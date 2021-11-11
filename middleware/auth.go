@@ -1,8 +1,8 @@
 package middleware
 
 import (
-	"Gin进阶/web_app/controllers"
-	"Gin进阶/web_app/pkg/jwt"
+	"Linkux/controllers"
+	"Linkux/pkg/jwt"
 	"strings"
 
 	"github.com/gin-gonic/gin"

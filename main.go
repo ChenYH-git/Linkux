@@ -1,12 +1,12 @@
 package main
 
 import (
-	"Gin进阶/web_app/dao/mysql"
-	"Gin进阶/web_app/dao/redis"
-	"Gin进阶/web_app/logger"
-	"Gin进阶/web_app/pkg/snowflakes"
-	"Gin进阶/web_app/routes"
-	"Gin进阶/web_app/settings"
+	"Linkux/dao/mysql"
+	"Linkux/dao/redis"
+	"Linkux/logger"
+	"Linkux/pkg/snowflakes"
+	"Linkux/routes"
+	"Linkux/settings"
 	"context"
 	"fmt"
 	"log"

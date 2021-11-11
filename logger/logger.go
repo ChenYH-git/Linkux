@@ -1,7 +1,7 @@
 package logger
 
 import (
-	"Gin进阶/web_app/settings"
+	"Linkux/settings"
 	"net"
 	"net/http"
 	"net/http/httputil"
