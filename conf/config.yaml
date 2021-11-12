@@ -19,7 +19,7 @@ mysql:
   port: 3306
   user: "root"
   password: "chenyuhan123000"
-  dbname: "Linkux"
+  dbname: "linkux"
   max_open_conns: 200
   max_idle_conns: 50
 redis:

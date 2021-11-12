@@ -21,8 +21,14 @@ func Setup(mode string) *gin.Engine {
 	r := gin.New()
 	r.Use(logger.GinLogger(), logger.GinRecovery(true), middleware.RateLimitMiddleware(2*time.Second, 1)) // 令牌桶容量为1，每两秒钟填充1个
 
-	r.LoadHTMLGlob("./template/*")
-	r.Static("/static", "./static")
+	//r.LoadHTMLGlob("./template/*")
+	//r.Static("/static", "./static")
+
+	r.GET("/login", controllers.LoginHandler)
+	r.GET("/index", controllers.IndexHandler)
+
+	r.POST("/post", controllers.CreatePostHandler)
+	r.POST("/vote", controllers.PostVoteController)
 
 	r.NoRoute(func(c *gin.Context) {
 		c.JSON(http.StatusNotFound, gin.H{

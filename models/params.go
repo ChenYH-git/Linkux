@@ -6,17 +6,6 @@ const (
 )
 
 //定义请求参数的结构体
-type ParamSignUp struct {
-	Username   string `json:"username" binding:"required"`
-	Password   string `json:"password" binding:"required"`
-	RePassword string `json:"re_password" binding:"required,eqfield=Password"`
-}
-
-type ParamLogin struct {
-	Username string `json:"username" binding:"required"`
-	Password string `json:"password" binding:"required"`
-}
-
 // 投票
 type ParamVoteData struct {
 	// UserID 从请求中获取当前用户
@@ -26,8 +15,8 @@ type ParamVoteData struct {
 
 // ParamPostList 获取帖子列表query string参数
 type ParamPostList struct {
-	CommunityID int64  `json:"community_id" form:"community_id"`
-	Page        int64  `json:"page" form:"page"`
-	Size        int64  `json:"size" form:"size"`
-	Order       string `json:"order" form:"order"`
+	LabelID int64  `json:"label_id" form:"label_id"`
+	Page    int64  `json:"page" form:"page"`
+	Size    int64  `json:"size" form:"size"`
+	Order   string `json:"order" form:"order"`
 }

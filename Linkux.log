@@ -1,0 +1,33 @@
+{"level":"DEBUG","time":"2021-11-11T18:29:03.536+0800","caller":"Linkux/main.go:33","msg":"logger init success..."}
+{"level":"DEBUG","time":"2021-11-11T18:31:25.678+0800","caller":"Linkux/main.go:33","msg":"logger init success..."}
+{"level":"DEBUG","time":"2021-11-11T18:31:45.101+0800","caller":"Linkux/main.go:33","msg":"logger init success..."}
+{"level":"INFO","time":"2021-11-11T18:31:49.261+0800","caller":"Linkux/main.go:65","msg":"Shutdown Server ..."}
+{"level":"INFO","time":"2021-11-11T18:31:49.761+0800","caller":"Linkux/main.go:72","msg":"Server exiting"}
+{"level":"DEBUG","time":"2021-11-11T19:13:57.774+0800","caller":"Linkux/main.go:33","msg":"logger init success..."}
+{"level":"INFO","time":"2021-11-11T19:19:54.020+0800","caller":"Linkux/main.go:65","msg":"Shutdown Server ..."}
+{"level":"INFO","time":"2021-11-11T19:19:54.522+0800","caller":"Linkux/main.go:72","msg":"Server exiting"}
+{"level":"DEBUG","time":"2021-11-11T19:19:57.422+0800","caller":"Linkux/main.go:33","msg":"logger init success..."}
+{"level":"INFO","time":"2021-11-11T19:21:45.257+0800","caller":"Linkux/main.go:65","msg":"Shutdown Server ..."}
+{"level":"INFO","time":"2021-11-11T19:21:45.758+0800","caller":"Linkux/main.go:72","msg":"Server exiting"}
+{"level":"DEBUG","time":"2021-11-11T19:21:48.552+0800","caller":"Linkux/main.go:33","msg":"logger init success..."}
+{"level":"ERROR","time":"2021-11-11T19:22:43.815+0800","caller":"controllers/user.go:16","msg":"get query code err: ","error":"EOF"}
+{"level":"INFO","time":"2021-11-11T19:22:43.816+0800","caller":"logger/logger.go:79","msg":"/login","status":200,"method":"GET","path":"/login","query":"code=001Eic2w3K5boX2FsK3w3fgwni3Eic2C","ip":"::1","user-agent":"Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_1 like Mac OS X) AppleWebKit/603.1.3 (KHTML, like Gecko) Version/10.0 Mobile/14E304 Safari/602.1 wechatdevtools/1.05.2110290 MicroMessenger/8.0.5 Language/zh_CN webview/","errors":"","cost":0.0010038}
+{"level":"INFO","time":"2021-11-11T19:23:50.334+0800","caller":"Linkux/main.go:65","msg":"Shutdown Server ..."}
+{"level":"INFO","time":"2021-11-11T19:23:50.836+0800","caller":"Linkux/main.go:72","msg":"Server exiting"}
+{"level":"DEBUG","time":"2021-11-11T19:26:17.880+0800","caller":"Linkux/main.go:33","msg":"logger init success..."}
+{"level":"INFO","time":"2021-11-11T19:26:32.268+0800","caller":"logger/logger.go:79","msg":"/login","status":200,"method":"GET","path":"/login","query":"code=061df4000Zf4LM12952002RzXm3df404","ip":"::1","user-agent":"Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_1 like Mac OS X) AppleWebKit/603.1.3 (KHTML, like Gecko) Version/10.0 Mobile/14E304 Safari/602.1 wechatdevtools/1.05.2110290 MicroMessenger/8.0.5 Language/zh_CN webview/","errors":"","cost":0.3215751}
+{"level":"ERROR","time":"2021-11-11T19:36:08.249+0800","caller":"controllers/user.go:15","msg":"logic.Login failed","error":"Error 1062: Duplicate entry 'o49Zd58gLLr2YjYgaRTfsLynkKVc' for key 'user.idx_user_id'"}
+{"level":"INFO","time":"2021-11-11T19:36:08.250+0800","caller":"logger/logger.go:79","msg":"/login","status":200,"method":"GET","path":"/login","query":"code=071dq2Ha1TNl5C0RkbJa1cl6Cv2dq2HH","ip":"::1","user-agent":"Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_1 like Mac OS X) AppleWebKit/603.1.3 (KHTML, like Gecko) Version/10.0 Mobile/14E304 Safari/602.1 wechatdevtools/1.05.2110290 MicroMessenger/8.0.5 Language/zh_CN webview/","errors":"","cost":0.2949901}
+{"level":"INFO","time":"2021-11-11T19:40:17.989+0800","caller":"Linkux/main.go:65","msg":"Shutdown Server ..."}
+{"level":"INFO","time":"2021-11-11T19:40:18.491+0800","caller":"Linkux/main.go:72","msg":"Server exiting"}
+{"level":"DEBUG","time":"2021-11-11T19:46:26.082+0800","caller":"Linkux/main.go:33","msg":"logger init success..."}
+{"level":"ERROR","time":"2021-11-11T19:47:35.563+0800","caller":"controllers/user.go:16","msg":"logic.Login failed","error":"Error 1062: Duplicate entry 'o49Zd58gLLr2YjYgaRTfsLynkKVc' for key 'user.idx_user_id'"}
+{"level":"INFO","time":"2021-11-11T19:47:35.564+0800","caller":"logger/logger.go:79","msg":"/login","status":200,"method":"GET","path":"/login","query":"code=021uC71w3NUqpX22Sn2w3DTP6o3uC718","ip":"::1","user-agent":"Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_1 like Mac OS X) AppleWebKit/603.1.3 (KHTML, like Gecko) Version/10.0 Mobile/14E304 Safari/602.1 wechatdevtools/1.05.2110290 MicroMessenger/8.0.5 Language/zh_CN webview/","errors":"","cost":0.3118665}
+{"level":"INFO","time":"2021-11-11T19:53:52.919+0800","caller":"Linkux/main.go:65","msg":"Shutdown Server ..."}
+{"level":"INFO","time":"2021-11-11T19:53:53.421+0800","caller":"Linkux/main.go:72","msg":"Server exiting"}
+{"level":"DEBUG","time":"2021-11-11T19:53:56.225+0800","caller":"Linkux/main.go:33","msg":"logger init success..."}
+{"level":"INFO","time":"2021-11-11T19:54:08.556+0800","caller":"logger/logger.go:79","msg":"/login","status":200,"method":"GET","path":"/login","query":"code=041bVz0w3NY5rX2k404w3oZe8U1bVz03","ip":"::1","user-agent":"Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_1 like Mac OS X) AppleWebKit/603.1.3 (KHTML, like Gecko) Version/10.0 Mobile/14E304 Safari/602.1 wechatdevtools/1.05.2110290 MicroMessenger/8.0.5 Language/zh_CN webview/","errors":"","cost":0.3527714}
+{"level":"INFO","time":"2021-11-11T19:57:36.651+0800","caller":"logger/logger.go:79","msg":"/login","status":200,"method":"GET","path":"/login","query":"code=071qMkHa1uQ55C0Lv0Ia13vZN94qMkHW","ip":"::1","user-agent":"Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_1 like Mac OS X) AppleWebKit/603.1.3 (KHTML, like Gecko) Version/10.0 Mobile/14E304 Safari/602.1 wechatdevtools/1.05.2110290 MicroMessenger/8.0.5 Language/zh_CN webview/","errors":"","cost":0.3019483}
+{"level":"INFO","time":"2021-11-11T19:58:22.968+0800","caller":"logger/logger.go:79","msg":"/login","status":200,"method":"GET","path":"/login","query":"code=091eDeGa1x5c6C0c2QGa1PcQ200eDeGz","ip":"::1","user-agent":"Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_1 like Mac OS X) AppleWebKit/603.1.3 (KHTML, like Gecko) Version/10.0 Mobile/14E304 Safari/602.1 wechatdevtools/1.05.2110290 MicroMessenger/8.0.5 Language/zh_CN webview/","errors":"","cost":0.1407917}
+{"level":"INFO","time":"2021-11-11T19:58:51.385+0800","caller":"Linkux/main.go:65","msg":"Shutdown Server ..."}
+{"level":"INFO","time":"2021-11-11T19:58:51.386+0800","caller":"Linkux/main.go:72","msg":"Server exiting"}
