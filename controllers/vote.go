@@ -23,11 +23,13 @@ func PostVoteController(c *gin.Context) {
 		return
 	}
 
-	userID, err := getCurrentUserID(c)
-	if err != nil {
-		ResponseError(c, CodeNeedLogin)
-		return
-	}
+	//userID, err := getCurrentUserID(c)
+	//if err != nil {
+	//	ResponseError(c, CodeNeedLogin)
+	//	return
+	//}
+
+	userID := "0"
 
 	if err := logic.VoteForPost(userID, p); err != nil {
 		zap.L().Error("logic.VoteForPost failed", zap.Error(err))

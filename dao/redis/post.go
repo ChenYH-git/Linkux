@@ -20,8 +20,8 @@ func CreateRedisPost(postID, labelID int64) error {
 		Member: postID,
 	})
 
-	cKey := getRedisKey(KeyLabelSetPF + strconv.Itoa(int(labelID)))
-	pipeline.SAdd(cKey, postID)
+	lKey := getRedisKey(KeyLabelSetPF + strconv.Itoa(int(labelID)))
+	pipeline.SAdd(lKey, postID)
 	_, err := pipeline.Exec()
 	return err
 }
@@ -36,6 +36,28 @@ func GetPostIDsInOrder(p *models.ParamPostList) ([]string, error) {
 	key := getRedisKey(KeyPostTimeZset)
 	if p.Order == models.OrderScore {
 		key = getRedisKey(KeyPostScoreZset)
+	}
+	return getIDsFromKey(key, p.Page, p.Size)
+}
+
+func GetLabelPostIDsInOrder(p *models.ParamPostList) ([]string, error) {
+	orderKey := getRedisKey(KeyPostTimeZset)
+	if orderKey == models.OrderScore {
+		orderKey = getRedisKey(KeyPostScoreZset)
+	}
+
+	lKey := getRedisKey(KeyLabelSetPF + strconv.Itoa(int(p.LabelID)))
+	key := orderKey + strconv.Itoa(int(p.LabelID))
+	if client.Exists(key).Val() < 1 {
+		pipeline := client.Pipeline()
+		pipeline.ZInterStore(key, redis.ZStore{
+			Aggregate: "MAX",
+		}, lKey, orderKey)
+		pipeline.Expire(key, 60*time.Second)
+		_, err := pipeline.Exec()
+		if err != nil {
+			return nil, err
+		}
 	}
 	return getIDsFromKey(key, p.Page, p.Size)
 }

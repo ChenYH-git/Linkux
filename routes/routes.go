@@ -30,6 +30,11 @@ func Setup(mode string) *gin.Engine {
 	r.POST("/post", controllers.CreatePostHandler)
 	r.POST("/vote", controllers.PostVoteController)
 
+	r.GET("/label", controllers.LabelHandler)
+	r.GET("/label/:id", controllers.LabelDetailHandler)
+
+	r.GET("/post/:id", controllers.GetPostDetailHandler)
+
 	r.NoRoute(func(c *gin.Context) {
 		c.JSON(http.StatusNotFound, gin.H{
 			"msg": "404 NOT FOUND",

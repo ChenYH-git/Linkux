@@ -2,6 +2,8 @@ package mysql
 
 import (
 	"Linkux/models"
+	"database/sql"
+	"errors"
 	"strings"
 
 	"github.com/jmoiron/sqlx"
@@ -30,5 +32,31 @@ func GetPostListByIDs(ids []string) (postList []*models.Post, err error) {
 	query = db.Rebind(query)
 
 	err = db.Select(&postList, query, args...)
+	return
+}
+
+func GetLabelDetailByID(id int64) (label *models.LabelDetail, err error) {
+	label = new(models.LabelDetail)
+	sqlStr := `select
+				label_id, label_name, introduction, create_time
+				from label
+				where label_id = ?
+	`
+	if err = db.Get(label, sqlStr, id); err != nil {
+		if err == sql.ErrNoRows {
+			err = errors.New("无效标签id")
+		}
+	}
+	return label, err
+}
+
+func GetPostByID(pid int64) (post *models.Post, err error) {
+	post = new(models.Post)
+	sqlStr := `select
+	post_id, title, content, author_id, label_id, create_time
+	from post
+	where post_id = ?
+	`
+	err = db.Get(post, sqlStr, pid)
 	return
 }

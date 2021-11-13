@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"Linkux/models"
 	"fmt"
 	"reflect"
 	"strings"
@@ -31,8 +30,6 @@ func InitTrans(locale string) (err error) {
 			}
 			return name
 		})
-		//为SignUpParam注册自定义校验方法
-		v.RegisterStructValidation(SignUpParamStructLevelValidation, models.ParamSignUp{})
 
 		zhT := zh.New() //中文翻译器
 		enT := en.New() //英文翻译器
@@ -68,13 +65,4 @@ func removeTopStruct(fields map[string]string) map[string]string {
 		res[field[strings.Index(field, ".")+1:]] = err
 	}
 	return res
-}
-
-//自定义结构体校验函数
-func SignUpParamStructLevelValidation(sl validator.StructLevel) {
-	su := sl.Current().Interface().(models.ParamSignUp)
-
-	if su.Password != su.RePassword {
-		sl.ReportError(su.RePassword, "re_password", "RePassword", "eqfield", "password")
-	}
 }

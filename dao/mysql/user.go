@@ -22,7 +22,7 @@ func InsertUser(user *models.User) (err error) {
 
 func GetUserByID(uid string) (user *models.User, err error) {
 	user = new(models.User)
-	sqlStr := `select * from user where user_id = ?`
+	sqlStr := `select username from user where user_id = ?`
 	err = db.Get(user, sqlStr, uid)
 	return
 }
