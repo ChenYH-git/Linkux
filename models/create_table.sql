@@ -3,6 +3,15 @@
 #                     `contribution` bigint(20) NOT NULL ,
 #                     `username` varchar(64) COLLATE utf8mb4_general_ci NOT NULL ,
 #                     `user_id` varchar(128) NOT NULL ,
+#                     `pic_link` varchar(256) NOT NULL,
+#                     PRIMARY KEY (`id`),
+#                     UNIQUE KEY `idx_user_id` (`user_id`) USING BTREE
+# ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
+#
+# CREATE TABLE `collection` (
+#                     `id` bigint(20) NOT NULL AUTO_INCREMENT,
+#                     `post_id` bigint(20) NOT NULL COMMENT '收藏的帖子id',
+#                     `user_id` varchar(128) NOT NULL ,
 #                     PRIMARY KEY (`id`),
 #                     UNIQUE KEY `idx_user_id` (`user_id`) USING BTREE
 # ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;

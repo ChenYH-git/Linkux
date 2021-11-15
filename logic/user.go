@@ -2,6 +2,7 @@ package logic
 
 import (
 	"Linkux/dao/mysql"
+	"Linkux/dao/redis"
 	"Linkux/models"
 	"encoding/json"
 	"io/ioutil"
@@ -10,14 +11,14 @@ import (
 	"go.uber.org/zap"
 )
 
-var (
+const (
 	id         = `wxb27cb3df6158fc0e`
 	secret     = `001a15eeb9b2e60acfb21ce896e3885f`
 	grant_type = `authorization_code`
 )
 
-func Login(code string) (user *models.User, err error) {
-	resp, err := http.Get("https://api.weixin.qq.com/sns/jscode2session?appid=" + id + `&secret=` + secret + `&js_code=` + code + `&grant_type=` + grant_type)
+func Login(p *models.User) (userID string, err error) {
+	resp, err := http.Get("https://api.weixin.qq.com/sns/jscode2session?appid=" + id + `&secret=` + secret + `&js_code=` + p.Code + `&grant_type=` + grant_type)
 	if err != nil {
 		zap.L().Error("Get weixin API failed", zap.Error(err))
 		return
@@ -36,10 +37,116 @@ func Login(code string) (user *models.User, err error) {
 		return
 	}
 
-	user = &models.User{
+	user := &models.User{
 		UserID:       res.OpenID,
 		Contribution: 0,
+		Username:     p.Username,
+		PicLink:      p.PicLink,
 	}
 
-	return user, mysql.InsertUser(user)
+	return user.UserID, mysql.InsertUser(user)
+}
+
+func GetUserConByID(p *models.ParamPostList, userID string) (data []*models.ApiPostDetail, err error) {
+	ids, err := redis.GetPostIDsInOrder(p)
+	if err != nil {
+		return
+	}
+	if len(ids) == 0 {
+		zap.L().Warn("redis.GetPostIDsInOrder return 0 id")
+		return
+	}
+
+	posts, err := mysql.GetPostListOfMy(ids, userID)
+	if err != nil {
+		return
+	}
+	data = make([]*models.ApiPostDetail, 0, len(posts))
+	voteData, err := redis.GetPostVoteData(ids)
+	if err != nil {
+		return
+	}
+	for idx, post := range posts {
+		user, err := mysql.GetUserByID(post.AuthorID)
+		if err != nil {
+			zap.L().Error("mysql.GetUserByID() failed",
+				zap.String("author_id", post.AuthorID),
+				zap.Error(err))
+			continue
+		}
+
+		label, err := mysql.GetLabelDetailByID(post.LabelID)
+		if err != nil {
+			zap.L().Error("mysql.GetLabelDetailByID() failed",
+				zap.Int64("label_id", post.LabelID),
+				zap.Error(err))
+			continue
+		}
+		postDetail := &models.ApiPostDetail{
+			AuthorName:  user.Username,
+			VoteNum:     voteData[idx],
+			Post:        post,
+			LabelDetail: label,
+		}
+		data = append(data, postDetail)
+	}
+	return
+}
+
+func AddCollection(p *models.Collection, userID string) (err error) {
+	err = mysql.AddCollection(p, userID)
+	if err != nil {
+		zap.L().Error("mysql.AddCollection(p, userID) failed",
+			zap.String("user_id", userID),
+			zap.Error(err))
+		return
+	}
+	return nil
+}
+
+func GetCollection(p *models.ParamPostList, userID string) (data []*models.ApiPostDetail, err error) {
+	ids, err := mysql.GetCollectionIDs(p, userID)
+	if err != nil {
+		return
+	}
+	if len(ids) == 0 {
+		zap.L().Warn("mysql.GetCollectionIDs return 0 id")
+		return
+	}
+
+	posts, err := mysql.GetPostListByIDs(ids)
+	if err != nil {
+		return
+	}
+	data = make([]*models.ApiPostDetail, 0, len(posts))
+	voteData, err := redis.GetPostVoteData(ids)
+	if err != nil {
+		return
+	}
+	for idx, post := range posts {
+		user, err := mysql.GetUserByID(post.AuthorID)
+		if err != nil {
+			zap.L().Error("mysql.GetUserByID() failed",
+				zap.String("author_id", post.AuthorID),
+				zap.Error(err))
+			continue
+		}
+
+		label, err := mysql.GetLabelDetailByID(post.LabelID)
+		if err != nil {
+			zap.L().Error("mysql.GetLabelDetailByID() failed",
+				zap.Int64("label_id", post.LabelID),
+				zap.Error(err))
+			continue
+		}
+		postDetail := &models.ApiPostDetail{
+			AuthorName:  user.Username,
+			VoteNum:     voteData[idx],
+			PicLink:     user.PicLink,
+			Post:        post,
+			LabelDetail: label,
+		}
+		data = append(data, postDetail)
+	}
+	return
 }

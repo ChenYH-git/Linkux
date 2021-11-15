@@ -4,7 +4,7 @@ go 1.15
 
 require (
 	github.com/bwmarrin/snowflake v0.3.0
-	github.com/dgrijalva/jwt-go v3.2.0+incompatible
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect
 	github.com/fsnotify/fsnotify v1.5.1
 	github.com/gin-gonic/gin v1.7.4
 	github.com/go-playground/locales v0.13.0
@@ -18,7 +18,7 @@ require (
 	github.com/onsi/ginkgo v1.16.5 // indirect
 	github.com/onsi/gomega v1.17.0 // indirect
 	github.com/spf13/viper v1.9.0
-	github.com/ugorji/go/codec v1.1.7
+	github.com/ugorji/go/codec v1.1.7 // indirect
 	go.uber.org/zap v1.19.1
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0 // indirect
 )

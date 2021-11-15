@@ -19,21 +19,23 @@ func Setup(mode string) *gin.Engine {
 	controllers.InitTrans("zh")
 
 	r := gin.New()
-	r.Use(logger.GinLogger(), logger.GinRecovery(true), middleware.RateLimitMiddleware(2*time.Second, 1)) // 令牌桶容量为1，每两秒钟填充1个
+	r.Use(logger.GinLogger(), logger.GinRecovery(true), middleware.RateLimitMiddleware(time.Second, 5)) // 令牌桶容量为1，每两秒钟填充1个
 
 	//r.LoadHTMLGlob("./template/*")
 	//r.Static("/static", "./static")
-
-	r.GET("/login", controllers.LoginHandler)
-	r.GET("/index", controllers.IndexHandler)
-
-	r.POST("/post", controllers.CreatePostHandler)
-	r.POST("/vote", controllers.PostVoteController)
-
-	r.GET("/label", controllers.LabelHandler)
-	r.GET("/label/:id", controllers.LabelDetailHandler)
-
-	r.GET("/post/:id", controllers.GetPostDetailHandler)
+	{
+		r.POST("/login", controllers.LoginHandler)
+		r.GET("/index", controllers.IndexHandler)
+		r.POST("/post", controllers.CreatePostHandler)
+		r.POST("/vote", controllers.PostVoteController)
+		r.GET("/label", controllers.LabelHandler)
+		r.GET("/label/:id", controllers.LabelDetailHandler)
+		r.GET("/post/:id", controllers.GetPostDetailHandler)
+		r.GET("/rank", controllers.GetUserRankHandler)
+		r.GET("/contribution", controllers.GetUserContributionHandler)
+		r.POST("/collect/add", controllers.AddCollectionHandler)
+		r.GET("/collect", controllers.GetCollectionHandler)
+	}
 
 	r.NoRoute(func(c *gin.Context) {
 		c.JSON(http.StatusNotFound, gin.H{

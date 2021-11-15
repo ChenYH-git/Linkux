@@ -9,12 +9,20 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
+const conPerPost = 10
+
 func CreatePost(p *models.Post) (err error) {
 	sqlStr := `insert into post(
 	post_id, title, content, author_id, label_id)
 	values(? , ?, ?, ?, ?)
 	`
 	_, err = db.Exec(sqlStr, p.ID, p.Title, p.Content, p.AuthorID, p.LabelID)
+	return
+}
+
+func AddContribution(p *models.Post) (err error) {
+	sqlStr := `update user set contribution = contribution + ? where user_id = ?`
+	_, err = db.Exec(sqlStr, conPerPost, p.AuthorID)
 	return
 }
 
