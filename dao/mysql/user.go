@@ -50,9 +50,27 @@ func GetPostListOfMy(ids []string, userID string) (postList []*models.Post, err 
 
 }
 
-func AddCollection(p *models.Collection, userID string) (err error) {
+func AddCollection(p *models.Triger, userID string) (err error) {
 	sqlStr := `insert into collection(user_id, post_id) values(?, ?)`
 	_, err = db.Exec(sqlStr, userID, p.PostID)
+	return
+}
+
+func AddCollectNum(p *models.Triger) (err error) {
+	sqlStr := `update post set collect_num = collect_num + 1 where post_id = ?`
+	_, err = db.Exec(sqlStr, p.PostID)
+	return
+}
+
+func DeleteCollection(p *models.Triger, userID string) (err error) {
+	sqlStr := `delete from collection where user_id = ? and post_id = ?`
+	_, err = db.Exec(sqlStr, userID, p.PostID)
+	return
+}
+
+func DeleteCollectNum(p *models.Triger) (err error) {
+	sqlStr := `update post set collect_num = collect_num - 1 where post_id = ?`
+	_, err = db.Exec(sqlStr, p.PostID)
 	return
 }
 
@@ -69,5 +87,11 @@ func GetCollectionIDs(p *models.ParamPostList, userID string) (ids []string, err
 	for _, v := range postList {
 		ids = append(ids, strconv.FormatInt(v.ID, 10))
 	}
+	return
+}
+
+func AddViewNum(p *models.Triger) (err error) {
+	sqlStr := `update post set viewd_num = viewd_num + 1 where post_id = ?`
+	_, err = db.Exec(sqlStr, p.PostID)
 	return
 }

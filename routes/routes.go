@@ -28,13 +28,15 @@ func Setup(mode string) *gin.Engine {
 		r.GET("/index", controllers.IndexHandler)
 		r.POST("/post", controllers.CreatePostHandler)
 		r.POST("/vote", controllers.PostVoteController)
+		r.PUT("/view/add", controllers.AddViewHandler)
 		r.GET("/label", controllers.LabelHandler)
 		r.GET("/label/:id", controllers.LabelDetailHandler)
 		r.GET("/post/:id", controllers.GetPostDetailHandler)
 		r.GET("/rank", controllers.GetUserRankHandler)
 		r.GET("/contribution", controllers.GetUserContributionHandler)
-		r.POST("/collect/add", controllers.AddCollectionHandler)
-		r.GET("/collect", controllers.GetCollectionHandler)
+		r.POST("/collect", controllers.AddCollectionHandler)
+		r.GET("/collect/get", controllers.GetCollectionHandler)
+		r.PUT("/collect/delete", controllers.DeleteCollectionHandler)
 	}
 
 	r.NoRoute(func(c *gin.Context) {

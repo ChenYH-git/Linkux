@@ -27,7 +27,7 @@ func AddContribution(p *models.Post) (err error) {
 }
 
 func GetPostListByIDs(ids []string) (postList []*models.Post, err error) {
-	sqlStr := `select post_id, title, content, author_id, label_id, create_time
+	sqlStr := `select post_id, title, content, author_id, label_id, collect_num, viewd_num, create_time
 	from post
 	where post_id in (?)
 	order by FIND_IN_SET(post_id, ?)
@@ -61,7 +61,7 @@ func GetLabelDetailByID(id int64) (label *models.LabelDetail, err error) {
 func GetPostByID(pid int64) (post *models.Post, err error) {
 	post = new(models.Post)
 	sqlStr := `select
-	post_id, title, content, author_id, label_id, create_time
+	post_id, title, content, author_id, label_id, collect_num, viewd_num, create_time
 	from post
 	where post_id = ?
 	`

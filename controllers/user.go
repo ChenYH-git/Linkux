@@ -62,7 +62,7 @@ func GetUserContributionHandler(c *gin.Context) {
 }
 
 func AddCollectionHandler(c *gin.Context) {
-	p := new(models.Collection)
+	p := new(models.Triger)
 	if err := c.ShouldBindJSON(p); err != nil {
 		zap.L().Error("invalid collection param", zap.Error(err))
 		ResponseError(c, CodeInvalidParam)
@@ -84,6 +84,32 @@ func AddCollectionHandler(c *gin.Context) {
 
 	ResponseSuccess(c, gin.H{
 		"msg": "add collection success",
+	})
+}
+
+func DeleteCollectionHandler(c *gin.Context) {
+	p := new(models.Triger)
+	if err := c.ShouldBindJSON(p); err != nil {
+		zap.L().Error("invalid collection param", zap.Error(err))
+		ResponseError(c, CodeInvalidParam)
+		return
+	}
+	//userID, err := getCurrentUserID(c)
+	//if err != nil {
+	//	zap.L().Error("getCurrentUserID failed", zap.Error(err))
+	//	ResponseError(c, CodeUserNotExist)
+	//	return
+	//}
+
+	userID := "0"
+	if err := logic.DeleteCollection(p, userID); err != nil {
+		zap.L().Error("logic.AddCollection(userID) failed", zap.Error(err))
+		ResponseError(c, CodeServerBusy)
+		return
+	}
+
+	ResponseSuccess(c, gin.H{
+		"msg": "delete collection success",
 	})
 }
 
@@ -113,4 +139,23 @@ func GetCollectionHandler(c *gin.Context) {
 	}
 
 	ResponseSuccess(c, data)
+}
+
+func AddViewHandler(c *gin.Context) {
+	p := new(models.Triger)
+	if err := c.ShouldBindJSON(p); err != nil {
+		zap.L().Error("invalid collection param", zap.Error(err))
+		ResponseError(c, CodeInvalidParam)
+		return
+	}
+
+	if err := logic.AddViewNum(p); err != nil {
+		zap.L().Error("logic.AddViewNum(p) failed", zap.Error(err))
+		ResponseError(c, CodeServerBusy)
+		return
+	}
+
+	ResponseSuccess(c, gin.H{
+		"msg": "add viewNum success",
+	})
 }

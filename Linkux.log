@@ -224,3 +224,54 @@
 {"level":"INFO","time":"2021-11-15T17:08:57.185+0800","caller":"logger/logger.go:79","msg":"/collect","status":200,"method":"GET","path":"/collect","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.28.4","errors":"","cost":0.0049997}
 {"level":"INFO","time":"2021-11-15T17:09:37.855+0800","caller":"Linkux/main.go:70","msg":"Shutdown Server ..."}
 {"level":"INFO","time":"2021-11-15T17:09:38.357+0800","caller":"Linkux/main.go:77","msg":"Server exiting"}
+{"level":"DEBUG","time":"2021-11-16T19:54:27.730+0800","caller":"Linkux/main.go:34","msg":"logger init success..."}
+{"level":"INFO","time":"2021-11-16T19:55:10.665+0800","caller":"logger/logger.go:79","msg":"/index","status":200,"method":"GET","path":"/index","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.28.4","errors":"","cost":0.0129998}
+{"level":"INFO","time":"2021-11-16T19:56:37.188+0800","caller":"Linkux/main.go:70","msg":"Shutdown Server ..."}
+{"level":"INFO","time":"2021-11-16T19:56:37.695+0800","caller":"Linkux/main.go:77","msg":"Server exiting"}
+{"level":"DEBUG","time":"2021-11-16T19:58:28.977+0800","caller":"Linkux/main.go:34","msg":"logger init success..."}
+{"level":"INFO","time":"2021-11-16T19:58:30.938+0800","caller":"logger/logger.go:79","msg":"/index","status":200,"method":"GET","path":"/index","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.28.4","errors":"","cost":0.0039968}
+{"level":"INFO","time":"2021-11-16T20:09:10.003+0800","caller":"Linkux/main.go:70","msg":"Shutdown Server ..."}
+{"level":"INFO","time":"2021-11-16T20:09:10.504+0800","caller":"Linkux/main.go:77","msg":"Server exiting"}
+{"level":"DEBUG","time":"2021-11-16T20:09:13.308+0800","caller":"Linkux/main.go:34","msg":"logger init success..."}
+{"level":"ERROR","time":"2021-11-16T20:11:16.987+0800","caller":"controllers/post.go:28","msg":"logic.CreatePost(p) failed","error":"Error 1364: Field 'collect_num' doesn't have a default value"}
+{"level":"INFO","time":"2021-11-16T20:11:16.988+0800","caller":"logger/logger.go:79","msg":"/post","status":200,"method":"POST","path":"/post","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.28.4","errors":"","cost":0.0039774}
+{"level":"INFO","time":"2021-11-16T20:11:43.974+0800","caller":"Linkux/main.go:70","msg":"Shutdown Server ..."}
+{"level":"INFO","time":"2021-11-16T20:11:44.476+0800","caller":"Linkux/main.go:77","msg":"Server exiting"}
+{"level":"DEBUG","time":"2021-11-16T20:13:14.267+0800","caller":"Linkux/main.go:34","msg":"logger init success..."}
+{"level":"INFO","time":"2021-11-16T20:13:16.590+0800","caller":"logger/logger.go:79","msg":"/post","status":200,"method":"POST","path":"/post","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.28.4","errors":"","cost":0.0199994}
+{"level":"INFO","time":"2021-11-16T20:17:35.071+0800","caller":"Linkux/main.go:70","msg":"Shutdown Server ..."}
+{"level":"INFO","time":"2021-11-16T20:17:35.572+0800","caller":"Linkux/main.go:77","msg":"Server exiting"}
+{"level":"DEBUG","time":"2021-11-16T20:20:31.436+0800","caller":"Linkux/main.go:34","msg":"logger init success..."}
+{"level":"INFO","time":"2021-11-16T20:22:27.665+0800","caller":"logger/logger.go:79","msg":"/index","status":200,"method":"GET","path":"/index","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.28.4","errors":"","cost":0.006001}
+{"level":"INFO","time":"2021-11-16T20:22:53.127+0800","caller":"Linkux/main.go:70","msg":"Shutdown Server ..."}
+{"level":"INFO","time":"2021-11-16T20:22:53.627+0800","caller":"Linkux/main.go:77","msg":"Server exiting"}
+{"level":"DEBUG","time":"2021-11-16T20:23:18.770+0800","caller":"Linkux/main.go:34","msg":"logger init success..."}
+{"level":"INFO","time":"2021-11-16T20:23:20.570+0800","caller":"logger/logger.go:79","msg":"/index","status":200,"method":"GET","path":"/index","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.28.4","errors":"","cost":0.0039949}
+{"level":"INFO","time":"2021-11-16T20:24:10.996+0800","caller":"logger/logger.go:79","msg":"/collect/get","status":200,"method":"GET","path":"/collect/get","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.28.4","errors":"","cost":0.0030035}
+{"level":"INFO","time":"2021-11-16T20:24:46.196+0800","caller":"logger/logger.go:79","msg":"/post","status":200,"method":"POST","path":"/post","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.28.4","errors":"","cost":0.0189989}
+{"level":"INFO","time":"2021-11-16T20:25:26.571+0800","caller":"logger/logger.go:79","msg":"/post","status":200,"method":"POST","path":"/post","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.28.4","errors":"","cost":0.0180395}
+{"level":"INFO","time":"2021-11-16T20:25:51.457+0800","caller":"logger/logger.go:79","msg":"/rank","status":200,"method":"GET","path":"/rank","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.28.4","errors":"","cost":0.0010037}
+{"level":"INFO","time":"2021-11-16T20:28:06.868+0800","caller":"logger/logger.go:79","msg":"/contribution","status":200,"method":"GET","path":"/contribution","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.28.4","errors":"","cost":0.0069754}
+{"level":"INFO","time":"2021-11-16T20:28:57.362+0800","caller":"Linkux/main.go:70","msg":"Shutdown Server ..."}
+{"level":"INFO","time":"2021-11-16T20:28:57.863+0800","caller":"Linkux/main.go:77","msg":"Server exiting"}
+{"level":"DEBUG","time":"2021-11-16T20:41:59.774+0800","caller":"Linkux/main.go:34","msg":"logger init success..."}
+{"level":"ERROR","time":"2021-11-16T20:43:27.462+0800","caller":"logic/user.go:99","msg":"mysql.AddCollection(p, userID) failed","user_id":"0","error":"Error 1062: Duplicate entry '0' for key 'collection.idx_user_id'"}
+{"level":"ERROR","time":"2021-11-16T20:43:27.462+0800","caller":"controllers/user.go:80","msg":"logic.AddCollection(userID) failed","error":"Error 1062: Duplicate entry '0' for key 'collection.idx_user_id'"}
+{"level":"INFO","time":"2021-11-16T20:43:27.463+0800","caller":"logger/logger.go:79","msg":"/collect/add","status":200,"method":"POST","path":"/collect/add","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.28.4","errors":"","cost":0.0089919}
+{"level":"INFO","time":"2021-11-16T20:46:08.559+0800","caller":"logger/logger.go:79","msg":"/collect/add","status":200,"method":"POST","path":"/collect/add","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.28.4","errors":"","cost":0.0240131}
+{"level":"INFO","time":"2021-11-16T20:49:08.770+0800","caller":"logger/logger.go:79","msg":"/collect/get","status":200,"method":"GET","path":"/collect/get","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.28.4","errors":"","cost":0.3081932}
+{"level":"INFO","time":"2021-11-16T20:49:20.100+0800","caller":"Linkux/main.go:70","msg":"Shutdown Server ..."}
+{"level":"INFO","time":"2021-11-16T20:49:20.601+0800","caller":"Linkux/main.go:77","msg":"Server exiting"}
+{"level":"DEBUG","time":"2021-11-16T20:55:53.707+0800","caller":"Linkux/main.go:34","msg":"logger init success..."}
+{"level":"INFO","time":"2021-11-16T20:55:58.508+0800","caller":"logger/logger.go:79","msg":"/collect/get","status":200,"method":"GET","path":"/collect/get","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.28.4","errors":"","cost":0.0040039}
+{"level":"INFO","time":"2021-11-16T20:56:09.498+0800","caller":"Linkux/main.go:70","msg":"Shutdown Server ..."}
+{"level":"INFO","time":"2021-11-16T20:56:09.998+0800","caller":"Linkux/main.go:77","msg":"Server exiting"}
+{"level":"DEBUG","time":"2021-11-16T21:03:06.476+0800","caller":"Linkux/main.go:34","msg":"logger init success..."}
+{"level":"INFO","time":"2021-11-16T21:03:55.777+0800","caller":"logger/logger.go:79","msg":"/addview","status":200,"method":"PUT","path":"/addview","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.28.4","errors":"","cost":0.0050024}
+{"level":"INFO","time":"2021-11-16T21:04:22.015+0800","caller":"Linkux/main.go:70","msg":"Shutdown Server ..."}
+{"level":"INFO","time":"2021-11-16T21:04:22.516+0800","caller":"Linkux/main.go:77","msg":"Server exiting"}
+{"level":"DEBUG","time":"2021-11-16T21:25:45.880+0800","caller":"Linkux/main.go:34","msg":"logger init success..."}
+{"level":"INFO","time":"2021-11-16T21:26:24.508+0800","caller":"logger/logger.go:79","msg":"/collect/delete","status":200,"method":"PUT","path":"/collect/delete","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.28.4","errors":"","cost":0.0100462}
+{"level":"INFO","time":"2021-11-16T21:26:53.244+0800","caller":"logger/logger.go:79","msg":"/collect","status":200,"method":"POST","path":"/collect","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.28.4","errors":"","cost":0.006999}
+{"level":"INFO","time":"2021-11-16T21:27:17.107+0800","caller":"Linkux/main.go:70","msg":"Shutdown Server ..."}
+{"level":"INFO","time":"2021-11-16T21:27:17.608+0800","caller":"Linkux/main.go:77","msg":"Server exiting"}

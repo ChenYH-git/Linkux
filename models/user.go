@@ -16,6 +16,6 @@ type LoginResBody struct {
 	Errcode    int    `json:"errcode"`
 }
 
-type Collection struct {
+type Triger struct {
 	PostID int64 `json:"post_id" db:"post_id"`
 }

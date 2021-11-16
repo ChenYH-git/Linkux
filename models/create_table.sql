@@ -16,6 +16,22 @@
 #                     UNIQUE KEY `idx_user_id` (`user_id`) USING BTREE
 # ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
 #
+# CREATE TABLE `follow` (
+#                               `id` bigint(20) NOT NULL AUTO_INCREMENT,
+#                               `follow_id` bigint(20) NOT NULL COMMENT '关注的作者id',
+#                               `user_id` varchar(128) NOT NULL ,
+#                               PRIMARY KEY (`id`),
+#                               UNIQUE KEY `idx_user_id` (`user_id`) USING BTREE
+# ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
+#
+# CREATE TABLE `followed` (
+#                               `id` bigint(20) NOT NULL AUTO_INCREMENT,
+#                               `followed_id` bigint(20) NOT NULL COMMENT '粉丝id',
+#                               `user_id` varchar(128) NOT NULL ,
+#                               PRIMARY KEY (`id`),
+#                               UNIQUE KEY `idx_user_id` (`user_id`) USING BTREE
+# ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
+#
 # DROP TABLE IF EXISTS `label`;
 # CREATE TABLE label (
 #     `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -28,7 +44,7 @@
 #      UNIQUE KEY `idx_label_id` (`label_id`),
 #      UNIQUE KEY `idx_label_name` (`label_name`)
 # ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 Collate = utf8mb4_general_ci;
-
+#
 # DROP TABLE IF EXISTS `post`;
 # CREATE TABLE  `post` (
 #     `id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -37,7 +53,9 @@
 #     `content` varchar(8192) COLLATE utf8mb4_general_ci NOT NULL COMMENT '内容',
 #     `author_id` bigint(20) NOT NULL COMMENT '作者的用户id',
 #     `label_id` bigint(20) NOT NULL COMMENT '所属标签',
-#     `status` tinyint(4) NOT NULL DEFAULT '1' COMMENT '帖子状态',
+#     `collect_num` bigint(20) NOT NULL DEFAULT '0' COMMENT '帖子收藏量',
+#     `viewd_num` bigint(20) NOT NULL DEFAULT '0' COMMENT '帖子观看量',
+#     `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '帖子状态',
 #     `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
 #     `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
 #     PRIMARY KEY (`id`),
