@@ -186,3 +186,90 @@ func AddViewNum(p *models.Triger) (err error) {
 	}
 	return nil
 }
+
+func AddFollow(p *models.Follow, userID string) (err error) {
+	err = mysql.AddFollow(p, userID)
+	if err != nil {
+		zap.L().Error("mysql.AddFollow(p, userID) failed",
+			zap.String("user_id", userID),
+			zap.Error(err))
+		return
+	}
+	return nil
+}
+
+func CancelFollow(p *models.Follow, userID string) (err error) {
+	err = mysql.CancelFollow(p, userID)
+	if err != nil {
+		zap.L().Error("mysql.CancelFollow(p, userID) failed",
+			zap.String("user_id", userID),
+			zap.Error(err))
+		return
+	}
+	return nil
+}
+
+func GetFollowUser(userID string) (data []*models.User, err error) {
+	ids, err := mysql.GetFollowUser(userID)
+	if err != nil {
+		zap.L().Error("mysql.GetFollowUser(userID) failed",
+			zap.String("user_id", userID),
+			zap.Error(err))
+		return nil, err
+	}
+
+	data, err = mysql.GetFollowUserByIDs(ids)
+	if err != nil {
+		zap.L().Error("mysql.GetFollowUserByIDs(ids) failed",
+			zap.String("user_id", userID),
+			zap.Error(err))
+		return nil, err
+	}
+
+	return data, nil
+}
+
+func GetFollowedUser(userID string) (data []*models.User, err error) {
+	ids, err := mysql.GetFollowedUser(userID)
+	if err != nil {
+		zap.L().Error("mysql.GetFollowedUser(userID) failed",
+			zap.String("user_id", userID),
+			zap.Error(err))
+		return nil, err
+	}
+
+	data, err = mysql.GetFollowedUserByIDs(ids)
+	if err != nil {
+		zap.L().Error("mysql.GetFollowedUserByIDs(ids) failed",
+			zap.String("user_id", userID),
+			zap.Error(err))
+		return nil, err
+	}
+
+	return data, nil
+}
+
+func GetFollowPost(p *models.ParamPostList, userID string) (data []*models.ApiPostDetail, err error) {
+	ids, err := mysql.GetFollowUser(userID)
+	if err != nil {
+		zap.L().Error("mysql.GetFollowUser(userID) failed",
+			zap.String("user_id", userID),
+			zap.Error(err))
+		return nil, err
+	}
+
+	IDs := make([]string, 0, len(ids))
+	for _, v := range ids {
+		IDs = append(IDs, v.FollowID)
+	}
+
+	data, err = mysql.GetFollowPostByIDs(p, IDs)
+	if err != nil {
+		zap.L().Error("mysql.GetFollowPostByIDs(p, ids) failed",
+			zap.String("user_id", userID),
+			zap.Error(err))
+		return nil, err
+	}
+
+	return data, nil
+}

@@ -19,3 +19,8 @@ type LoginResBody struct {
 type Triger struct {
 	PostID int64 `json:"post_id" db:"post_id"`
 }
+
+type Follow struct {
+	FollowID   string `json:"follow_id" db:"follow_id"`
+	FollowedID string `json:"followed_id" db:"followed_id"`
+}

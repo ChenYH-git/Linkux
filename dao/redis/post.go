@@ -79,3 +79,19 @@ func GetPostVoteData(ids []string) (data []int64, err error) {
 	}
 	return
 }
+
+func GetPostVoteDataSingle(id string) (data int64, err error) {
+	pipeline := client.Pipeline()
+
+	key := getRedisKey(KeyPostVotedZsetPF + id)
+	pipeline.ZCount(key, "1", "1")
+
+	cmder, err := pipeline.Exec()
+	if err != nil {
+		return 0, err
+	}
+
+	data = cmder[0].(*redis.IntCmd).Val()
+
+	return
+}

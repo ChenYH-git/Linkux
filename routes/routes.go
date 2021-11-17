@@ -19,7 +19,7 @@ func Setup(mode string) *gin.Engine {
 	controllers.InitTrans("zh")
 
 	r := gin.New()
-	r.Use(logger.GinLogger(), logger.GinRecovery(true), middleware.RateLimitMiddleware(time.Second, 5)) // 令牌桶容量为1，每两秒钟填充1个
+	r.Use(logger.GinLogger(), logger.GinRecovery(true), middleware.RateLimitMiddleware(time.Second, 5)) // 令牌桶容量为5，每秒钟填充1个
 
 	//r.LoadHTMLGlob("./template/*")
 	//r.Static("/static", "./static")
@@ -37,6 +37,11 @@ func Setup(mode string) *gin.Engine {
 		r.POST("/collect", controllers.AddCollectionHandler)
 		r.GET("/collect/get", controllers.GetCollectionHandler)
 		r.PUT("/collect/delete", controllers.DeleteCollectionHandler)
+		r.POST("/follow", controllers.AddFollowHandler)
+		r.GET("/follow/get/follow", controllers.GetFollowUserHandler)
+		r.GET("/follow/get/followed", controllers.GetFollowedUserHandler)
+		r.GET("/follow/get/post", controllers.GetFollowPostHandler)
+		r.PUT("/follow/cancel", controllers.CancelFollowHandler)
 	}
 
 	r.NoRoute(func(c *gin.Context) {

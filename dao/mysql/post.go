@@ -16,7 +16,7 @@ func CreatePost(p *models.Post) (err error) {
 	post_id, title, content, author_id, label_id)
 	values(? , ?, ?, ?, ?)
 	`
-	_, err = db.Exec(sqlStr, p.ID, p.Title, p.Content, p.AuthorID, p.LabelID)
+	_, err = db.Exec(sqlStr, p.PostID, p.Title, p.Content, p.AuthorID, p.LabelID)
 	return
 }
 

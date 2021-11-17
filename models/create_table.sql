@@ -13,23 +13,23 @@
 #                     `post_id` bigint(20) NOT NULL COMMENT '收藏的帖子id',
 #                     `user_id` varchar(128) NOT NULL ,
 #                     PRIMARY KEY (`id`),
-#                     UNIQUE KEY `idx_user_id` (`user_id`) USING BTREE
+#                     KEY `idx_user_id` (`user_id`)
 # ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
 #
 # CREATE TABLE `follow` (
 #                               `id` bigint(20) NOT NULL AUTO_INCREMENT,
-#                               `follow_id` bigint(20) NOT NULL COMMENT '关注的作者id',
+#                               `follow_id` varchar(128) NOT NULL COMMENT '关注的作者id',
 #                               `user_id` varchar(128) NOT NULL ,
 #                               PRIMARY KEY (`id`),
-#                               UNIQUE KEY `idx_user_id` (`user_id`) USING BTREE
+#                               KEY `idx_user_id` (`user_id`)
 # ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
 #
 # CREATE TABLE `followed` (
 #                               `id` bigint(20) NOT NULL AUTO_INCREMENT,
-#                               `followed_id` bigint(20) NOT NULL COMMENT '粉丝id',
+#                               `followed_id` varchar(128) NOT NULL COMMENT '粉丝id',
 #                               `user_id` varchar(128) NOT NULL ,
 #                               PRIMARY KEY (`id`),
-#                               UNIQUE KEY `idx_user_id` (`user_id`) USING BTREE
+#                               KEY `idx_user_id` (`user_id`)
 # ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
 #
 # DROP TABLE IF EXISTS `label`;

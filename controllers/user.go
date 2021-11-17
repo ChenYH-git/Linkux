@@ -38,7 +38,7 @@ func GetUserContributionHandler(c *gin.Context) {
 		Order: models.OrderScore,
 	}
 	if err := c.ShouldBindQuery(p); err != nil {
-		zap.L().Error("IndexHandler get query err: ", zap.Error(err))
+		zap.L().Error("GetUserContributionHandler get query err: ", zap.Error(err))
 		ResponseError(c, CodeInvalidParam)
 		return
 	}
@@ -119,7 +119,7 @@ func GetCollectionHandler(c *gin.Context) {
 		Size: 10,
 	}
 	if err := c.ShouldBindQuery(p); err != nil {
-		zap.L().Error("IndexHandler get query err: ", zap.Error(err))
+		zap.L().Error("GetCollectionHandler get query err: ", zap.Error(err))
 		ResponseError(c, CodeInvalidParam)
 		return
 	}
@@ -144,7 +144,7 @@ func GetCollectionHandler(c *gin.Context) {
 func AddViewHandler(c *gin.Context) {
 	p := new(models.Triger)
 	if err := c.ShouldBindJSON(p); err != nil {
-		zap.L().Error("invalid collection param", zap.Error(err))
+		zap.L().Error("invalid view param", zap.Error(err))
 		ResponseError(c, CodeInvalidParam)
 		return
 	}
@@ -158,4 +158,130 @@ func AddViewHandler(c *gin.Context) {
 	ResponseSuccess(c, gin.H{
 		"msg": "add viewNum success",
 	})
+}
+
+func AddFollowHandler(c *gin.Context) {
+	p := new(models.Follow)
+	if err := c.ShouldBindJSON(p); err != nil {
+		zap.L().Error("invalid follow param", zap.Error(err))
+		ResponseError(c, CodeInvalidParam)
+		return
+	}
+
+	//userID, err := getCurrentUserID(c)
+	//if err != nil {
+	//	zap.L().Error("getCurrentUserID failed", zap.Error(err))
+	//	ResponseError(c, CodeUserNotExist)
+	//	return
+	//}
+
+	userID := "0"
+
+	if err := logic.AddFollow(p, userID); err != nil {
+		zap.L().Error("logic.AddFollow(p, userID) failed", zap.Error(err))
+		ResponseError(c, CodeServerBusy)
+		return
+	}
+
+	ResponseSuccess(c, gin.H{
+		"msg": "add follow success",
+	})
+}
+
+func CancelFollowHandler(c *gin.Context) {
+	p := new(models.Follow)
+	if err := c.ShouldBindJSON(p); err != nil {
+		zap.L().Error("invalid follow param", zap.Error(err))
+		ResponseError(c, CodeInvalidParam)
+		return
+	}
+
+	//userID, err := getCurrentUserID(c)
+	//if err != nil {
+	//	zap.L().Error("getCurrentUserID failed", zap.Error(err))
+	//	ResponseError(c, CodeUserNotExist)
+	//	return
+	//}
+
+	userID := "0"
+
+	if err := logic.CancelFollow(p, userID); err != nil {
+		zap.L().Error("logic.CancelFollow(p, userID) failed", zap.Error(err))
+		ResponseError(c, CodeServerBusy)
+		return
+	}
+
+	ResponseSuccess(c, gin.H{
+		"msg": "cancel follow success",
+	})
+}
+
+func GetFollowUserHandler(c *gin.Context) {
+	//userID, err := getCurrentUserID(c)
+	//if err != nil {
+	//	zap.L().Error("getCurrentUserID failed", zap.Error(err))
+	//	ResponseError(c, CodeUserNotExist)
+	//	return
+	//}
+
+	userID := "0"
+
+	data, err := logic.GetFollowUser(userID)
+	if err != nil {
+		zap.L().Error("logic.GetFollowUser(userID) failed", zap.Error(err))
+		ResponseError(c, CodeServerBusy)
+		return
+	}
+
+	ResponseSuccess(c, data)
+}
+
+func GetFollowedUserHandler(c *gin.Context) {
+	//userID, err := getCurrentUserID(c)
+	//if err != nil {
+	//	zap.L().Error("getCurrentUserID failed", zap.Error(err))
+	//	ResponseError(c, CodeUserNotExist)
+	//	return
+	//}
+
+	userID := "0"
+
+	data, err := logic.GetFollowedUser(userID)
+	if err != nil {
+		zap.L().Error("logic.GetFollowedUser(userID) failed", zap.Error(err))
+		ResponseError(c, CodeServerBusy)
+		return
+	}
+
+	ResponseSuccess(c, data)
+}
+
+func GetFollowPostHandler(c *gin.Context) {
+	p := &models.ParamPostList{
+		Page: 1,
+		Size: 10,
+	}
+	if err := c.ShouldBindQuery(p); err != nil {
+		zap.L().Error("GetFollowPostHandler get query err: ", zap.Error(err))
+		ResponseError(c, CodeInvalidParam)
+		return
+	}
+
+	//userID, err := getCurrentUserID(c)
+	//if err != nil {
+	//	zap.L().Error("getCurrentUserID failed", zap.Error(err))
+	//	ResponseError(c, CodeUserNotExist)
+	//	return
+	//}
+
+	userID := "0"
+
+	data, err := logic.GetFollowPost(p, userID)
+	if err != nil {
+		zap.L().Error("logic.GetFollowedUser(userID) failed", zap.Error(err))
+		ResponseError(c, CodeServerBusy)
+		return
+	}
+
+	ResponseSuccess(c, data)
 }

@@ -10,13 +10,13 @@ import (
 )
 
 func CreatePost(p *models.Post) (err error) {
-	p.ID = snowflakes.GenID()
+	p.PostID = snowflakes.GenID()
 
 	err = mysql.CreatePost(p)
 	if err != nil {
 		return err
 	}
-	err = redis.CreateRedisPost(p.ID, p.LabelID)
+	err = redis.CreateRedisPost(p.PostID, p.LabelID)
 	if err != nil {
 		return err
 	}
