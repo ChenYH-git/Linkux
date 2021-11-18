@@ -21,9 +21,9 @@ func InsertUser(user *models.User) (err error) {
 		return nil
 	}
 
-	sqlStr = `insert into user(user_id, contribution) values(?,?)`
+	sqlStr = `insert into user(user_id, username, pic_link, contribution) values(?,?,?,?)`
 
-	_, err = db.Exec(sqlStr, user.UserID, user.Contribution)
+	_, err = db.Exec(sqlStr, user.UserID, user.Username, user.PicLink, user.Contribution)
 	return
 }
 

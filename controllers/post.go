@@ -18,12 +18,12 @@ func CreatePostHandler(c *gin.Context) {
 		return
 	}
 
-	//userID, err := getCurrentUserID(c)
-	//if err != nil {
-	//	ResponseError(c, CodeNeedLogin)
-	//	return
-	//}
-	//p.AuthorID = userID
+	userID, err := getCurrentUserID(CtxUserIDKey)
+	if err != nil {
+		ResponseError(c, CodeNeedLogin)
+		return
+	}
+	p.AuthorID = userID
 	if err := logic.CreatePost(p); err != nil {
 		zap.L().Error("logic.CreatePost(p) failed", zap.Error(err))
 		ResponseError(c, CodeServerBusy)

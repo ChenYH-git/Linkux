@@ -20,11 +20,10 @@ func Setup(mode string) *gin.Engine {
 
 	r := gin.New()
 	r.Use(logger.GinLogger(), logger.GinRecovery(true), middleware.RateLimitMiddleware(time.Second, 5)) // 令牌桶容量为5，每秒钟填充1个
-
+	r.POST("/login", controllers.LoginHandler)
 	//r.LoadHTMLGlob("./template/*")
 	//r.Static("/static", "./static")
 	{
-		r.POST("/login", controllers.LoginHandler)
 		r.GET("/index", controllers.IndexHandler)
 		r.POST("/post", controllers.CreatePostHandler)
 		r.POST("/vote", controllers.PostVoteController)

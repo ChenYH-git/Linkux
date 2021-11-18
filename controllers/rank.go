@@ -15,8 +15,8 @@ func GetUserRankHandler(c *gin.Context) {
 		return
 	}
 
-	//userID, err := getCurrentUserID(c)
-	userID := "0"
+	userID, err := getCurrentUserID(CtxUserIDKey)
+
 	if err != nil {
 		zap.L().Error("rank: get my id failed", zap.Error(err))
 		ResponseError(c, CodeNeedLogin)

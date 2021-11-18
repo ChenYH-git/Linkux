@@ -25,7 +25,8 @@ func LoginHandler(c *gin.Context) {
 		return
 	}
 
-	c.Set(CtxUserIDKey, userID)
+	setCurrentUserID(CtxUserIDKey+userID, userID)
+
 	ResponseSuccess(c, gin.H{
 		"openid": userID,
 	})
@@ -42,14 +43,12 @@ func GetUserContributionHandler(c *gin.Context) {
 		ResponseError(c, CodeInvalidParam)
 		return
 	}
-	//userID, err := getCurrentUserID(c)
-	//if err != nil {
-	//	zap.L().Error("getCurrentUserID failed", zap.Error(err))
-	//	ResponseError(c, CodeUserNotExist)
-	//	return
-	//}
-
-	userID := "0"
+	userID, err := getCurrentUserID(CtxUserIDKey)
+	if err != nil {
+		zap.L().Error("getCurrentUserID failed", zap.Error(err))
+		ResponseError(c, CodeUserNotExist)
+		return
+	}
 
 	data, err := logic.GetUserConByID(p, userID)
 	if err != nil {
@@ -68,14 +67,13 @@ func AddCollectionHandler(c *gin.Context) {
 		ResponseError(c, CodeInvalidParam)
 		return
 	}
-	//userID, err := getCurrentUserID(c)
-	//if err != nil {
-	//	zap.L().Error("getCurrentUserID failed", zap.Error(err))
-	//	ResponseError(c, CodeUserNotExist)
-	//	return
-	//}
+	userID, err := getCurrentUserID(CtxUserIDKey)
+	if err != nil {
+		zap.L().Error("getCurrentUserID failed", zap.Error(err))
+		ResponseError(c, CodeUserNotExist)
+		return
+	}
 
-	userID := "0"
 	if err := logic.AddCollection(p, userID); err != nil {
 		zap.L().Error("logic.AddCollection(userID) failed", zap.Error(err))
 		ResponseError(c, CodeServerBusy)
@@ -94,14 +92,13 @@ func DeleteCollectionHandler(c *gin.Context) {
 		ResponseError(c, CodeInvalidParam)
 		return
 	}
-	//userID, err := getCurrentUserID(c)
-	//if err != nil {
-	//	zap.L().Error("getCurrentUserID failed", zap.Error(err))
-	//	ResponseError(c, CodeUserNotExist)
-	//	return
-	//}
+	userID, err := getCurrentUserID(CtxUserIDKey)
+	if err != nil {
+		zap.L().Error("getCurrentUserID failed", zap.Error(err))
+		ResponseError(c, CodeUserNotExist)
+		return
+	}
 
-	userID := "0"
 	if err := logic.DeleteCollection(p, userID); err != nil {
 		zap.L().Error("logic.AddCollection(userID) failed", zap.Error(err))
 		ResponseError(c, CodeServerBusy)
@@ -123,14 +120,13 @@ func GetCollectionHandler(c *gin.Context) {
 		ResponseError(c, CodeInvalidParam)
 		return
 	}
-	//userID, err := getCurrentUserID(c)
-	//if err != nil {
-	//	zap.L().Error("getCurrentUserID failed", zap.Error(err))
-	//	ResponseError(c, CodeUserNotExist)
-	//	return
-	//}
+	userID, err := getCurrentUserID(CtxUserIDKey)
+	if err != nil {
+		zap.L().Error("getCurrentUserID failed", zap.Error(err))
+		ResponseError(c, CodeUserNotExist)
+		return
+	}
 
-	userID := "0"
 	data, err := logic.GetCollection(p, userID)
 	if err != nil {
 		zap.L().Error("logic.GetCollection(p, userID) failed", zap.Error(err))
@@ -168,14 +164,12 @@ func AddFollowHandler(c *gin.Context) {
 		return
 	}
 
-	//userID, err := getCurrentUserID(c)
-	//if err != nil {
-	//	zap.L().Error("getCurrentUserID failed", zap.Error(err))
-	//	ResponseError(c, CodeUserNotExist)
-	//	return
-	//}
-
-	userID := "0"
+	userID, err := getCurrentUserID(CtxUserIDKey)
+	if err != nil {
+		zap.L().Error("getCurrentUserID failed", zap.Error(err))
+		ResponseError(c, CodeUserNotExist)
+		return
+	}
 
 	if err := logic.AddFollow(p, userID); err != nil {
 		zap.L().Error("logic.AddFollow(p, userID) failed", zap.Error(err))
@@ -196,14 +190,12 @@ func CancelFollowHandler(c *gin.Context) {
 		return
 	}
 
-	//userID, err := getCurrentUserID(c)
-	//if err != nil {
-	//	zap.L().Error("getCurrentUserID failed", zap.Error(err))
-	//	ResponseError(c, CodeUserNotExist)
-	//	return
-	//}
-
-	userID := "0"
+	userID, err := getCurrentUserID(CtxUserIDKey)
+	if err != nil {
+		zap.L().Error("getCurrentUserID failed", zap.Error(err))
+		ResponseError(c, CodeUserNotExist)
+		return
+	}
 
 	if err := logic.CancelFollow(p, userID); err != nil {
 		zap.L().Error("logic.CancelFollow(p, userID) failed", zap.Error(err))
@@ -217,14 +209,12 @@ func CancelFollowHandler(c *gin.Context) {
 }
 
 func GetFollowUserHandler(c *gin.Context) {
-	//userID, err := getCurrentUserID(c)
-	//if err != nil {
-	//	zap.L().Error("getCurrentUserID failed", zap.Error(err))
-	//	ResponseError(c, CodeUserNotExist)
-	//	return
-	//}
-
-	userID := "0"
+	userID, err := getCurrentUserID(CtxUserIDKey)
+	if err != nil {
+		zap.L().Error("getCurrentUserID failed", zap.Error(err))
+		ResponseError(c, CodeUserNotExist)
+		return
+	}
 
 	data, err := logic.GetFollowUser(userID)
 	if err != nil {
@@ -237,14 +227,12 @@ func GetFollowUserHandler(c *gin.Context) {
 }
 
 func GetFollowedUserHandler(c *gin.Context) {
-	//userID, err := getCurrentUserID(c)
-	//if err != nil {
-	//	zap.L().Error("getCurrentUserID failed", zap.Error(err))
-	//	ResponseError(c, CodeUserNotExist)
-	//	return
-	//}
-
-	userID := "0"
+	userID, err := getCurrentUserID(CtxUserIDKey)
+	if err != nil {
+		zap.L().Error("getCurrentUserID failed", zap.Error(err))
+		ResponseError(c, CodeUserNotExist)
+		return
+	}
 
 	data, err := logic.GetFollowedUser(userID)
 	if err != nil {
@@ -267,14 +255,12 @@ func GetFollowPostHandler(c *gin.Context) {
 		return
 	}
 
-	//userID, err := getCurrentUserID(c)
-	//if err != nil {
-	//	zap.L().Error("getCurrentUserID failed", zap.Error(err))
-	//	ResponseError(c, CodeUserNotExist)
-	//	return
-	//}
-
-	userID := "0"
+	userID, err := getCurrentUserID(CtxUserIDKey)
+	if err != nil {
+		zap.L().Error("getCurrentUserID failed", zap.Error(err))
+		ResponseError(c, CodeUserNotExist)
+		return
+	}
 
 	data, err := logic.GetFollowPost(p, userID)
 	if err != nil {
