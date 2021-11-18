@@ -10,6 +10,7 @@ func GetUserRank() (data []*models.ApiRankDetail, err error) {
 	from user
 	order by contribution
 	desc
+	limit 10
 	`
 	data = make([]*models.ApiRankDetail, 0, 10)
 	err = db.Select(&data, sqlStr)

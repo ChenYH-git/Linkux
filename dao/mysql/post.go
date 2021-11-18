@@ -13,10 +13,10 @@ const conPerPost = 10
 
 func CreatePost(p *models.Post) (err error) {
 	sqlStr := `insert into post(
-	post_id, title, content, author_id, label_id)
-	values(? , ?, ?, ?, ?)
+	post_id, title, content, author_id, label_id, trans_id)
+	values(? , ?, ?, ?, ?, ?)
 	`
-	_, err = db.Exec(sqlStr, p.PostID, p.Title, p.Content, p.AuthorID, p.LabelID)
+	_, err = db.Exec(sqlStr, p.PostID, p.Title, p.Content, p.AuthorID, p.LabelID, p.TransID)
 	return
 }
 

@@ -16,6 +16,7 @@ type ParamVoteData struct {
 // ParamPostList 获取帖子列表query string参数
 type ParamPostList struct {
 	LabelID int64  `json:"label_id" form:"label_id"`
+	TransID int64  `json:"trans_id" form:"trans_id"`
 	Page    int64  `json:"page" form:"page"`
 	Size    int64  `json:"size" form:"size"`
 	Order   string `json:"order" form:"order"`

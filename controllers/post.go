@@ -30,7 +30,9 @@ func CreatePostHandler(c *gin.Context) {
 		return
 	}
 
-	ResponseSuccess(c, nil)
+	ResponseSuccess(c, gin.H{
+		"msg": "create post success",
+	})
 }
 
 func IndexHandler(c *gin.Context) {

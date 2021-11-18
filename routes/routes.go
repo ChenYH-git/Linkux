@@ -42,6 +42,10 @@ func Setup(mode string) *gin.Engine {
 		r.GET("/follow/get/followed", controllers.GetFollowedUserHandler)
 		r.GET("/follow/get/post", controllers.GetFollowPostHandler)
 		r.PUT("/follow/cancel", controllers.CancelFollowHandler)
+		r.POST("/trans", controllers.CreateTransTaskHandler)
+		r.GET("/trans/get/task", controllers.GetTransTaskHandler)
+		r.GET("/trans/get/exist", controllers.GetTransExistHandler)
+		//r.POST("/search", controllers.SearchHandler)
 	}
 
 	r.NoRoute(func(c *gin.Context) {

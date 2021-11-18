@@ -4,6 +4,7 @@ import "time"
 
 type Post struct {
 	PostID     int64     `json:"post_id,string" db:"post_id"`
+	TransID    int64     `json:"trans_id,string" db:"trans_id"`
 	LabelID    int64     `json:"label_id" db:"label_id" binding:"required"`
 	ViewdNum   int64     `json:"viewd_num" db:"viewd_num"`
 	CollectNum int64     `json:"collect_num" db:"collect_num"`
