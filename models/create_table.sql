@@ -52,7 +52,7 @@
 #     `trans_id` bigint(20) NOT NUlL DEFAULT '0' COMMENT '翻译任务的id',
 #     `title` varchar(128) COLLATE utf8mb4_general_ci NOT NULL COMMENT '标题',
 #     `content` varchar(8192) COLLATE utf8mb4_general_ci NOT NULL COMMENT '内容',
-#     `author_id` bigint(20) NOT NULL COMMENT '作者的用户id',
+#     `author_id` varchar(128) NOT NULL COMMENT '作者的用户id',
 #     `label_id` bigint(20) NOT NULL COMMENT '所属标签',
 #     `collect_num` bigint(20) NOT NULL DEFAULT '0' COMMENT '帖子收藏量',
 #     `viewd_num` bigint(20) NOT NULL DEFAULT '0' COMMENT '帖子观看量',

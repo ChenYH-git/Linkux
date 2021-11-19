@@ -3,7 +3,6 @@ package controllers
 import (
 	"errors"
 	"strconv"
-	"sync"
 
 	"github.com/gin-gonic/gin"
 )
@@ -15,29 +14,18 @@ var (
 
 const CtxUserIDKey = "userID"
 
-var Mu sync.RWMutex
-
-var Keys map[string]string
-
-func getCurrentUserID(key string) (value string, err error) {
-	Mu.RLock()
-	value, exists := Keys[key]
-	if !exists {
-		err = errors.New("获取id失败")
-		return "", err
+func getCurrentUserID(c *gin.Context) (userID string, err error) {
+	uid, ok := c.Get(CtxUserIDKey)
+	if !ok {
+		err = ErrorNoUser
+		return
 	}
-	Mu.RUnlock()
-	return value, nil
-}
-
-func setCurrentUserID(key string, value string) {
-	Mu.Lock()
-	if Keys == nil {
-		Keys = make(map[string]string)
+	userID, ok = uid.(string)
+	if !ok {
+		err = ErrorChangeString
+		return
 	}
-
-	Keys[key] = value
-	Mu.Unlock()
+	return
 }
 
 func getPageInfo(c *gin.Context) (int64, int64) {

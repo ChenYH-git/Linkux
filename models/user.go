@@ -6,6 +6,7 @@ type User struct {
 	Username     string `json:"username" db:"username"`
 	PicLink      string `json:"pic_link" db:"pic_link"`
 	Code         string `json:"code"`
+	Token        string `json:"token"`
 }
 
 type LoginResBody struct {

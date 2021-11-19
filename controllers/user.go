@@ -16,19 +16,17 @@ func LoginHandler(c *gin.Context) {
 		return
 	}
 
-	var userID string
+	var token string
 	var err error
 
-	if userID, err = logic.Login(p); err != nil {
+	if token, err = logic.Login(p); err != nil {
 		zap.L().Error("logic.Login failed", zap.Error(err))
 		ResponseError(c, CodeServerBusy)
 		return
 	}
 
-	setCurrentUserID(CtxUserIDKey+userID, userID)
-
 	ResponseSuccess(c, gin.H{
-		"openid": userID,
+		"token": token,
 	})
 }
 
@@ -43,7 +41,7 @@ func GetUserContributionHandler(c *gin.Context) {
 		ResponseError(c, CodeInvalidParam)
 		return
 	}
-	userID, err := getCurrentUserID(CtxUserIDKey)
+	userID, err := getCurrentUserID(c)
 	if err != nil {
 		zap.L().Error("getCurrentUserID failed", zap.Error(err))
 		ResponseError(c, CodeUserNotExist)
@@ -67,7 +65,7 @@ func AddCollectionHandler(c *gin.Context) {
 		ResponseError(c, CodeInvalidParam)
 		return
 	}
-	userID, err := getCurrentUserID(CtxUserIDKey)
+	userID, err := getCurrentUserID(c)
 	if err != nil {
 		zap.L().Error("getCurrentUserID failed", zap.Error(err))
 		ResponseError(c, CodeUserNotExist)
@@ -92,7 +90,7 @@ func DeleteCollectionHandler(c *gin.Context) {
 		ResponseError(c, CodeInvalidParam)
 		return
 	}
-	userID, err := getCurrentUserID(CtxUserIDKey)
+	userID, err := getCurrentUserID(c)
 	if err != nil {
 		zap.L().Error("getCurrentUserID failed", zap.Error(err))
 		ResponseError(c, CodeUserNotExist)
@@ -120,7 +118,7 @@ func GetCollectionHandler(c *gin.Context) {
 		ResponseError(c, CodeInvalidParam)
 		return
 	}
-	userID, err := getCurrentUserID(CtxUserIDKey)
+	userID, err := getCurrentUserID(c)
 	if err != nil {
 		zap.L().Error("getCurrentUserID failed", zap.Error(err))
 		ResponseError(c, CodeUserNotExist)
@@ -164,7 +162,7 @@ func AddFollowHandler(c *gin.Context) {
 		return
 	}
 
-	userID, err := getCurrentUserID(CtxUserIDKey)
+	userID, err := getCurrentUserID(c)
 	if err != nil {
 		zap.L().Error("getCurrentUserID failed", zap.Error(err))
 		ResponseError(c, CodeUserNotExist)
@@ -190,7 +188,7 @@ func CancelFollowHandler(c *gin.Context) {
 		return
 	}
 
-	userID, err := getCurrentUserID(CtxUserIDKey)
+	userID, err := getCurrentUserID(c)
 	if err != nil {
 		zap.L().Error("getCurrentUserID failed", zap.Error(err))
 		ResponseError(c, CodeUserNotExist)
@@ -209,7 +207,7 @@ func CancelFollowHandler(c *gin.Context) {
 }
 
 func GetFollowUserHandler(c *gin.Context) {
-	userID, err := getCurrentUserID(CtxUserIDKey)
+	userID, err := getCurrentUserID(c)
 	if err != nil {
 		zap.L().Error("getCurrentUserID failed", zap.Error(err))
 		ResponseError(c, CodeUserNotExist)
@@ -227,7 +225,7 @@ func GetFollowUserHandler(c *gin.Context) {
 }
 
 func GetFollowedUserHandler(c *gin.Context) {
-	userID, err := getCurrentUserID(CtxUserIDKey)
+	userID, err := getCurrentUserID(c)
 	if err != nil {
 		zap.L().Error("getCurrentUserID failed", zap.Error(err))
 		ResponseError(c, CodeUserNotExist)
@@ -255,7 +253,7 @@ func GetFollowPostHandler(c *gin.Context) {
 		return
 	}
 
-	userID, err := getCurrentUserID(CtxUserIDKey)
+	userID, err := getCurrentUserID(c)
 	if err != nil {
 		zap.L().Error("getCurrentUserID failed", zap.Error(err))
 		ResponseError(c, CodeUserNotExist)

@@ -4,6 +4,7 @@ import (
 	"Linkux/dao/mysql"
 	"Linkux/dao/redis"
 	"Linkux/models"
+	"Linkux/pkg/jwt"
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
@@ -44,7 +45,13 @@ func Login(p *models.User) (userID string, err error) {
 		PicLink:      p.PicLink,
 	}
 
-	return user.UserID, mysql.InsertUser(user)
+	token, err := jwt.GenToken(user.UserID, user.Username)
+	if err != nil {
+		return
+	}
+	user.Token = token
+
+	return user.Token, mysql.InsertUser(user)
 }
 
 func GetUserConByID(p *models.ParamPostList, userID string) (data []*models.ApiPostDetail, err error) {
