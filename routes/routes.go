@@ -20,7 +20,9 @@ func Setup(mode string) *gin.Engine {
 
 	r := gin.New()
 	r.Use(logger.GinLogger(), logger.GinRecovery(true), middleware.RateLimitMiddleware(time.Second, 5)) // 令牌桶容量为5，每秒钟填充1个
+
 	r.POST("/login", controllers.LoginHandler)
+	r.GET("/search", controllers.SearchHandler)
 	//r.LoadHTMLGlob("./template/*")
 	//r.Static("/static", "./static")
 	v1 := r.Group("/")
@@ -46,7 +48,6 @@ func Setup(mode string) *gin.Engine {
 		v1.POST("trans", controllers.CreateTransTaskHandler)
 		v1.GET("trans/get/task", controllers.GetTransTaskHandler)
 		v1.GET("trans/get/exist", controllers.GetTransExistHandler)
-		v1.GET("/search", controllers.SearchHandler)
 	}
 
 	r.NoRoute(func(c *gin.Context) {
