@@ -46,7 +46,7 @@ func Setup(mode string) *gin.Engine {
 		v1.POST("trans", controllers.CreateTransTaskHandler)
 		v1.GET("trans/get/task", controllers.GetTransTaskHandler)
 		v1.GET("trans/get/exist", controllers.GetTransExistHandler)
-		//r.POST("/search", controllers.SearchHandler)
+		v1.GET("/search", controllers.SearchHandler)
 	}
 
 	r.NoRoute(func(c *gin.Context) {

@@ -20,4 +20,5 @@ type ParamPostList struct {
 	Page    int64  `json:"page" form:"page"`
 	Size    int64  `json:"size" form:"size"`
 	Order   string `json:"order" form:"order"`
+	Search  string `json:"search" form:"search"`
 }
