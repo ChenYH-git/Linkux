@@ -8,9 +8,8 @@ const (
 //定义请求参数的结构体
 // 投票
 type ParamVoteData struct {
-	// UserID 从请求中获取当前用户
-	PostID    string `json:"post_id" binding:"required"`                          // 帖子id
-	Direction int8   `json:"direction,string" binding:"oneof=1 0 -1" example:"1"` // 赞同（1） 反对（-1） 取消（0）(required在默认为0时，会主动过滤）
+	PostID    int64 `json:"post_id,string" binding:"required"`                   // 帖子id
+	Direction int8  `json:"direction,string" binding:"oneof=1 0 -1" example:"1"` // 赞同（1） 反对（-1） 取消（0）(required在默认为0时，会主动过滤）
 }
 
 // ParamPostList 获取帖子列表query string参数
@@ -20,5 +19,5 @@ type ParamPostList struct {
 	Page    int64  `json:"page" form:"page"`                   // 分页信息，可以为空，默认从1开始
 	Size    int64  `json:"size" form:"size"`                   // 分页大小，可以为空，默认大小10
 	Order   string `json:"order" form:"order" example:"score"` // 排序方式，可以为空，默认为score，可以为time
-	Search  string `json:"search" form:"search"`               // 搜索内容，可以为空，搜索时用到
+	Search  string `json:"search" form:"search"`               // 搜索内容，可以为空，搜索时必填
 }

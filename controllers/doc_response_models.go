@@ -14,13 +14,26 @@ type _ResponseTransList struct {
 	data *[]models.Trans `json:"data"`
 }
 
+type _ResponseFollowList struct {
+	code ResCode        `json:"code"`
+	msg  string         `json:"msg"`
+	data *[]models.User `json:"data"`
+}
+
 type _ResponseMsg struct {
-	code ResCode `json:"code"`
-	msg  string  `json:"msg"`
+	code ResCode       `json:"code"`
+	msg  string        `json:"msg"`
+	data []interface{} `json:"data"`
 }
 
 type _RankResponseMsg struct {
 	code ResCode       `json:"code"`
 	msg  string        `json:"msg"`
 	data []interface{} `json:"data"`
+}
+
+type _ResponseUsr struct {
+	code  ResCode `json:"code"`
+	msg   string  `json:"msg"`
+	token string  `json:"token"`
 }

@@ -8,6 +8,16 @@ import (
 	"go.uber.org/zap"
 )
 
+// LoginHandler 用户登录接口
+// @Summary 用户登录接口
+// @Description 微信一键登录后端接口
+// @Tags 用户相关接口
+// @Accept application/json
+// @Produce application/json
+// @Param object body models.User true "用户具体参数"
+// @Security ApiKeyAuth
+// @Success 200 {object} _ResponseMsg
+// @Router /login [post]
 func LoginHandler(c *gin.Context) {
 	p := new(models.User)
 	if err := c.ShouldBindJSON(p); err != nil {
@@ -30,6 +40,16 @@ func LoginHandler(c *gin.Context) {
 	})
 }
 
+// GetUserContributionHandler 获取`我的贡献`接口
+// @Summary 获取`我的贡献`接口
+// @Description 获取`我的贡献`
+// @Tags 用户相关接口
+// @Accept application/json
+// @Produce application/json
+// @Param Authorization header string true "Bearer 用户令牌"
+// @Security ApiKeyAuth
+// @Success 200 {object} _ResponsePostList
+// @Router /contribution [get]
 func GetUserContributionHandler(c *gin.Context) {
 	p := &models.ParamPostList{
 		Page:  1,
@@ -58,8 +78,19 @@ func GetUserContributionHandler(c *gin.Context) {
 	ResponseSuccess(c, data)
 }
 
+// AddCollectionHandler 加入收藏接口
+// @Summary 加入收藏接口
+// @Description 加入收藏
+// @Tags 用户相关接口
+// @Accept application/json
+// @Produce application/json
+// @Param Authorization header string true "Bearer 用户令牌"
+// @Param object body models.Trigger true "帖子id参数"
+// @Security ApiKeyAuth
+// @Success 200 {object} _ResponseMsg
+// @Router /collect [post]
 func AddCollectionHandler(c *gin.Context) {
-	p := new(models.Triger)
+	p := new(models.Trigger)
 	if err := c.ShouldBindJSON(p); err != nil {
 		zap.L().Error("invalid collection param", zap.Error(err))
 		ResponseError(c, CodeInvalidParam)
@@ -78,13 +109,22 @@ func AddCollectionHandler(c *gin.Context) {
 		return
 	}
 
-	ResponseSuccess(c, gin.H{
-		"msg": "add collection success",
-	})
+	ResponseSuccess(c, nil)
 }
 
+// DeleteCollectionHandler 取消收藏接口
+// @Summary 取消收藏接口
+// @Description 取消收藏
+// @Tags 用户相关接口
+// @Accept application/json
+// @Produce application/json
+// @Param Authorization header string true "Bearer 用户令牌"
+// @Param object body models.Trigger true "帖子id参数"
+// @Security ApiKeyAuth
+// @Success 200 {object} _ResponseMsg
+// @Router /collect/delete [put]
 func DeleteCollectionHandler(c *gin.Context) {
-	p := new(models.Triger)
+	p := new(models.Trigger)
 	if err := c.ShouldBindJSON(p); err != nil {
 		zap.L().Error("invalid collection param", zap.Error(err))
 		ResponseError(c, CodeInvalidParam)
@@ -103,11 +143,20 @@ func DeleteCollectionHandler(c *gin.Context) {
 		return
 	}
 
-	ResponseSuccess(c, gin.H{
-		"msg": "delete collection success",
-	})
+	ResponseSuccess(c, nil)
 }
 
+// GetCollectionHandler 获取收藏列表接口
+// @Summary 获取收藏列表接口
+// @Description 获取收藏列表
+// @Tags 用户相关接口
+// @Accept application/json
+// @Produce application/json
+// @Param Authorization header string true "Bearer 用户令牌"
+// @Param object query models.ParamPostList true "分页参数"
+// @Security ApiKeyAuth
+// @Success 200 {object} _ResponsePostList
+// @Router /collect/get [get]
 func GetCollectionHandler(c *gin.Context) {
 	p := &models.ParamPostList{
 		Page: 1,
@@ -135,8 +184,19 @@ func GetCollectionHandler(c *gin.Context) {
 	ResponseSuccess(c, data)
 }
 
+// AddViewHandler 观看量+1接口
+// @Summary 观看量+1接口
+// @Description 观看量+1
+// @Tags 用户相关接口
+// @Accept application/json
+// @Produce application/json
+// @Param Authorization header string true "Bearer 用户令牌"
+// @Param object body models.Trigger true "帖子id参数"
+// @Security ApiKeyAuth
+// @Success 200 {object} _ResponseMsg
+// @Router /view/add [put]
 func AddViewHandler(c *gin.Context) {
-	p := new(models.Triger)
+	p := new(models.Trigger)
 	if err := c.ShouldBindJSON(p); err != nil {
 		zap.L().Error("invalid view param", zap.Error(err))
 		ResponseError(c, CodeInvalidParam)
@@ -149,11 +209,20 @@ func AddViewHandler(c *gin.Context) {
 		return
 	}
 
-	ResponseSuccess(c, gin.H{
-		"msg": "add viewNum success",
-	})
+	ResponseSuccess(c, nil)
 }
 
+// AddFollowHandler 关注作者接口
+// @Summary 关注作者接口
+// @Description 关注作者
+// @Tags 用户相关接口
+// @Accept application/json
+// @Produce application/json
+// @Param Authorization header string true "Bearer 用户令牌"
+// @Param object body models.Follow true "作者id参数"
+// @Security ApiKeyAuth
+// @Success 200 {object} _ResponseMsg
+// @Router /follow [post]
 func AddFollowHandler(c *gin.Context) {
 	p := new(models.Follow)
 	if err := c.ShouldBindJSON(p); err != nil {
@@ -175,11 +244,20 @@ func AddFollowHandler(c *gin.Context) {
 		return
 	}
 
-	ResponseSuccess(c, gin.H{
-		"msg": "add follow success",
-	})
+	ResponseSuccess(c, nil)
 }
 
+// CancelFollowHandler 取消关注作者接口
+// @Summary 取消关注作者接口
+// @Description 取消关注作者
+// @Tags 用户相关接口
+// @Accept application/json
+// @Produce application/json
+// @Param Authorization header string true "Bearer 用户令牌"
+// @Param object body models.Follow true "作者id参数"
+// @Security ApiKeyAuth
+// @Success 200 {object} _ResponseMsg
+// @Router /follow/cancel [put]
 func CancelFollowHandler(c *gin.Context) {
 	p := new(models.Follow)
 	if err := c.ShouldBindJSON(p); err != nil {
@@ -201,11 +279,19 @@ func CancelFollowHandler(c *gin.Context) {
 		return
 	}
 
-	ResponseSuccess(c, gin.H{
-		"msg": "cancel follow success",
-	})
+	ResponseSuccess(c, nil)
 }
 
+// GetFollowUserHandler 获取关注作者接口
+// @Summary 获取关注作者接口
+// @Description 获取关注作者
+// @Tags 用户相关接口
+// @Accept application/json
+// @Produce application/json
+// @Param Authorization header string true "Bearer 用户令牌"
+// @Security ApiKeyAuth
+// @Success 200 {object} _ResponseFollowList
+// @Router /follow/get/follow [get]
 func GetFollowUserHandler(c *gin.Context) {
 	userID, err := getCurrentUserID(c)
 	if err != nil {
@@ -224,6 +310,16 @@ func GetFollowUserHandler(c *gin.Context) {
 	ResponseSuccess(c, data)
 }
 
+// GetFollowedUserHandler 获取粉丝接口
+// @Summary 获取粉丝接口
+// @Description 获取粉丝
+// @Tags 用户相关接口
+// @Accept application/json
+// @Produce application/json
+// @Param Authorization header string true "Bearer 用户令牌"
+// @Security ApiKeyAuth
+// @Success 200 {object} _ResponseFollowList
+// @Router /follow/get/followed [get]
 func GetFollowedUserHandler(c *gin.Context) {
 	userID, err := getCurrentUserID(c)
 	if err != nil {
@@ -242,6 +338,17 @@ func GetFollowedUserHandler(c *gin.Context) {
 	ResponseSuccess(c, data)
 }
 
+// GetFollowPostHandler 获取关注帖子接口
+// @Summary 获取关注帖子接口
+// @Description 获取关注帖子
+// @Tags 用户相关接口
+// @Accept application/json
+// @Produce application/json
+// @Param Authorization header string true "Bearer 用户令牌"
+// @Param object query models.ParamPostList true "分页参数"
+// @Security ApiKeyAuth
+// @Success 200 {object} _ResponsePostList
+// @Router /follow/get/post [get]
 func GetFollowPostHandler(c *gin.Context) {
 	p := &models.ParamPostList{
 		Page: 1,

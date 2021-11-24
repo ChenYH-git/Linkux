@@ -1,13 +1,127 @@
 definitions:
   controllers._RankResponseMsg:
     type: object
+  controllers._ResponseFollowList:
+    type: object
   controllers._ResponseMsg:
     type: object
   controllers._ResponsePostList:
     type: object
   controllers._ResponseTransList:
     type: object
-host: 192.168.1.5:8080
+  controllers._ResponseUsr:
+    type: object
+  models.Follow:
+    properties:
+      follow_id:
+        description: 关注的作者id
+        type: string
+      followed_id:
+        description: 粉丝id
+        type: string
+    type: object
+  models.ParamVoteData:
+    properties:
+      direction:
+        description: 赞同（1） 反对（-1） 取消（0）(required在默认为0时，会主动过滤）
+        example: "1"
+        type: string
+      post_id:
+        description: 帖子id
+        example: "0"
+        type: string
+    required:
+    - post_id
+    type: object
+  models.Post:
+    properties:
+      author_id:
+        description: 作者id，无需填入
+        type: string
+      collect_num:
+        description: 收藏量，无需填入
+        type: integer
+      content:
+        description: 内容，必填
+        type: string
+      create_time:
+        description: 创建时间，无需填入
+        type: string
+      label_id:
+        description: 社区标签id，必填
+        type: integer
+      post_id:
+        description: 帖子id，由后端生成，无需填入
+        example: "0"
+        type: string
+      status:
+        description: 帖子状态，管理审核时使用，无需填入
+        type: integer
+      title:
+        description: 标题，必填
+        type: string
+      trans_id:
+        description: 翻译任务id，不为0说明帖子是翻译帖，对应某个翻译任务，按情况填入
+        example: "0"
+        type: string
+      viewd_num:
+        description: 观看量，无需填入
+        type: integer
+    required:
+    - content
+    - label_id
+    - title
+    type: object
+  models.Trans:
+    properties:
+      content:
+        description: 内容，必填
+        type: string
+      create_time:
+        description: 创建时间，不用填
+        type: string
+      status:
+        description: 任务帖状态，审核用
+        type: integer
+      title:
+        description: 标题，必填
+        type: string
+      trans_id:
+        description: 翻译任务id，不用填
+        example: "0"
+        type: string
+    required:
+    - content
+    - title
+    type: object
+  models.Trigger:
+    properties:
+      post_id:
+        description: 对应帖子id
+        type: integer
+    type: object
+  models.User:
+    properties:
+      code:
+        description: 微信返回的 code
+        type: string
+      contribution:
+        description: 用户贡献度
+        type: integer
+      pic_link:
+        description: 头像链接
+        type: string
+      token:
+        description: 后端返回的用户 token
+        type: string
+      userID:
+        description: 用户id
+        type: string
+      username:
+        description: 用户名
+        type: string
+    type: object
+host: localhost:8080
 info:
   contact:
     email: 2135378647@qq.com
@@ -21,6 +135,287 @@ info:
   title: 2021 秋软工团队合作项目
   version: "1.0"
 paths:
+  /collect:
+    post:
+      consumes:
+      - application/json
+      description: 加入收藏
+      parameters:
+      - description: Bearer 用户令牌
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 帖子id参数
+        in: body
+        name: object
+        required: true
+        schema:
+          $ref: '#/definitions/models.Trigger'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers._ResponseMsg'
+      security:
+      - ApiKeyAuth: []
+      summary: 加入收藏接口
+      tags:
+      - 用户相关接口
+  /collect/delete:
+    put:
+      consumes:
+      - application/json
+      description: 取消收藏
+      parameters:
+      - description: Bearer 用户令牌
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 帖子id参数
+        in: body
+        name: object
+        required: true
+        schema:
+          $ref: '#/definitions/models.Trigger'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers._ResponseMsg'
+      security:
+      - ApiKeyAuth: []
+      summary: 取消收藏接口
+      tags:
+      - 用户相关接口
+  /collect/get:
+    get:
+      consumes:
+      - application/json
+      description: 获取收藏列表
+      parameters:
+      - description: Bearer 用户令牌
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 帖子社区标签id，可以为空
+        in: query
+        name: label_id
+        type: integer
+      - description: 排序方式，可以为空，默认为score，可以为time
+        example: score
+        in: query
+        name: order
+        type: string
+      - description: 分页信息，可以为空，默认从1开始
+        in: query
+        name: page
+        type: integer
+      - description: 搜索内容，可以为空，搜索时必填
+        in: query
+        name: search
+        type: string
+      - description: 分页大小，可以为空，默认大小10
+        in: query
+        name: size
+        type: integer
+      - description: 帖子对应的翻译任务帖id，可以为空，查看已有翻译时必须保证不为0
+        in: query
+        name: trans_id
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers._ResponsePostList'
+      security:
+      - ApiKeyAuth: []
+      summary: 获取收藏列表接口
+      tags:
+      - 用户相关接口
+  /contribution:
+    get:
+      consumes:
+      - application/json
+      description: 获取`我的贡献`
+      parameters:
+      - description: Bearer 用户令牌
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers._ResponsePostList'
+      security:
+      - ApiKeyAuth: []
+      summary: 获取`我的贡献`接口
+      tags:
+      - 用户相关接口
+  /follow:
+    post:
+      consumes:
+      - application/json
+      description: 关注作者
+      parameters:
+      - description: Bearer 用户令牌
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 作者id参数
+        in: body
+        name: object
+        required: true
+        schema:
+          $ref: '#/definitions/models.Follow'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers._ResponseMsg'
+      security:
+      - ApiKeyAuth: []
+      summary: 关注作者接口
+      tags:
+      - 用户相关接口
+  /follow/cancel:
+    put:
+      consumes:
+      - application/json
+      description: 取消关注作者
+      parameters:
+      - description: Bearer 用户令牌
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 作者id参数
+        in: body
+        name: object
+        required: true
+        schema:
+          $ref: '#/definitions/models.Follow'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers._ResponseMsg'
+      security:
+      - ApiKeyAuth: []
+      summary: 取消关注作者接口
+      tags:
+      - 用户相关接口
+  /follow/get/follow:
+    get:
+      consumes:
+      - application/json
+      description: 获取关注作者
+      parameters:
+      - description: Bearer 用户令牌
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers._ResponseFollowList'
+      security:
+      - ApiKeyAuth: []
+      summary: 获取关注作者接口
+      tags:
+      - 用户相关接口
+  /follow/get/followed:
+    get:
+      consumes:
+      - application/json
+      description: 获取粉丝
+      parameters:
+      - description: Bearer 用户令牌
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers._ResponseFollowList'
+      security:
+      - ApiKeyAuth: []
+      summary: 获取粉丝接口
+      tags:
+      - 用户相关接口
+  /follow/get/post:
+    get:
+      consumes:
+      - application/json
+      description: 获取关注帖子
+      parameters:
+      - description: Bearer 用户令牌
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 帖子社区标签id，可以为空
+        in: query
+        name: label_id
+        type: integer
+      - description: 排序方式，可以为空，默认为score，可以为time
+        example: score
+        in: query
+        name: order
+        type: string
+      - description: 分页信息，可以为空，默认从1开始
+        in: query
+        name: page
+        type: integer
+      - description: 搜索内容，可以为空，搜索时必填
+        in: query
+        name: search
+        type: string
+      - description: 分页大小，可以为空，默认大小10
+        in: query
+        name: size
+        type: integer
+      - description: 帖子对应的翻译任务帖id，可以为空，查看已有翻译时必须保证不为0
+        in: query
+        name: trans_id
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers._ResponsePostList'
+      security:
+      - ApiKeyAuth: []
+      summary: 获取关注帖子接口
+      tags:
+      - 用户相关接口
   /index:
     get:
       consumes:
@@ -45,7 +440,7 @@ paths:
         in: query
         name: page
         type: integer
-      - description: 搜索内容，可以为空，搜索时用到
+      - description: 搜索内容，可以为空，搜索时必填
         in: query
         name: search
         type: string
@@ -69,6 +464,30 @@ paths:
       summary: 热搜帖子列表接口
       tags:
       - 帖子相关接口
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: 微信一键登录后端接口
+      parameters:
+      - description: 用户具体参数
+        in: body
+        name: object
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers._ResponseMsg'
+      security:
+      - ApiKeyAuth: []
+      summary: 用户登录接口
+      tags:
+      - 用户相关接口
   /post:
     post:
       consumes:
@@ -80,58 +499,19 @@ paths:
         name: Authorization
         required: true
         type: string
-      - description: 作者id，无需填入
-        in: query
-        name: author_id
-        type: string
-      - description: 收藏量，无需填入
-        in: query
-        name: collect_num
-        type: integer
-      - description: 内容，必填
-        in: query
-        name: content
+      - description: 帖子具体参数
+        in: body
+        name: object
         required: true
-        type: string
-      - description: 创建时间，无需填入
-        in: query
-        name: create_time
-        type: string
-      - description: 社区标签id，必填
-        in: query
-        name: label_id
-        required: true
-        type: integer
-      - description: 帖子id，由后端生成，无需填入
-        example: "0"
-        in: query
-        name: post_id
-        type: string
-      - description: 帖子状态，管理审核时使用，无需填入
-        in: query
-        name: status
-        type: integer
-      - description: 标题，必填
-        in: query
-        name: title
-        required: true
-        type: string
-      - description: 翻译任务id，不为0说明帖子是翻译帖，对应某个翻译任务，按情况填入
-        example: "0"
-        in: query
-        name: trans_id
-        type: string
-      - description: 观看量，无需填入
-        in: query
-        name: viewd_num
-        type: integer
+        schema:
+          $ref: '#/definitions/models.Post'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/controllers._ResponseMsg'
+            $ref: '#/definitions/controllers._ResponseUsr'
       security:
       - ApiKeyAuth: []
       summary: 创建帖子接口
@@ -179,7 +559,7 @@ paths:
         in: query
         name: page
         type: integer
-      - description: 搜索内容，可以为空，搜索时用到
+      - description: 搜索内容，可以为空，搜索时必填
         in: query
         name: search
         type: string
@@ -214,24 +594,12 @@ paths:
         name: Authorization
         required: true
         type: string
-      - in: query
-        name: content
+      - description: 创建翻译任务参数
+        in: body
+        name: object
         required: true
-        type: string
-      - in: query
-        name: create_time
-        type: string
-      - in: query
-        name: status
-        type: integer
-      - in: query
-        name: title
-        required: true
-        type: string
-      - example: "0"
-        in: query
-        name: trans_id
-        type: string
+        schema:
+          $ref: '#/definitions/models.Trans'
       produces:
       - application/json
       responses:
@@ -268,7 +636,7 @@ paths:
         in: query
         name: page
         type: integer
-      - description: 搜索内容，可以为空，搜索时用到
+      - description: 搜索内容，可以为空，搜索时必填
         in: query
         name: search
         type: string
@@ -315,4 +683,62 @@ paths:
       summary: 获取翻译任务接口
       tags:
       - 翻译相关接口
+  /view/add:
+    put:
+      consumes:
+      - application/json
+      description: 观看量+1
+      parameters:
+      - description: Bearer 用户令牌
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 帖子id参数
+        in: body
+        name: object
+        required: true
+        schema:
+          $ref: '#/definitions/models.Trigger'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers._ResponseMsg'
+      security:
+      - ApiKeyAuth: []
+      summary: 观看量+1接口
+      tags:
+      - 用户相关接口
+  /vote:
+    post:
+      consumes:
+      - application/json
+      description: 根据帖子id和投票信息进行点赞、踩
+      parameters:
+      - description: Bearer 用户令牌
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 翻译任务id参数
+        in: body
+        name: object
+        required: true
+        schema:
+          $ref: '#/definitions/models.ParamVoteData'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers._ResponseMsg'
+      security:
+      - ApiKeyAuth: []
+      summary: 点赞投票接口
+      tags:
+      - 帖子相关接口
 swagger: "2.0"

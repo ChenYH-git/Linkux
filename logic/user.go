@@ -100,7 +100,7 @@ func GetUserConByID(p *models.ParamPostList, userID string) (data []*models.ApiP
 	return
 }
 
-func AddCollection(p *models.Triger, userID string) (err error) {
+func AddCollection(p *models.Trigger, userID string) (err error) {
 	err = mysql.AddCollection(p, userID)
 	if err != nil {
 		zap.L().Error("mysql.AddCollection(p, userID) failed",
@@ -119,7 +119,7 @@ func AddCollection(p *models.Triger, userID string) (err error) {
 	return nil
 }
 
-func DeleteCollection(p *models.Triger, userID string) (err error) {
+func DeleteCollection(p *models.Trigger, userID string) (err error) {
 	err = mysql.DeleteCollection(p, userID)
 	if err != nil {
 		zap.L().Error("mysql.AddCollection(p, userID) failed",
@@ -185,7 +185,7 @@ func GetCollection(p *models.ParamPostList, userID string) (data []*models.ApiPo
 	return
 }
 
-func AddViewNum(p *models.Triger) (err error) {
+func AddViewNum(p *models.Trigger) (err error) {
 	err = mysql.AddViewNum(p)
 	if err != nil {
 		zap.L().Error("mysql.AddCollectNum() failed", zap.Error(err))

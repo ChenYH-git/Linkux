@@ -15,8 +15,451 @@
         },
         "version": "1.0"
     },
-    "host": "192.168.1.5:8080",
+    "host": "localhost:8080",
     "paths": {
+        "/collect": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "加入收藏",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户相关接口"
+                ],
+                "summary": "加入收藏接口",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer 用户令牌",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "帖子id参数",
+                        "name": "object",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Trigger"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controllers._ResponseMsg"
+                        }
+                    }
+                }
+            }
+        },
+        "/collect/delete": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "取消收藏",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户相关接口"
+                ],
+                "summary": "取消收藏接口",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer 用户令牌",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "帖子id参数",
+                        "name": "object",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Trigger"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controllers._ResponseMsg"
+                        }
+                    }
+                }
+            }
+        },
+        "/collect/get": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "获取收藏列表",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户相关接口"
+                ],
+                "summary": "获取收藏列表接口",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer 用户令牌",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "帖子社区标签id，可以为空",
+                        "name": "label_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "score",
+                        "description": "排序方式，可以为空，默认为score，可以为time",
+                        "name": "order",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "分页信息，可以为空，默认从1开始",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "搜索内容，可以为空，搜索时必填",
+                        "name": "search",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "分页大小，可以为空，默认大小10",
+                        "name": "size",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "帖子对应的翻译任务帖id，可以为空，查看已有翻译时必须保证不为0",
+                        "name": "trans_id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controllers._ResponsePostList"
+                        }
+                    }
+                }
+            }
+        },
+        "/contribution": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "获取`我的贡献`",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户相关接口"
+                ],
+                "summary": "获取`我的贡献`接口",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer 用户令牌",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controllers._ResponsePostList"
+                        }
+                    }
+                }
+            }
+        },
+        "/follow": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "关注作者",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户相关接口"
+                ],
+                "summary": "关注作者接口",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer 用户令牌",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "作者id参数",
+                        "name": "object",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Follow"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controllers._ResponseMsg"
+                        }
+                    }
+                }
+            }
+        },
+        "/follow/cancel": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "取消关注作者",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户相关接口"
+                ],
+                "summary": "取消关注作者接口",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer 用户令牌",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "作者id参数",
+                        "name": "object",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Follow"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controllers._ResponseMsg"
+                        }
+                    }
+                }
+            }
+        },
+        "/follow/get/follow": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "获取关注作者",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户相关接口"
+                ],
+                "summary": "获取关注作者接口",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer 用户令牌",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controllers._ResponseFollowList"
+                        }
+                    }
+                }
+            }
+        },
+        "/follow/get/followed": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "获取粉丝",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户相关接口"
+                ],
+                "summary": "获取粉丝接口",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer 用户令牌",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controllers._ResponseFollowList"
+                        }
+                    }
+                }
+            }
+        },
+        "/follow/get/post": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "获取关注帖子",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户相关接口"
+                ],
+                "summary": "获取关注帖子接口",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer 用户令牌",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "帖子社区标签id，可以为空",
+                        "name": "label_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "score",
+                        "description": "排序方式，可以为空，默认为score，可以为time",
+                        "name": "order",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "分页信息，可以为空，默认从1开始",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "搜索内容，可以为空，搜索时必填",
+                        "name": "search",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "分页大小，可以为空，默认大小10",
+                        "name": "size",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "帖子对应的翻译任务帖id，可以为空，查看已有翻译时必须保证不为0",
+                        "name": "trans_id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controllers._ResponsePostList"
+                        }
+                    }
+                }
+            }
+        },
         "/index": {
             "get": {
                 "security": [
@@ -64,7 +507,7 @@
                     },
                     {
                         "type": "string",
-                        "description": "搜索内容，可以为空，搜索时用到",
+                        "description": "搜索内容，可以为空，搜索时必填",
                         "name": "search",
                         "in": "query"
                     },
@@ -86,6 +529,45 @@
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/controllers._ResponsePostList"
+                        }
+                    }
+                }
+            }
+        },
+        "/login": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "微信一键登录后端接口",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户相关接口"
+                ],
+                "summary": "用户登录接口",
+                "parameters": [
+                    {
+                        "description": "用户具体参数",
+                        "name": "object",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controllers._ResponseMsg"
                         }
                     }
                 }
@@ -118,76 +600,20 @@
                         "required": true
                     },
                     {
-                        "type": "string",
-                        "description": "作者id，无需填入",
-                        "name": "author_id",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "收藏量，无需填入",
-                        "name": "collect_num",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "内容，必填",
-                        "name": "content",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "创建时间，无需填入",
-                        "name": "create_time",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "社区标签id，必填",
-                        "name": "label_id",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "example": "0",
-                        "description": "帖子id，由后端生成，无需填入",
-                        "name": "post_id",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "帖子状态，管理审核时使用，无需填入",
-                        "name": "status",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "标题，必填",
-                        "name": "title",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "example": "0",
-                        "description": "翻译任务id，不为0说明帖子是翻译帖，对应某个翻译任务，按情况填入",
-                        "name": "trans_id",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "观看量，无需填入",
-                        "name": "viewd_num",
-                        "in": "query"
+                        "description": "帖子具体参数",
+                        "name": "object",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Post"
+                        }
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controllers._ResponseMsg"
+                            "$ref": "#/definitions/controllers._ResponseUsr"
                         }
                     }
                 }
@@ -270,7 +696,7 @@
                     },
                     {
                         "type": "string",
-                        "description": "搜索内容，可以为空，搜索时用到",
+                        "description": "搜索内容，可以为空，搜索时必填",
                         "name": "search",
                         "in": "query"
                     },
@@ -324,32 +750,13 @@
                         "required": true
                     },
                     {
-                        "type": "string",
-                        "name": "content",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "name": "create_time",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "name": "status",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "name": "title",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "example": "0",
-                        "name": "trans_id",
-                        "in": "query"
+                        "description": "创建翻译任务参数",
+                        "name": "object",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Trans"
+                        }
                     }
                 ],
                 "responses": {
@@ -409,7 +816,7 @@
                     },
                     {
                         "type": "string",
-                        "description": "搜索内容，可以为空，搜索时用到",
+                        "description": "搜索内容，可以为空，搜索时必填",
                         "name": "search",
                         "in": "query"
                     },
@@ -472,10 +879,105 @@
                     }
                 }
             }
+        },
+        "/view/add": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "观看量+1",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户相关接口"
+                ],
+                "summary": "观看量+1接口",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer 用户令牌",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "帖子id参数",
+                        "name": "object",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Trigger"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controllers._ResponseMsg"
+                        }
+                    }
+                }
+            }
+        },
+        "/vote": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "根据帖子id和投票信息进行点赞、踩",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "帖子相关接口"
+                ],
+                "summary": "点赞投票接口",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer 用户令牌",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "翻译任务id参数",
+                        "name": "object",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.ParamVoteData"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controllers._ResponseMsg"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
         "controllers._RankResponseMsg": {
+            "type": "object"
+        },
+        "controllers._ResponseFollowList": {
             "type": "object"
         },
         "controllers._ResponseMsg": {
@@ -486,6 +988,160 @@
         },
         "controllers._ResponseTransList": {
             "type": "object"
+        },
+        "controllers._ResponseUsr": {
+            "type": "object"
+        },
+        "models.Follow": {
+            "type": "object",
+            "properties": {
+                "follow_id": {
+                    "description": "关注的作者id",
+                    "type": "string"
+                },
+                "followed_id": {
+                    "description": "粉丝id",
+                    "type": "string"
+                }
+            }
+        },
+        "models.ParamVoteData": {
+            "type": "object",
+            "required": [
+                "post_id"
+            ],
+            "properties": {
+                "direction": {
+                    "description": "赞同（1） 反对（-1） 取消（0）(required在默认为0时，会主动过滤）",
+                    "type": "string",
+                    "example": "1"
+                },
+                "post_id": {
+                    "description": "帖子id",
+                    "type": "string",
+                    "example": "0"
+                }
+            }
+        },
+        "models.Post": {
+            "type": "object",
+            "required": [
+                "content",
+                "label_id",
+                "title"
+            ],
+            "properties": {
+                "author_id": {
+                    "description": "作者id，无需填入",
+                    "type": "string"
+                },
+                "collect_num": {
+                    "description": "收藏量，无需填入",
+                    "type": "integer"
+                },
+                "content": {
+                    "description": "内容，必填",
+                    "type": "string"
+                },
+                "create_time": {
+                    "description": "创建时间，无需填入",
+                    "type": "string"
+                },
+                "label_id": {
+                    "description": "社区标签id，必填",
+                    "type": "integer"
+                },
+                "post_id": {
+                    "description": "帖子id，由后端生成，无需填入",
+                    "type": "string",
+                    "example": "0"
+                },
+                "status": {
+                    "description": "帖子状态，管理审核时使用，无需填入",
+                    "type": "integer"
+                },
+                "title": {
+                    "description": "标题，必填",
+                    "type": "string"
+                },
+                "trans_id": {
+                    "description": "翻译任务id，不为0说明帖子是翻译帖，对应某个翻译任务，按情况填入",
+                    "type": "string",
+                    "example": "0"
+                },
+                "viewd_num": {
+                    "description": "观看量，无需填入",
+                    "type": "integer"
+                }
+            }
+        },
+        "models.Trans": {
+            "type": "object",
+            "required": [
+                "content",
+                "title"
+            ],
+            "properties": {
+                "content": {
+                    "description": "内容，必填",
+                    "type": "string"
+                },
+                "create_time": {
+                    "description": "创建时间，不用填",
+                    "type": "string"
+                },
+                "status": {
+                    "description": "任务帖状态，审核用",
+                    "type": "integer"
+                },
+                "title": {
+                    "description": "标题，必填",
+                    "type": "string"
+                },
+                "trans_id": {
+                    "description": "翻译任务id，不用填",
+                    "type": "string",
+                    "example": "0"
+                }
+            }
+        },
+        "models.Trigger": {
+            "type": "object",
+            "properties": {
+                "post_id": {
+                    "description": "对应帖子id",
+                    "type": "integer"
+                }
+            }
+        },
+        "models.User": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "微信返回的 code",
+                    "type": "string"
+                },
+                "contribution": {
+                    "description": "用户贡献度",
+                    "type": "integer"
+                },
+                "pic_link": {
+                    "description": "头像链接",
+                    "type": "string"
+                },
+                "token": {
+                    "description": "后端返回的用户 token",
+                    "type": "string"
+                },
+                "userID": {
+                    "description": "用户id",
+                    "type": "string"
+                },
+                "username": {
+                    "description": "用户名",
+                    "type": "string"
+                }
+            }
         }
     }
 }

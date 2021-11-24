@@ -16,9 +16,9 @@ import (
 // @Accept application/json
 // @Produce application/json
 // @Param Authorization header string true "Bearer 用户令牌"
-// @Param object query models.Post true "帖子具体参数"
+// @Param object body models.Post true "帖子具体参数"
 // @Security ApiKeyAuth
-// @Success 200 {object} _ResponseMsg
+// @Success 200 {object} _ResponseUsr
 // @Router /post [post]
 func CreatePostHandler(c *gin.Context) {
 	p := new(models.Post)

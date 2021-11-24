@@ -3,6 +3,7 @@ package redis
 import (
 	"errors"
 	"math"
+	"strconv"
 	"time"
 
 	"github.com/go-redis/redis"
@@ -18,13 +19,13 @@ var (
 	errVoteRepeated   = errors.New("不允许重复投相同票")
 )
 
-func VoteForPost(userID, postID string, value float64) error {
-	postTime := client.ZScore(getRedisKey(KeyPostTimeZset), postID).Val()
+func VoteForPost(userID string, postID int64, value float64) error {
+	postTime := client.ZScore(getRedisKey(KeyPostTimeZset), strconv.FormatInt(postID, 10)).Val()
 	if float64(time.Now().Unix())-postTime > oneWeekSeconds {
 		return errVoteTimeExpire
 	}
 
-	ov := client.ZScore(getRedisKey(KeyPostVotedZsetPF+postID), userID).Val()
+	ov := client.ZScore(getRedisKey(KeyPostVotedZsetPF+strconv.FormatInt(postID, 10)), userID).Val()
 	if value == ov {
 		return errVoteRepeated
 	}
@@ -36,12 +37,12 @@ func VoteForPost(userID, postID string, value float64) error {
 	}
 	diff := math.Abs(ov - value)
 	pipeline := client.TxPipeline()
-	pipeline.ZIncrBy(getRedisKey(KeyPostScoreZset), dir*diff*scorePerVote, postID)
+	pipeline.ZIncrBy(getRedisKey(KeyPostScoreZset), dir*diff*scorePerVote, strconv.FormatInt(postID, 10))
 
 	if value == 0 {
-		pipeline.ZRem(getRedisKey(KeyPostVotedZsetPF+postID), userID)
+		pipeline.ZRem(getRedisKey(KeyPostVotedZsetPF+strconv.FormatInt(postID, 10)), userID)
 	} else {
-		pipeline.ZAdd(getRedisKey(KeyPostVotedZsetPF+postID), redis.Z{
+		pipeline.ZAdd(getRedisKey(KeyPostVotedZsetPF+strconv.FormatInt(postID, 10)), redis.Z{
 			Score:  value,
 			Member: userID,
 		})

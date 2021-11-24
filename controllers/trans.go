@@ -15,7 +15,7 @@ import (
 // @Accept application/json
 // @Produce application/json
 // @Param Authorization header string true "Bearer 用户令牌"
-// @Param object query models.Trans true "创建翻译任务参数"
+// @Param object body models.Trans true "创建翻译任务参数"
 // @Security ApiKeyAuth
 // @Success 200 {object} _ResponseMsg
 // @Router /trans [post]
