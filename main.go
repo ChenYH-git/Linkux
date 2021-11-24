@@ -19,6 +19,20 @@ import (
 	"go.uber.org/zap"
 )
 
+// @title 2021 秋软工团队合作项目
+// @version 1.0
+// @description 软工合作 alpha 冲刺版
+// @termsOfService http://swagger.io/terms/
+
+// @contact.name FZU UNDEFINED 小组
+// @contact.url https://blog.csdn.net/codingyuhan
+// @contact.email 2135378647@qq.com
+
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
+
+// @host 192.168.1.5:8080
+// @BasePath
 func main() {
 	//1.加载配置
 	if err := settings.Init(); err != nil {

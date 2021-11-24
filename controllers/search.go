@@ -8,6 +8,16 @@ import (
 	"go.uber.org/zap"
 )
 
+// SearchHandler 帖子搜索接口
+// @Summary 帖子搜索接口
+// @Description 按输入内容检索帖子
+// @Tags 帖子相关接口
+// @Accept application/json
+// @Produce application/json
+// @Param object query models.ParamPostList true "搜索参数"
+// @Security ApiKeyAuth
+// @Success 200 {object} _ResponsePostList
+// @Router /search [get]
 func SearchHandler(c *gin.Context) {
 	p := &models.ParamPostList{
 		Page:  1,

@@ -9,6 +9,17 @@ import (
 	"go.uber.org/zap"
 )
 
+// CreatePostHandler 创建帖子接口
+// @Summary 创建帖子接口
+// @Description 根据输入的数据上传帖子
+// @Tags 帖子相关接口
+// @Accept application/json
+// @Produce application/json
+// @Param Authorization header string true "Bearer 用户令牌"
+// @Param object query models.Post true "帖子具体参数"
+// @Security ApiKeyAuth
+// @Success 200 {object} _ResponseMsg
+// @Router /post [post]
 func CreatePostHandler(c *gin.Context) {
 	p := new(models.Post)
 	if err := c.ShouldBindJSON(p); err != nil {
@@ -30,11 +41,20 @@ func CreatePostHandler(c *gin.Context) {
 		return
 	}
 
-	ResponseSuccess(c, gin.H{
-		"msg": "create post success",
-	})
+	ResponseSuccess(c, nil)
 }
 
+// IndexHandler 热搜帖子列表接口
+// @Summary 热搜帖子列表接口
+// @Description 可按社区标签以时间或分数排序查询帖子列表接口
+// @Tags 帖子相关接口
+// @Accept application/json
+// @Produce application/json
+// @Param Authorization header string true "Bearer 用户令牌"
+// @Param object query models.ParamPostList false "查询参数"
+// @Security ApiKeyAuth
+// @Success 200 {object} _ResponsePostList
+// @Router /index [get]
 func IndexHandler(c *gin.Context) {
 	p := &models.ParamPostList{
 		Page:  1,

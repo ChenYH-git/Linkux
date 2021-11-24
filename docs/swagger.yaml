@@ -1,0 +1,318 @@
+definitions:
+  controllers._RankResponseMsg:
+    type: object
+  controllers._ResponseMsg:
+    type: object
+  controllers._ResponsePostList:
+    type: object
+  controllers._ResponseTransList:
+    type: object
+host: 192.168.1.5:8080
+info:
+  contact:
+    email: 2135378647@qq.com
+    name: FZU UNDEFINED 小组
+    url: https://blog.csdn.net/codingyuhan
+  description: 软工合作 alpha 冲刺版
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: 2021 秋软工团队合作项目
+  version: "1.0"
+paths:
+  /index:
+    get:
+      consumes:
+      - application/json
+      description: 可按社区标签以时间或分数排序查询帖子列表接口
+      parameters:
+      - description: Bearer 用户令牌
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 帖子社区标签id，可以为空
+        in: query
+        name: label_id
+        type: integer
+      - description: 排序方式，可以为空，默认为score，可以为time
+        example: score
+        in: query
+        name: order
+        type: string
+      - description: 分页信息，可以为空，默认从1开始
+        in: query
+        name: page
+        type: integer
+      - description: 搜索内容，可以为空，搜索时用到
+        in: query
+        name: search
+        type: string
+      - description: 分页大小，可以为空，默认大小10
+        in: query
+        name: size
+        type: integer
+      - description: 帖子对应的翻译任务帖id，可以为空，查看已有翻译时必须保证不为0
+        in: query
+        name: trans_id
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers._ResponsePostList'
+      security:
+      - ApiKeyAuth: []
+      summary: 热搜帖子列表接口
+      tags:
+      - 帖子相关接口
+  /post:
+    post:
+      consumes:
+      - application/json
+      description: 根据输入的数据上传帖子
+      parameters:
+      - description: Bearer 用户令牌
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 作者id，无需填入
+        in: query
+        name: author_id
+        type: string
+      - description: 收藏量，无需填入
+        in: query
+        name: collect_num
+        type: integer
+      - description: 内容，必填
+        in: query
+        name: content
+        required: true
+        type: string
+      - description: 创建时间，无需填入
+        in: query
+        name: create_time
+        type: string
+      - description: 社区标签id，必填
+        in: query
+        name: label_id
+        required: true
+        type: integer
+      - description: 帖子id，由后端生成，无需填入
+        example: "0"
+        in: query
+        name: post_id
+        type: string
+      - description: 帖子状态，管理审核时使用，无需填入
+        in: query
+        name: status
+        type: integer
+      - description: 标题，必填
+        in: query
+        name: title
+        required: true
+        type: string
+      - description: 翻译任务id，不为0说明帖子是翻译帖，对应某个翻译任务，按情况填入
+        example: "0"
+        in: query
+        name: trans_id
+        type: string
+      - description: 观看量，无需填入
+        in: query
+        name: viewd_num
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers._ResponseMsg'
+      security:
+      - ApiKeyAuth: []
+      summary: 创建帖子接口
+      tags:
+      - 帖子相关接口
+  /rank:
+    get:
+      consumes:
+      - application/json
+      description: 返回排行榜数据
+      parameters:
+      - description: Bearer 用户令牌
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers._RankResponseMsg'
+      security:
+      - ApiKeyAuth: []
+      summary: 排行榜接口
+      tags:
+      - 排行榜相关接口
+  /search:
+    get:
+      consumes:
+      - application/json
+      description: 按输入内容检索帖子
+      parameters:
+      - description: 帖子社区标签id，可以为空
+        in: query
+        name: label_id
+        type: integer
+      - description: 排序方式，可以为空，默认为score，可以为time
+        example: score
+        in: query
+        name: order
+        type: string
+      - description: 分页信息，可以为空，默认从1开始
+        in: query
+        name: page
+        type: integer
+      - description: 搜索内容，可以为空，搜索时用到
+        in: query
+        name: search
+        type: string
+      - description: 分页大小，可以为空，默认大小10
+        in: query
+        name: size
+        type: integer
+      - description: 帖子对应的翻译任务帖id，可以为空，查看已有翻译时必须保证不为0
+        in: query
+        name: trans_id
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers._ResponsePostList'
+      security:
+      - ApiKeyAuth: []
+      summary: 帖子搜索接口
+      tags:
+      - 帖子相关接口
+  /trans:
+    post:
+      consumes:
+      - application/json
+      description: 按输入内容创建翻译任务
+      parameters:
+      - description: Bearer 用户令牌
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - in: query
+        name: content
+        required: true
+        type: string
+      - in: query
+        name: create_time
+        type: string
+      - in: query
+        name: status
+        type: integer
+      - in: query
+        name: title
+        required: true
+        type: string
+      - example: "0"
+        in: query
+        name: trans_id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers._ResponseMsg'
+      security:
+      - ApiKeyAuth: []
+      summary: 创建翻译任务接口
+      tags:
+      - 翻译相关接口
+  /trans/get/exist:
+    get:
+      consumes:
+      - application/json
+      description: 获取翻译任务对应的当前翻译文章
+      parameters:
+      - description: Bearer 用户令牌
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 帖子社区标签id，可以为空
+        in: query
+        name: label_id
+        type: integer
+      - description: 排序方式，可以为空，默认为score，可以为time
+        example: score
+        in: query
+        name: order
+        type: string
+      - description: 分页信息，可以为空，默认从1开始
+        in: query
+        name: page
+        type: integer
+      - description: 搜索内容，可以为空，搜索时用到
+        in: query
+        name: search
+        type: string
+      - description: 分页大小，可以为空，默认大小10
+        in: query
+        name: size
+        type: integer
+      - description: 帖子对应的翻译任务帖id，可以为空，查看已有翻译时必须保证不为0
+        in: query
+        name: trans_id
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers._ResponsePostList'
+      security:
+      - ApiKeyAuth: []
+      summary: 获取翻译任务对应的当前翻译文章接口
+      tags:
+      - 翻译相关接口
+  /trans/get/task:
+    get:
+      consumes:
+      - application/json
+      description: 获取翻译任务
+      parameters:
+      - description: Bearer 用户令牌
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers._ResponseTransList'
+      security:
+      - ApiKeyAuth: []
+      summary: 获取翻译任务接口
+      tags:
+      - 翻译相关接口
+swagger: "2.0"
