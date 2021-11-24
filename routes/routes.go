@@ -23,7 +23,7 @@ func Setup(mode string) *gin.Engine {
 	controllers.InitTrans("zh")
 
 	r := gin.New()
-	r.Use(logger.GinLogger(), logger.GinRecovery(true), middleware.RateLimitMiddleware(time.Second, 5)) // 令牌桶容量为5，每秒钟填充1个
+	r.Use(logger.GinLogger(), logger.GinRecovery(true), middleware.RateLimitMiddleware(100*time.Millisecond, 10)) // 令牌桶容量为5，每秒钟填充1个
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	r.POST("/login", controllers.LoginHandler)

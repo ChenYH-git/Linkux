@@ -25,8 +25,8 @@ func Init(cfg *settings.MySQLConfig) (err error) {
 		zap.L().Error("connnect mysqlDB failed, err:%v\n", zap.Error(err))
 		return
 	}
-	db.SetMaxOpenConns(settings.Conf.MySQLConfig.MaxOpenConns)
-	db.SetMaxIdleConns(settings.Conf.MySQLConfig.MaxIdleConns)
+	db.SetMaxOpenConns(cfg.MaxOpenConns)
+	db.SetMaxIdleConns(cfg.MaxIdleConns)
 	return
 }
 
