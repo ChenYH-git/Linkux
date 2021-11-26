@@ -81,7 +81,16 @@ func GetPostListOfMy(ids []string, userID string) (postList []*models.Post, err 
 }
 
 func AddCollection(p *models.Trigger, userID string) (err error) {
-	sqlStr := `select count(post_id = ?) from collection where user_id = ?`
+	sqlStr := `select author_id from post where post_id = ?`
+	var id string
+	if err := db.Get(&id, sqlStr, p.PostID); err != nil {
+		return err
+	}
+	if id == userID {
+		return errors.New("无法收藏自己的帖子")
+	}
+
+	sqlStr = `select count(post_id = ?) from collection where user_id = ?`
 	var count int
 	if err := db.Get(&count, sqlStr, p.PostID, userID); err != nil {
 		return err

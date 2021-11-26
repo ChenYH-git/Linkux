@@ -26,17 +26,18 @@ func LoginHandler(c *gin.Context) {
 		return
 	}
 
-	var token string
+	var user *models.User
 	var err error
 
-	if token, err = logic.Login(p); err != nil {
+	if user, err = logic.Login(p); err != nil {
 		zap.L().Error("logic.Login failed", zap.Error(err))
 		ResponseError(c, CodeServerBusy)
 		return
 	}
 
 	ResponseSuccess(c, gin.H{
-		"token": token,
+		"user_id": user.UserID,
+		"token":   user.Token,
 	})
 }
 

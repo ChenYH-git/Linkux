@@ -6,6 +6,7 @@ import (
 	"Linkux/models"
 	"Linkux/pkg/jwt"
 	"encoding/json"
+	"errors"
 	"io/ioutil"
 	"net/http"
 
@@ -18,7 +19,7 @@ const (
 	grant_type = `authorization_code`
 )
 
-func Login(p *models.User) (userID string, err error) {
+func Login(p *models.User) (user *models.User, err error) {
 	resp, err := http.Get("https://api.weixin.qq.com/sns/jscode2session?appid=" + id + `&secret=` + secret + `&js_code=` + p.Code + `&grant_type=` + grant_type)
 	if err != nil {
 		zap.L().Error("Get weixin API failed", zap.Error(err))
@@ -38,7 +39,7 @@ func Login(p *models.User) (userID string, err error) {
 		return
 	}
 
-	user := &models.User{
+	user = &models.User{
 		UserID:       res.OpenID,
 		Contribution: 0,
 		Username:     p.Username,
@@ -51,7 +52,7 @@ func Login(p *models.User) (userID string, err error) {
 	}
 	user.Token = token
 
-	return user.Token, mysql.InsertUser(user)
+	return user, mysql.InsertUser(user)
 }
 
 func GetUserConByID(p *models.ParamPostList, userID string) (data []*models.ApiPostDetail, err error) {
@@ -195,6 +196,10 @@ func AddViewNum(p *models.Trigger) (err error) {
 }
 
 func AddFollow(p *models.Follow, userID string) (err error) {
+	if p.FollowID == userID {
+		return errors.New("无法关注自己")
+	}
+
 	err = mysql.AddFollow(p, userID)
 	if err != nil {
 		zap.L().Error("mysql.AddFollow(p, userID) failed",
@@ -206,6 +211,10 @@ func AddFollow(p *models.Follow, userID string) (err error) {
 }
 
 func CancelFollow(p *models.Follow, userID string) (err error) {
+	if p.FollowID == userID {
+		return errors.New("无法取关自己")
+	}
+
 	err = mysql.CancelFollow(p, userID)
 	if err != nil {
 		zap.L().Error("mysql.CancelFollow(p, userID) failed",
