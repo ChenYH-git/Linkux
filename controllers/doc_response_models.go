@@ -37,3 +37,9 @@ type _ResponseUsr struct {
 	msg   string  `json:"msg"`
 	token string  `json:"token"`
 }
+
+type _ResponseVC struct {
+	code ResCode         `json:"code"`
+	msg  string          `json:"msg"`
+	vc   *models.VCorNot `json:"vc"`
+}

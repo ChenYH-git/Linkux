@@ -123,7 +123,7 @@ func AddCollection(p *models.Trigger, userID string) (err error) {
 func DeleteCollection(p *models.Trigger, userID string) (err error) {
 	err = mysql.DeleteCollection(p, userID)
 	if err != nil {
-		zap.L().Error("mysql.AddCollection(p, userID) failed",
+		zap.L().Error("mysql.DeleteCollection(p, userID) failed",
 			zap.String("user_id", userID),
 			zap.Error(err))
 		return
@@ -131,7 +131,7 @@ func DeleteCollection(p *models.Trigger, userID string) (err error) {
 
 	err = mysql.DeleteCollectNum(p)
 	if err != nil {
-		zap.L().Error("mysql.AddCollectNum() failed",
+		zap.L().Error("mysql.DeleteCollectNum() failed",
 			zap.String("user_id", userID),
 			zap.Error(err))
 		return

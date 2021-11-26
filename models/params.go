@@ -21,3 +21,8 @@ type ParamPostList struct {
 	Order   string `json:"order" form:"order" example:"score"` // 排序方式，可以为空，默认为score，可以为time
 	Search  string `json:"search" form:"search"`               // 搜索内容，可以为空，搜索时必填
 }
+
+type VCorNot struct {
+	Voted     bool `json:"voted"`     // 1为点过赞，0为没有
+	Collected bool `json:"collected"` // 1为收藏过，0为没有
+}

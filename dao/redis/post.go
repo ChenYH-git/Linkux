@@ -95,3 +95,11 @@ func GetPostVoteDataSingle(id string) (data int64, err error) {
 
 	return
 }
+
+func GetMyVote(pid, uid string) (flag bool, err error) {
+	ov := client.ZScore(getRedisKey(KeyPostVotedZsetPF+pid), uid).Val()
+	if ov < float64(1) {
+		return false, nil
+	}
+	return true, nil
+}

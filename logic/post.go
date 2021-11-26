@@ -5,7 +5,6 @@ import (
 	"Linkux/dao/redis"
 	"Linkux/models"
 	"Linkux/pkg/snowflakes"
-	"fmt"
 
 	"go.uber.org/zap"
 )
@@ -69,8 +68,6 @@ func GetNoLabelList(p *models.ParamPostList) (data []*models.ApiPostDetail, err 
 		return
 	}
 
-	fmt.Println(ids[0], " ", ids[1])
-
 	posts, err := mysql.GetPostListByIDs(ids)
 	if err != nil {
 		return
@@ -81,6 +78,7 @@ func GetNoLabelList(p *models.ParamPostList) (data []*models.ApiPostDetail, err 
 		return
 	}
 	for idx, post := range posts {
+
 		user, err := mysql.GetUserByID(post.AuthorID)
 		if err != nil {
 			zap.L().Error("mysql.GetUserByID() failed",

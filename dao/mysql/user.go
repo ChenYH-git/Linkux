@@ -104,6 +104,20 @@ func AddCollection(p *models.Trigger, userID string) (err error) {
 	return
 }
 
+func CheckCollect(pid, uid string) (flag bool, err error) {
+	sqlStr := `select count(post_id = ?) from collection where user_id = ?`
+	var count int
+	if err := db.Get(&count, sqlStr, pid, uid); err != nil {
+		return false, err
+	}
+	if count > 0 {
+		flag = true
+	} else {
+		flag = false
+	}
+	return
+}
+
 func AddCollectNum(p *models.Trigger) (err error) {
 	sqlStr := `update post set collect_num = collect_num + 1 where post_id = ?`
 	_, err = db.Exec(sqlStr, p.PostID)
@@ -111,7 +125,15 @@ func AddCollectNum(p *models.Trigger) (err error) {
 }
 
 func DeleteCollection(p *models.Trigger, userID string) (err error) {
-	sqlStr := `delete from collection where user_id = ? and post_id = ?`
+	sqlStr := `select count(post_id = ?) from collection where user_id = ?`
+	var count int
+	if err := db.Get(&count, sqlStr, p.PostID, userID); err != nil {
+		return err
+	}
+	if count < 1 {
+		return errors.New("无此帖子")
+	}
+	sqlStr = `delete from collection where user_id = ? and post_id = ?`
 	_, err = db.Exec(sqlStr, userID, p.PostID)
 	return
 }

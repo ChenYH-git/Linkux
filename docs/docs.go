@@ -475,6 +475,52 @@ var doc = `{
                 }
             }
         },
+        "/getvc": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "获取当前用户对帖子是否点赞收藏",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "帖子相关接口"
+                ],
+                "summary": "获取当前用户对帖子是否点赞收藏的接口",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer 用户令牌",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "两个 bool 参数",
+                        "name": "object",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Trigger"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controllers._ResponseMsg"
+                        }
+                    }
+                }
+            }
+        },
         "/index": {
             "get": {
                 "security": [
@@ -1125,7 +1171,8 @@ var doc = `{
             "properties": {
                 "post_id": {
                     "description": "对应帖子id",
-                    "type": "integer"
+                    "type": "string",
+                    "example": "0"
                 }
             }
         },

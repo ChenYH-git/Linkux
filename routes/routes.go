@@ -36,6 +36,7 @@ func Setup(mode string) *gin.Engine {
 		v1.GET("index", controllers.IndexHandler)
 		v1.POST("post", controllers.CreatePostHandler)
 		v1.POST("vote", controllers.PostVoteController)
+		v1.POST("getvc", controllers.GetVoteCollectHandler)
 		v1.PUT("view/add", controllers.AddViewHandler)
 		v1.GET("label", controllers.LabelHandler)
 		v1.GET("label/:id", controllers.LabelDetailHandler)

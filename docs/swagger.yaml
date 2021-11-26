@@ -98,7 +98,8 @@ definitions:
     properties:
       post_id:
         description: 对应帖子id
-        type: integer
+        example: "0"
+        type: string
     type: object
   models.User:
     properties:
@@ -416,6 +417,35 @@ paths:
       summary: 获取关注帖子接口
       tags:
       - 用户相关接口
+  /getvc:
+    post:
+      consumes:
+      - application/json
+      description: 获取当前用户对帖子是否点赞收藏
+      parameters:
+      - description: Bearer 用户令牌
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 两个 bool 参数
+        in: body
+        name: object
+        required: true
+        schema:
+          $ref: '#/definitions/models.Trigger'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers._ResponseMsg'
+      security:
+      - ApiKeyAuth: []
+      summary: 获取当前用户对帖子是否点赞收藏的接口
+      tags:
+      - 帖子相关接口
   /index:
     get:
       consumes:
