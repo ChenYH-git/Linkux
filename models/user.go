@@ -18,7 +18,7 @@ type LoginResBody struct {
 }
 
 type Trigger struct {
-	PostID int64 `json:"post_id" db:"post_id"` // 对应帖子id
+	PostID int64 `json:"post_id,string" db:"post_id"` // 对应帖子id
 }
 
 type Follow struct {

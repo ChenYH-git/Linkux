@@ -5,6 +5,7 @@ import (
 	"Linkux/dao/redis"
 	"Linkux/models"
 	"Linkux/pkg/snowflakes"
+	"fmt"
 
 	"go.uber.org/zap"
 )
@@ -67,6 +68,8 @@ func GetNoLabelList(p *models.ParamPostList) (data []*models.ApiPostDetail, err 
 		zap.L().Warn("redis.GetPostIDsInOrder return 0 id")
 		return
 	}
+
+	fmt.Println(ids[0], " ", ids[1])
 
 	posts, err := mysql.GetPostListByIDs(ids)
 	if err != nil {

@@ -3,6 +3,7 @@ package mysql
 import (
 	"Linkux/dao/redis"
 	"Linkux/models"
+	"errors"
 	"strconv"
 	"strings"
 
@@ -35,7 +36,7 @@ func GetUserByID(uid string) (user *models.User, err error) {
 }
 
 func GetFollowUserByIDs(ids []*models.Follow) (user []*models.User, err error) {
-	sqlStr := `select username, pic_link from user where user_id = ?`
+	sqlStr := `select user_id, username, pic_link from user where user_id = ?`
 
 	user = make([]*models.User, 0, len(ids))
 	for _, v := range ids {
@@ -48,7 +49,7 @@ func GetFollowUserByIDs(ids []*models.Follow) (user []*models.User, err error) {
 }
 
 func GetFollowedUserByIDs(ids []*models.Follow) (user []*models.User, err error) {
-	sqlStr := `select username, pic_link from user where user_id = ?`
+	sqlStr := `select user_id, username, pic_link from user where user_id = ?`
 
 	user = make([]*models.User, 0, len(ids))
 	for _, v := range ids {
@@ -80,7 +81,16 @@ func GetPostListOfMy(ids []string, userID string) (postList []*models.Post, err 
 }
 
 func AddCollection(p *models.Trigger, userID string) (err error) {
-	sqlStr := `insert into collection(user_id, post_id) values(?, ?)`
+	sqlStr := `select count(post_id = ?) from collection where user_id = ?`
+	var count int
+	if err := db.Get(&count, sqlStr, p.PostID, userID); err != nil {
+		return err
+	}
+	if count > 0 {
+		return errors.New("重复收藏")
+	}
+
+	sqlStr = `insert into collection(user_id, post_id) values(?, ?)`
 	_, err = db.Exec(sqlStr, userID, p.PostID)
 	return
 }
@@ -126,7 +136,16 @@ func AddViewNum(p *models.Trigger) (err error) {
 }
 
 func AddFollow(p *models.Follow, userID string) (err error) {
-	sqlStr := `insert into follow(follow_id, user_id) values(?, ?)`
+	sqlStr := `select count(follow_id = ?) from follow where user_id = ?`
+	var count int
+	if err := db.Get(&count, sqlStr, p.FollowID, userID); err != nil {
+		return err
+	}
+	if count > 0 {
+		return errors.New("重复关注")
+	}
+
+	sqlStr = `insert into follow(follow_id, user_id) values(?, ?)`
 	_, err = db.Exec(sqlStr, p.FollowID, userID)
 	if err != nil {
 		return err
