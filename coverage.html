@@ -1,0 +1,1777 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>controllers: Go Coverage Report</title>
+		<style>
+			body {
+				background: black;
+				color: rgb(80, 80, 80);
+			}
+			body, pre, #legend span {
+				font-family: Menlo, monospace;
+				font-weight: bold;
+			}
+			#topbar {
+				background: black;
+				position: fixed;
+				top: 0; left: 0; right: 0;
+				height: 42px;
+				border-bottom: 1px solid rgb(80, 80, 80);
+			}
+			#content {
+				margin-top: 50px;
+			}
+			#nav, #legend {
+				float: left;
+				margin-left: 10px;
+			}
+			#legend {
+				margin-top: 12px;
+			}
+			#nav {
+				margin-top: 10px;
+			}
+			#legend span {
+				margin: 0 5px;
+			}
+			.cov0 { color: rgb(192, 0, 0) }
+.cov1 { color: rgb(128, 128, 128) }
+.cov2 { color: rgb(116, 140, 131) }
+.cov3 { color: rgb(104, 152, 134) }
+.cov4 { color: rgb(92, 164, 137) }
+.cov5 { color: rgb(80, 176, 140) }
+.cov6 { color: rgb(68, 188, 143) }
+.cov7 { color: rgb(56, 200, 146) }
+.cov8 { color: rgb(44, 212, 149) }
+.cov9 { color: rgb(32, 224, 152) }
+.cov10 { color: rgb(20, 236, 155) }
+
+		</style>
+	</head>
+	<body>
+		<div id="topbar">
+			<div id="nav">
+				<select id="files">
+				
+				<option value="file0">Linkux/controllers/code.go (75.0%)</option>
+				
+				<option value="file1">Linkux/controllers/label.go (0.0%)</option>
+				
+				<option value="file2">Linkux/controllers/post.go (28.2%)</option>
+				
+				<option value="file3">Linkux/controllers/rank.go (43.8%)</option>
+				
+				<option value="file4">Linkux/controllers/request.go (21.1%)</option>
+				
+				<option value="file5">Linkux/controllers/response.go (66.7%)</option>
+				
+				<option value="file6">Linkux/controllers/search.go (45.5%)</option>
+				
+				<option value="file7">Linkux/controllers/trans.go (14.3%)</option>
+				
+				<option value="file8">Linkux/controllers/user.go (44.1%)</option>
+				
+				<option value="file9">Linkux/controllers/validator.go (0.0%)</option>
+				
+				<option value="file10">Linkux/controllers/vote.go (33.3%)</option>
+				
+				<option value="file11">Linkux/dao/mysql/label.go (50.0%)</option>
+				
+				<option value="file12">Linkux/dao/mysql/main.go (66.7%)</option>
+				
+				<option value="file13">Linkux/dao/mysql/post.go (87.0%)</option>
+				
+				<option value="file14">Linkux/dao/mysql/rank.go (90.0%)</option>
+				
+				<option value="file15">Linkux/dao/mysql/search.go (85.7%)</option>
+				
+				<option value="file16">Linkux/dao/mysql/trans.go (81.5%)</option>
+				
+				<option value="file17">Linkux/dao/mysql/user.go (79.4%)</option>
+				
+				<option value="file18">Linkux/dao/redis/keys.go (100.0%)</option>
+				
+				<option value="file19">Linkux/dao/redis/main.go (66.7%)</option>
+				
+				<option value="file20">Linkux/dao/redis/post.go (91.5%)</option>
+				
+				<option value="file21">Linkux/dao/redis/vote.go (20.0%)</option>
+				
+				</select>
+			</div>
+			<div id="legend">
+				<span>not tracked</span>
+			
+				<span class="cov0">not covered</span>
+				<span class="cov8">covered</span>
+			
+			</div>
+		</div>
+		<div id="content">
+		
+		<pre class="file" id="file0" style="display: none">package controllers
+
+type ResCode int64
+
+const (
+        CodeSuccess ResCode = 1000 + iota
+        CodeInvalidParam
+        CodeUserExist
+        CodeUserNotExist
+        CodeInvalidPassword
+        CodeServerBusy
+
+        CodeInvalidToken
+        CodeNeedLogin
+)
+
+var codeMsgMap = map[ResCode]string{
+        CodeSuccess:         "success",
+        CodeInvalidParam:    "请求参数有误",
+        CodeUserExist:       "用户名已存在",
+        CodeUserNotExist:    "用户名不存在",
+        CodeInvalidPassword: "用户名或密码错误",
+        CodeServerBusy:      "服务繁忙",
+        CodeInvalidToken:    "无效的token",
+        CodeNeedLogin:       "需要登录",
+}
+
+func (c ResCode) Msg() string <span class="cov8" title="1">{
+        msg, ok := codeMsgMap[c]
+        if !ok </span><span class="cov0" title="0">{
+                msg = codeMsgMap[CodeServerBusy]
+        }</span>
+        <span class="cov8" title="1">return msg</span>
+}
+</pre>
+		
+		<pre class="file" id="file1" style="display: none">package controllers
+
+import (
+        "Linkux/logic"
+        "strconv"
+
+        "github.com/gin-gonic/gin"
+        "go.uber.org/zap"
+)
+
+func LabelHandler(c *gin.Context) <span class="cov0" title="0">{
+        data, err := logic.GetLabelpostList()
+        if err != nil </span><span class="cov0" title="0">{
+                zap.L().Error("logic.GetLabelList() failed", zap.Error(err))
+                ResponseError(c, CodeServerBusy)
+                return
+        }</span>
+        <span class="cov0" title="0">ResponseSuccess(c, data)</span>
+}
+
+func LabelDetailHandler(c *gin.Context) <span class="cov0" title="0">{
+        idStr := c.Param("id")
+        id, err := strconv.ParseInt(idStr, 10, 64)
+        if err != nil </span><span class="cov0" title="0">{
+                ResponseError(c, CodeInvalidParam)
+                return
+        }</span>
+
+        <span class="cov0" title="0">data, err := logic.GetLabelDetail(id)
+        if err != nil </span><span class="cov0" title="0">{
+                zap.L().Error("logic.GetLabelDetail() failed", zap.Error(err))
+                ResponseError(c, CodeServerBusy)
+                return
+        }</span>
+        <span class="cov0" title="0">ResponseSuccess(c, data)</span>
+}
+</pre>
+		
+		<pre class="file" id="file2" style="display: none">package controllers
+
+import (
+        "Linkux/logic"
+        "Linkux/models"
+        "strconv"
+
+        "github.com/gin-gonic/gin"
+        "go.uber.org/zap"
+)
+
+// CreatePostHandler 创建帖子接口
+// @Summary 创建帖子接口
+// @Description 根据输入的数据上传帖子
+// @Tags 帖子相关接口
+// @Accept application/json
+// @Produce application/json
+// @Param Authorization header string true "Bearer 用户令牌"
+// @Param object body models.Post true "帖子具体参数"
+// @Security ApiKeyAuth
+// @Success 200 {object} _ResponseUsr
+// @Router /post [post]
+func CreatePostHandler(c *gin.Context) <span class="cov8" title="1">{
+        p := new(models.Post)
+        if err := c.ShouldBindJSON(p); err != nil </span><span class="cov8" title="1">{
+                zap.L().Debug("c.ShouldBindJSON failed", zap.Any("Err", err))
+                zap.L().Error("create post failed")
+                ResponseError(c, CodeInvalidParam)
+                return
+        }</span>
+
+        <span class="cov0" title="0">userID, err := getCurrentUserID(c)
+        if err != nil </span><span class="cov0" title="0">{
+                ResponseError(c, CodeNeedLogin)
+                return
+        }</span>
+        <span class="cov0" title="0">p.AuthorID = userID
+        if err := logic.CreatePost(p); err != nil </span><span class="cov0" title="0">{
+                zap.L().Error("logic.CreatePost(p) failed", zap.Error(err))
+                ResponseError(c, CodeServerBusy)
+                return
+        }</span>
+
+        <span class="cov0" title="0">ResponseSuccess(c, nil)</span>
+}
+
+// IndexHandler 热搜帖子列表接口
+// @Summary 热搜帖子列表接口
+// @Description 可按社区标签以时间或分数排序查询帖子列表接口
+// @Tags 帖子相关接口
+// @Accept application/json
+// @Produce application/json
+// @Param Authorization header string true "Bearer 用户令牌"
+// @Param object query models.ParamPostList false "查询参数"
+// @Security ApiKeyAuth
+// @Success 200 {object} _ResponsePostList
+// @Router /index [get]
+func IndexHandler(c *gin.Context) <span class="cov8" title="1">{
+        p := &amp;models.ParamPostList{
+                Page:  1,
+                Size:  10,
+                Order: models.OrderScore,
+        }
+        if err := c.ShouldBindQuery(p); err != nil </span><span class="cov0" title="0">{
+                zap.L().Error("IndexHandler get query err: ", zap.Error(err))
+                ResponseError(c, CodeInvalidParam)
+                return
+        }</span>
+
+        <span class="cov8" title="1">data, err := logic.GetPostList(p)
+        if err != nil </span><span class="cov0" title="0">{
+                zap.L().Error("logic.GetPostList() failed", zap.Error(err))
+                ResponseError(c, CodeServerBusy)
+                return
+        }</span>
+        <span class="cov8" title="1">ResponseSuccess(c, data)</span>
+}
+
+func GetPostDetailHandler(c *gin.Context) <span class="cov0" title="0">{
+        pidStr := c.Param("id")
+        pid, err := strconv.ParseInt(pidStr, 10, 64)
+        if err != nil </span><span class="cov0" title="0">{
+                zap.L().Error("get post detail with invalid param", zap.Error(err))
+                ResponseError(c, CodeInvalidParam)
+                return
+        }</span>
+        <span class="cov0" title="0">data, err := logic.GetPostByID(pid)
+        if err != nil </span><span class="cov0" title="0">{
+                zap.L().Error("logic.GetPostByID(pid) failed", zap.Error(err))
+                ResponseError(c, CodeInvalidParam)
+                return
+        }</span>
+        <span class="cov0" title="0">ResponseSuccess(c, data)</span>
+}
+</pre>
+		
+		<pre class="file" id="file3" style="display: none">package controllers
+
+import (
+        "Linkux/logic"
+
+        "github.com/gin-gonic/gin"
+        "go.uber.org/zap"
+)
+
+// GetUserRankHandler 排行榜接口
+// @Summary 排行榜接口
+// @Description 返回排行榜数据
+// @Tags 排行榜相关接口
+// @Accept application/json
+// @Produce application/json
+// @Param Authorization header string true "Bearer 用户令牌"
+// @Security ApiKeyAuth
+// @Success 200 {object} _RankResponseMsg
+// @Router /rank [get]
+func GetUserRankHandler(c *gin.Context) <span class="cov8" title="1">{
+        data, err := logic.GetUserRank()
+        if err != nil </span><span class="cov0" title="0">{
+                zap.L().Error("logic.GetUserRank() failed", zap.Error(err))
+                ResponseError(c, CodeInvalidParam)
+                return
+        }</span>
+
+        <span class="cov8" title="1">userID, err := getCurrentUserID(c)
+
+        if err != nil </span><span class="cov8" title="1">{
+                zap.L().Error("rank: get my id failed", zap.Error(err))
+                ResponseError(c, CodeNeedLogin)
+                return
+        }</span>
+
+        <span class="cov0" title="0">me, err := logic.GetMyRank(userID)
+        if err != nil </span><span class="cov0" title="0">{
+                zap.L().Error("get my rank failed", zap.Error(err))
+                ResponseError(c, CodeServerBusy)
+                return
+        }</span>
+
+        <span class="cov0" title="0">ResponseSuccess(c, gin.H{
+                "me":   me,
+                "rank": data,
+        })</span>
+}
+</pre>
+		
+		<pre class="file" id="file4" style="display: none">package controllers
+
+import (
+        "errors"
+        "strconv"
+
+        "github.com/gin-gonic/gin"
+)
+
+var (
+        ErrorChangeString = errors.New("强制转换为string失败")
+        ErrorNoUser       = errors.New("无此用户")
+)
+
+const CtxUserIDKey = "userID"
+
+func getCurrentUserID(c *gin.Context) (userID string, err error) <span class="cov8" title="1">{
+        uid, ok := c.Get(CtxUserIDKey)
+        if !ok </span><span class="cov8" title="1">{
+                err = ErrorNoUser
+                return
+        }</span>
+        <span class="cov0" title="0">userID, ok = uid.(string)
+        if !ok </span><span class="cov0" title="0">{
+                err = ErrorChangeString
+                return
+        }</span>
+        <span class="cov0" title="0">return</span>
+}
+
+func getPageInfo(c *gin.Context) (int64, int64) <span class="cov0" title="0">{
+        pageNumStr := c.Query("page")
+        sizeStr := c.Query("size")
+
+        var (
+                size    int64
+                pageNum int64
+                err     error
+        )
+
+        pageNum, err = strconv.ParseInt(pageNumStr, 10, 64)
+        if err != nil </span><span class="cov0" title="0">{
+                pageNum = 0
+        }</span>
+        <span class="cov0" title="0">size, err = strconv.ParseInt(sizeStr, 10, 64)
+        if err != nil </span><span class="cov0" title="0">{
+                size = 10
+        }</span>
+        <span class="cov0" title="0">return pageNum, size</span>
+}
+</pre>
+		
+		<pre class="file" id="file5" style="display: none">package controllers
+
+import (
+        "net/http"
+
+        "github.com/gin-gonic/gin"
+)
+
+/*
+{
+        "code": 10000, //程序中的错误码
+        "msg": xx,            //提示信息
+        "data": {},    //数据
+}
+*/
+
+type ResponseData struct {
+        Code ResCode     `json:"code"`
+        Msg  interface{} `json:"msg"`
+        Data interface{} `json:"data,omitempty"`
+}
+
+func ResponseError(c *gin.Context, code ResCode) <span class="cov8" title="1">{
+        c.JSON(http.StatusOK, &amp;ResponseData{
+                Code: code,
+                Msg:  code.Msg(),
+                Data: nil,
+        })
+}</span>
+
+func ResponseErrorWithMsg(c *gin.Context, code ResCode, msg interface{}) <span class="cov0" title="0">{
+        c.JSON(http.StatusOK, &amp;ResponseData{
+                Code: code,
+                Msg:  msg,
+                Data: nil,
+        })
+}</span>
+
+func ResponseSuccess(c *gin.Context, data interface{}) <span class="cov8" title="1">{
+        c.JSON(http.StatusOK, &amp;ResponseData{
+                Code: CodeSuccess,
+                Msg:  CodeSuccess.Msg(),
+                Data: data,
+        })
+}</span>
+</pre>
+		
+		<pre class="file" id="file6" style="display: none">package controllers
+
+import (
+        "Linkux/logic"
+        "Linkux/models"
+
+        "github.com/gin-gonic/gin"
+        "go.uber.org/zap"
+)
+
+// SearchHandler 帖子搜索接口
+// @Summary 帖子搜索接口
+// @Description 按输入内容检索帖子
+// @Tags 帖子相关接口
+// @Accept application/json
+// @Produce application/json
+// @Param object query models.ParamPostList true "搜索参数"
+// @Security ApiKeyAuth
+// @Success 200 {object} _ResponsePostList
+// @Router /search [get]
+func SearchHandler(c *gin.Context) <span class="cov8" title="1">{
+        p := &amp;models.ParamPostList{
+                Page:  1,
+                Size:  10,
+                Order: models.OrderScore,
+        }
+        if err := c.ShouldBindQuery(p); err != nil </span><span class="cov0" title="0">{
+                zap.L().Error("SearchHandler get query err: ", zap.Error(err))
+                ResponseError(c, CodeInvalidParam)
+                return
+        }</span>
+
+        <span class="cov8" title="1">data, err := logic.GetSearchRes(p)
+        if err != nil </span><span class="cov0" title="0">{
+                zap.L().Error("logic.GetSearchRes(p) failed", zap.Error(err))
+                ResponseError(c, CodeServerBusy)
+                return
+        }</span>
+        <span class="cov8" title="1">ResponseSuccess(c, data)</span>
+}
+</pre>
+		
+		<pre class="file" id="file7" style="display: none">package controllers
+
+import (
+        "Linkux/logic"
+        "Linkux/models"
+
+        "github.com/gin-gonic/gin"
+        "go.uber.org/zap"
+)
+
+// CreateTransTaskHandler 创建翻译任务接口
+// @Summary 创建翻译任务接口
+// @Description 按输入内容创建翻译任务
+// @Tags 翻译相关接口
+// @Accept application/json
+// @Produce application/json
+// @Param Authorization header string true "Bearer 用户令牌"
+// @Param object body models.Trans true "创建翻译任务参数"
+// @Security ApiKeyAuth
+// @Success 200 {object} _ResponseMsg
+// @Router /trans [post]
+func CreateTransTaskHandler(c *gin.Context) <span class="cov8" title="1">{
+        p := new(models.Trans)
+        if err := c.ShouldBindJSON(p); err != nil </span><span class="cov0" title="0">{
+                zap.L().Debug("c.ShouldBindJSON failed", zap.Any("Err", err))
+                zap.L().Error("create trans failed")
+                ResponseError(c, CodeInvalidParam)
+                return
+        }</span>
+
+        <span class="cov8" title="1">if err := logic.CreateTrans(p); err != nil </span><span class="cov0" title="0">{
+                zap.L().Error("logic.CreateTrans(p) failed", zap.Error(err))
+                ResponseError(c, CodeServerBusy)
+                return
+        }</span>
+
+        <span class="cov8" title="1">ResponseSuccess(c, nil)</span>
+}
+
+// GetTransTaskHandler 获取翻译任务接口
+// @Summary 获取翻译任务接口
+// @Description 获取翻译任务
+// @Tags 翻译相关接口
+// @Accept application/json
+// @Produce application/json
+// @Param Authorization header string true "Bearer 用户令牌"
+// @Security ApiKeyAuth
+// @Success 200 {object} _ResponseTransList
+// @Router /trans/get/task [get]
+func GetTransTaskHandler(c *gin.Context) <span class="cov0" title="0">{
+        data, err := logic.GetTransTask()
+        if err != nil </span><span class="cov0" title="0">{
+                zap.L().Error("logic.GetTransTask() failed", zap.Error(err))
+                ResponseError(c, CodeServerBusy)
+                return
+        }</span>
+
+        <span class="cov0" title="0">ResponseSuccess(c, data)</span>
+}
+
+// GetTransExistHandler 获取翻译任务对应的当前翻译文章接口
+// @Summary 获取翻译任务对应的当前翻译文章接口
+// @Description 获取翻译任务对应的当前翻译文章
+// @Tags 翻译相关接口
+// @Accept application/json
+// @Produce application/json
+// @Param Authorization header string true "Bearer 用户令牌"
+// @Param object query models.ParamPostList true "翻译任务id参数"
+// @Security ApiKeyAuth
+// @Success 200 {object} _ResponsePostList
+// @Router /trans/get/exist [get]
+func GetTransExistHandler(c *gin.Context) <span class="cov0" title="0">{
+        p := &amp;models.ParamPostList{
+                Page: 1,
+                Size: 10,
+        }
+        if err := c.ShouldBindQuery(p); err != nil </span><span class="cov0" title="0">{
+                zap.L().Error("GetTransExistHandler get query err: ", zap.Error(err))
+                ResponseError(c, CodeInvalidParam)
+                return
+        }</span>
+
+        <span class="cov0" title="0">data, err := logic.GetTransExist(p)
+        if err != nil </span><span class="cov0" title="0">{
+                zap.L().Error("logic.GetTransExist(p) failed", zap.Error(err))
+                ResponseError(c, CodeServerBusy)
+                return
+        }</span>
+
+        <span class="cov0" title="0">ResponseSuccess(c, data)</span>
+}
+</pre>
+		
+		<pre class="file" id="file8" style="display: none">package controllers
+
+import (
+        "Linkux/logic"
+        "Linkux/models"
+
+        "github.com/gin-gonic/gin"
+        "go.uber.org/zap"
+)
+
+// LoginHandler 用户登录接口
+// @Summary 用户登录接口
+// @Description 微信一键登录后端接口
+// @Tags 用户相关接口
+// @Accept application/json
+// @Produce application/json
+// @Param object body models.User true "用户具体参数"
+// @Security ApiKeyAuth
+// @Success 200 {object} _ResponseMsg
+// @Router /login [post]
+func LoginHandler(c *gin.Context) <span class="cov8" title="1">{
+        p := new(models.User)
+        if err := c.ShouldBindJSON(p); err != nil </span><span class="cov0" title="0">{
+                zap.L().Error("Invalid login param", zap.Error(err))
+                ResponseErrorWithMsg(c, CodeInvalidParam, err.Error())
+                return
+        }</span>
+
+        <span class="cov8" title="1">var token string
+        var err error
+
+        if token, err = logic.Login(p); err != nil </span><span class="cov0" title="0">{
+                zap.L().Error("logic.Login failed", zap.Error(err))
+                ResponseError(c, CodeServerBusy)
+                return
+        }</span>
+
+        <span class="cov8" title="1">ResponseSuccess(c, gin.H{
+                "token": token,
+        })</span>
+}
+
+// GetUserContributionHandler 获取`我的贡献`接口
+// @Summary 获取`我的贡献`接口
+// @Description 获取`我的贡献`
+// @Tags 用户相关接口
+// @Accept application/json
+// @Produce application/json
+// @Param Authorization header string true "Bearer 用户令牌"
+// @Security ApiKeyAuth
+// @Success 200 {object} _ResponsePostList
+// @Router /contribution [get]
+func GetUserContributionHandler(c *gin.Context) <span class="cov8" title="1">{
+        p := &amp;models.ParamPostList{
+                Page:  1,
+                Size:  10,
+                Order: models.OrderScore,
+        }
+        if err := c.ShouldBindQuery(p); err != nil </span><span class="cov0" title="0">{
+                zap.L().Error("GetUserContributionHandler get query err: ", zap.Error(err))
+                ResponseError(c, CodeInvalidParam)
+                return
+        }</span>
+        <span class="cov8" title="1">userID, err := getCurrentUserID(c)
+        if err != nil </span><span class="cov8" title="1">{
+                zap.L().Error("getCurrentUserID failed", zap.Error(err))
+                ResponseError(c, CodeUserNotExist)
+                return
+        }</span>
+
+        <span class="cov0" title="0">data, err := logic.GetUserConByID(p, userID)
+        if err != nil </span><span class="cov0" title="0">{
+                zap.L().Error("logic.GetUserConByID() failed,", zap.Error(err))
+                ResponseError(c, CodeServerBusy)
+                return
+        }</span>
+
+        <span class="cov0" title="0">ResponseSuccess(c, data)</span>
+}
+
+// AddCollectionHandler 加入收藏接口
+// @Summary 加入收藏接口
+// @Description 加入收藏
+// @Tags 用户相关接口
+// @Accept application/json
+// @Produce application/json
+// @Param Authorization header string true "Bearer 用户令牌"
+// @Param object body models.Trigger true "帖子id参数"
+// @Security ApiKeyAuth
+// @Success 200 {object} _ResponseMsg
+// @Router /collect [post]
+func AddCollectionHandler(c *gin.Context) <span class="cov8" title="1">{
+        p := new(models.Trigger)
+        if err := c.ShouldBindJSON(p); err != nil </span><span class="cov0" title="0">{
+                zap.L().Error("invalid collection param", zap.Error(err))
+                ResponseError(c, CodeInvalidParam)
+                return
+        }</span>
+        <span class="cov8" title="1">userID, err := getCurrentUserID(c)
+        if err != nil </span><span class="cov8" title="1">{
+                zap.L().Error("getCurrentUserID failed", zap.Error(err))
+                ResponseError(c, CodeUserNotExist)
+                return
+        }</span>
+
+        <span class="cov0" title="0">if err := logic.AddCollection(p, userID); err != nil </span><span class="cov0" title="0">{
+                zap.L().Error("logic.AddCollection(userID) failed", zap.Error(err))
+                ResponseError(c, CodeServerBusy)
+                return
+        }</span>
+
+        <span class="cov0" title="0">ResponseSuccess(c, nil)</span>
+}
+
+// DeleteCollectionHandler 取消收藏接口
+// @Summary 取消收藏接口
+// @Description 取消收藏
+// @Tags 用户相关接口
+// @Accept application/json
+// @Produce application/json
+// @Param Authorization header string true "Bearer 用户令牌"
+// @Param object body models.Trigger true "帖子id参数"
+// @Security ApiKeyAuth
+// @Success 200 {object} _ResponseMsg
+// @Router /collect/delete [put]
+func DeleteCollectionHandler(c *gin.Context) <span class="cov8" title="1">{
+        p := new(models.Trigger)
+        if err := c.ShouldBindJSON(p); err != nil </span><span class="cov0" title="0">{
+                zap.L().Error("invalid collection param", zap.Error(err))
+                ResponseError(c, CodeInvalidParam)
+                return
+        }</span>
+        <span class="cov8" title="1">userID, err := getCurrentUserID(c)
+        if err != nil </span><span class="cov8" title="1">{
+                zap.L().Error("getCurrentUserID failed", zap.Error(err))
+                ResponseError(c, CodeUserNotExist)
+                return
+        }</span>
+
+        <span class="cov0" title="0">if err := logic.DeleteCollection(p, userID); err != nil </span><span class="cov0" title="0">{
+                zap.L().Error("logic.AddCollection(userID) failed", zap.Error(err))
+                ResponseError(c, CodeServerBusy)
+                return
+        }</span>
+
+        <span class="cov0" title="0">ResponseSuccess(c, nil)</span>
+}
+
+// GetCollectionHandler 获取收藏列表接口
+// @Summary 获取收藏列表接口
+// @Description 获取收藏列表
+// @Tags 用户相关接口
+// @Accept application/json
+// @Produce application/json
+// @Param Authorization header string true "Bearer 用户令牌"
+// @Param object query models.ParamPostList true "分页参数"
+// @Security ApiKeyAuth
+// @Success 200 {object} _ResponsePostList
+// @Router /collect/get [get]
+func GetCollectionHandler(c *gin.Context) <span class="cov8" title="1">{
+        p := &amp;models.ParamPostList{
+                Page: 1,
+                Size: 10,
+        }
+        if err := c.ShouldBindQuery(p); err != nil </span><span class="cov0" title="0">{
+                zap.L().Error("GetCollectionHandler get query err: ", zap.Error(err))
+                ResponseError(c, CodeInvalidParam)
+                return
+        }</span>
+        <span class="cov8" title="1">userID, err := getCurrentUserID(c)
+        if err != nil </span><span class="cov8" title="1">{
+                zap.L().Error("getCurrentUserID failed", zap.Error(err))
+                ResponseError(c, CodeUserNotExist)
+                return
+        }</span>
+
+        <span class="cov0" title="0">data, err := logic.GetCollection(p, userID)
+        if err != nil </span><span class="cov0" title="0">{
+                zap.L().Error("logic.GetCollection(p, userID) failed", zap.Error(err))
+                ResponseError(c, CodeServerBusy)
+                return
+        }</span>
+
+        <span class="cov0" title="0">ResponseSuccess(c, data)</span>
+}
+
+// AddViewHandler 观看量+1接口
+// @Summary 观看量+1接口
+// @Description 观看量+1
+// @Tags 用户相关接口
+// @Accept application/json
+// @Produce application/json
+// @Param Authorization header string true "Bearer 用户令牌"
+// @Param object body models.Trigger true "帖子id参数"
+// @Security ApiKeyAuth
+// @Success 200 {object} _ResponseMsg
+// @Router /view/add [put]
+func AddViewHandler(c *gin.Context) <span class="cov8" title="1">{
+        p := new(models.Trigger)
+        if err := c.ShouldBindJSON(p); err != nil </span><span class="cov0" title="0">{
+                zap.L().Error("invalid view param", zap.Error(err))
+                ResponseError(c, CodeInvalidParam)
+                return
+        }</span>
+
+        <span class="cov8" title="1">if err := logic.AddViewNum(p); err != nil </span><span class="cov0" title="0">{
+                zap.L().Error("logic.AddViewNum(p) failed", zap.Error(err))
+                ResponseError(c, CodeServerBusy)
+                return
+        }</span>
+
+        <span class="cov8" title="1">ResponseSuccess(c, nil)</span>
+}
+
+// AddFollowHandler 关注作者接口
+// @Summary 关注作者接口
+// @Description 关注作者
+// @Tags 用户相关接口
+// @Accept application/json
+// @Produce application/json
+// @Param Authorization header string true "Bearer 用户令牌"
+// @Param object body models.Follow true "作者id参数"
+// @Security ApiKeyAuth
+// @Success 200 {object} _ResponseMsg
+// @Router /follow [post]
+func AddFollowHandler(c *gin.Context) <span class="cov8" title="1">{
+        p := new(models.Follow)
+        if err := c.ShouldBindJSON(p); err != nil </span><span class="cov8" title="1">{
+                zap.L().Error("invalid follow param", zap.Error(err))
+                ResponseError(c, CodeInvalidParam)
+                return
+        }</span>
+
+        <span class="cov0" title="0">userID, err := getCurrentUserID(c)
+        if err != nil </span><span class="cov0" title="0">{
+                zap.L().Error("getCurrentUserID failed", zap.Error(err))
+                ResponseError(c, CodeUserNotExist)
+                return
+        }</span>
+
+        <span class="cov0" title="0">if err := logic.AddFollow(p, userID); err != nil </span><span class="cov0" title="0">{
+                zap.L().Error("logic.AddFollow(p, userID) failed", zap.Error(err))
+                ResponseError(c, CodeServerBusy)
+                return
+        }</span>
+
+        <span class="cov0" title="0">ResponseSuccess(c, nil)</span>
+}
+
+// CancelFollowHandler 取消关注作者接口
+// @Summary 取消关注作者接口
+// @Description 取消关注作者
+// @Tags 用户相关接口
+// @Accept application/json
+// @Produce application/json
+// @Param Authorization header string true "Bearer 用户令牌"
+// @Param object body models.Follow true "作者id参数"
+// @Security ApiKeyAuth
+// @Success 200 {object} _ResponseMsg
+// @Router /follow/cancel [put]
+func CancelFollowHandler(c *gin.Context) <span class="cov8" title="1">{
+        p := new(models.Follow)
+        if err := c.ShouldBindJSON(p); err != nil </span><span class="cov0" title="0">{
+                zap.L().Error("invalid follow param", zap.Error(err))
+                ResponseError(c, CodeInvalidParam)
+                return
+        }</span>
+
+        <span class="cov8" title="1">userID, err := getCurrentUserID(c)
+        if err != nil </span><span class="cov8" title="1">{
+                zap.L().Error("getCurrentUserID failed", zap.Error(err))
+                ResponseError(c, CodeUserNotExist)
+                return
+        }</span>
+
+        <span class="cov0" title="0">if err := logic.CancelFollow(p, userID); err != nil </span><span class="cov0" title="0">{
+                zap.L().Error("logic.CancelFollow(p, userID) failed", zap.Error(err))
+                ResponseError(c, CodeServerBusy)
+                return
+        }</span>
+
+        <span class="cov0" title="0">ResponseSuccess(c, nil)</span>
+}
+
+// GetFollowUserHandler 获取关注作者接口
+// @Summary 获取关注作者接口
+// @Description 获取关注作者
+// @Tags 用户相关接口
+// @Accept application/json
+// @Produce application/json
+// @Param Authorization header string true "Bearer 用户令牌"
+// @Security ApiKeyAuth
+// @Success 200 {object} _ResponseFollowList
+// @Router /follow/get/follow [get]
+func GetFollowUserHandler(c *gin.Context) <span class="cov8" title="1">{
+        userID, err := getCurrentUserID(c)
+        if err != nil </span><span class="cov8" title="1">{
+                zap.L().Error("getCurrentUserID failed", zap.Error(err))
+                ResponseError(c, CodeUserNotExist)
+                return
+        }</span>
+
+        <span class="cov0" title="0">data, err := logic.GetFollowUser(userID)
+        if err != nil </span><span class="cov0" title="0">{
+                zap.L().Error("logic.GetFollowUser(userID) failed", zap.Error(err))
+                ResponseError(c, CodeServerBusy)
+                return
+        }</span>
+
+        <span class="cov0" title="0">ResponseSuccess(c, data)</span>
+}
+
+// GetFollowedUserHandler 获取粉丝接口
+// @Summary 获取粉丝接口
+// @Description 获取粉丝
+// @Tags 用户相关接口
+// @Accept application/json
+// @Produce application/json
+// @Param Authorization header string true "Bearer 用户令牌"
+// @Security ApiKeyAuth
+// @Success 200 {object} _ResponseFollowList
+// @Router /follow/get/followed [get]
+func GetFollowedUserHandler(c *gin.Context) <span class="cov8" title="1">{
+        userID, err := getCurrentUserID(c)
+        if err != nil </span><span class="cov8" title="1">{
+                zap.L().Error("getCurrentUserID failed", zap.Error(err))
+                ResponseError(c, CodeUserNotExist)
+                return
+        }</span>
+
+        <span class="cov0" title="0">data, err := logic.GetFollowedUser(userID)
+        if err != nil </span><span class="cov0" title="0">{
+                zap.L().Error("logic.GetFollowedUser(userID) failed", zap.Error(err))
+                ResponseError(c, CodeServerBusy)
+                return
+        }</span>
+
+        <span class="cov0" title="0">ResponseSuccess(c, data)</span>
+}
+
+// GetFollowPostHandler 获取关注帖子接口
+// @Summary 获取关注帖子接口
+// @Description 获取关注帖子
+// @Tags 用户相关接口
+// @Accept application/json
+// @Produce application/json
+// @Param Authorization header string true "Bearer 用户令牌"
+// @Param object query models.ParamPostList true "分页参数"
+// @Security ApiKeyAuth
+// @Success 200 {object} _ResponsePostList
+// @Router /follow/get/post [get]
+func GetFollowPostHandler(c *gin.Context) <span class="cov8" title="1">{
+        p := &amp;models.ParamPostList{
+                Page: 1,
+                Size: 10,
+        }
+        if err := c.ShouldBindQuery(p); err != nil </span><span class="cov0" title="0">{
+                zap.L().Error("GetFollowPostHandler get query err: ", zap.Error(err))
+                ResponseError(c, CodeInvalidParam)
+                return
+        }</span>
+
+        <span class="cov8" title="1">userID, err := getCurrentUserID(c)
+        if err != nil </span><span class="cov8" title="1">{
+                zap.L().Error("getCurrentUserID failed", zap.Error(err))
+                ResponseError(c, CodeUserNotExist)
+                return
+        }</span>
+
+        <span class="cov0" title="0">data, err := logic.GetFollowPost(p, userID)
+        if err != nil </span><span class="cov0" title="0">{
+                zap.L().Error("logic.GetFollowedUser(userID) failed", zap.Error(err))
+                ResponseError(c, CodeServerBusy)
+                return
+        }</span>
+
+        <span class="cov0" title="0">ResponseSuccess(c, data)</span>
+}
+</pre>
+		
+		<pre class="file" id="file9" style="display: none">package controllers
+
+import (
+        "fmt"
+        "reflect"
+        "strings"
+
+        en2 "github.com/go-playground/validator/v10/translations/en"
+        zh2 "github.com/go-playground/validator/v10/translations/zh"
+
+        "github.com/gin-gonic/gin/binding"
+        "github.com/go-playground/locales/en"
+        "github.com/go-playground/locales/zh"
+        ut "github.com/go-playground/universal-translator"
+        "github.com/go-playground/validator/v10"
+)
+
+//定义全局翻译器
+var trans ut.Translator
+
+//InitTrans初始化翻译器
+func InitTrans(locale string) (err error) <span class="cov0" title="0">{
+        //修改gin框架中的Validator引擎属性，实现自定制
+        if v, ok := binding.Validator.Engine().(*validator.Validate); ok </span><span class="cov0" title="0">{
+                //注册一个获取json tag的自定义方法
+                v.RegisterTagNameFunc(func(fld reflect.StructField) string </span><span class="cov0" title="0">{
+                        name := strings.SplitN(fld.Tag.Get("json"), ",", 2)[0]
+                        if name == "-" </span><span class="cov0" title="0">{
+                                return ""
+                        }</span>
+                        <span class="cov0" title="0">return name</span>
+                })
+
+                <span class="cov0" title="0">zhT := zh.New() //中文翻译器
+                enT := en.New() //英文翻译器
+
+                //第一个参数是备用的语言环境
+                //后面的参数是应该支持的语言环境
+                uni := ut.New(zhT, zhT, enT)
+
+                var ok bool
+                trans, ok = uni.GetTranslator(locale)
+                if !ok </span><span class="cov0" title="0">{
+                        return fmt.Errorf("uni.GetTranslator(%s) failed", locale)
+                }</span>
+
+                //注册翻译器
+                <span class="cov0" title="0">switch locale </span>{
+                case "en":<span class="cov0" title="0">
+                        err = en2.RegisterDefaultTranslations(v, trans)</span>
+                case "zh":<span class="cov0" title="0">
+                        err = zh2.RegisterDefaultTranslations(v, trans)</span>
+                default:<span class="cov0" title="0">
+                        err = en2.RegisterDefaultTranslations(v, trans)</span>
+                }
+                <span class="cov0" title="0">return</span>
+        }
+        <span class="cov0" title="0">return</span>
+}
+
+//取出提示信息中的结构体名称
+func removeTopStruct(fields map[string]string) map[string]string <span class="cov0" title="0">{
+        res := map[string]string{}
+        for field, err := range fields </span><span class="cov0" title="0">{
+                res[field[strings.Index(field, ".")+1:]] = err
+        }</span>
+        <span class="cov0" title="0">return res</span>
+}
+</pre>
+		
+		<pre class="file" id="file10" style="display: none">package controllers
+
+import (
+        "Linkux/logic"
+        "Linkux/models"
+
+        "go.uber.org/zap"
+
+        "github.com/gin-gonic/gin"
+        "github.com/go-playground/validator/v10"
+)
+
+// PostVoteController 点赞投票接口
+// @Summary 点赞投票接口
+// @Description 根据帖子id和投票信息进行点赞、踩
+// @Tags 帖子相关接口
+// @Accept application/json
+// @Produce application/json
+// @Param Authorization header string true "Bearer 用户令牌"
+// @Param object body models.ParamVoteData true "翻译任务id参数"
+// @Security ApiKeyAuth
+// @Success 200 {object} _ResponseMsg
+// @Router /vote [post]
+func PostVoteController(c *gin.Context) <span class="cov8" title="1">{
+        p := new(models.ParamVoteData)
+        if err := c.ShouldBindJSON(p); err != nil </span><span class="cov8" title="1">{
+                errs, ok := err.(validator.ValidationErrors) // 类型断言
+                if !ok </span><span class="cov8" title="1">{
+                        ResponseError(c, CodeInvalidParam)
+                        return
+                }</span>
+                <span class="cov0" title="0">errData := removeTopStruct(errs.Translate(trans)) // 翻译并去除掉错误提示中的结构体标识
+                ResponseErrorWithMsg(c, CodeInvalidParam, errData)
+                return</span>
+        }
+
+        <span class="cov0" title="0">userID, err := getCurrentUserID(c)
+        if err != nil </span><span class="cov0" title="0">{
+                ResponseError(c, CodeNeedLogin)
+                return
+        }</span>
+
+        <span class="cov0" title="0">if err := logic.VoteForPost(userID, p); err != nil </span><span class="cov0" title="0">{
+                zap.L().Error("logic.VoteForPost failed", zap.Error(err))
+                ResponseError(c, CodeServerBusy)
+                return
+        }</span>
+
+        <span class="cov0" title="0">ResponseSuccess(c, nil)</span>
+}
+</pre>
+		
+		<pre class="file" id="file11" style="display: none">package mysql
+
+import (
+        "Linkux/models"
+        "database/sql"
+
+        "go.uber.org/zap"
+)
+
+func GetLabelList() (labelList []*models.Label, err error) <span class="cov8" title="1">{
+        sqlStr := `select label_id, label_name from label`
+        if err := db.Select(&amp;labelList, sqlStr); err != nil </span><span class="cov0" title="0">{
+                if err == sql.ErrNoRows </span><span class="cov0" title="0">{
+                        zap.L().Warn("No label in db")
+                        err = nil
+                }</span>
+        }
+        <span class="cov8" title="1">return</span>
+}
+</pre>
+		
+		<pre class="file" id="file12" style="display: none">package mysql
+
+import (
+        "Linkux/settings"
+        "fmt"
+
+        "go.uber.org/zap"
+
+        _ "github.com/go-sql-driver/mysql"
+        "github.com/jmoiron/sqlx"
+)
+
+var db *sqlx.DB
+
+func Init(cfg *settings.MySQLConfig) (err error) <span class="cov8" title="1">{
+        dsn := fmt.Sprintf("%s:%s@(%s:%d)/%s?parseTime=True&amp;loc=Local",
+                cfg.User,
+                cfg.Password,
+                cfg.Host,
+                cfg.Port,
+                cfg.DbName,
+        )
+        db, err = sqlx.Connect("mysql", dsn)
+        if err != nil </span><span class="cov0" title="0">{
+                zap.L().Error("connnect mysqlDB failed, err:%v\n", zap.Error(err))
+                return
+        }</span>
+        <span class="cov8" title="1">db.SetMaxOpenConns(cfg.MaxOpenConns)
+        db.SetMaxIdleConns(cfg.MaxIdleConns)
+        return</span>
+}
+
+func Close() <span class="cov0" title="0">{
+        _ = db.Close()
+}</span>
+</pre>
+		
+		<pre class="file" id="file13" style="display: none">package mysql
+
+import (
+        "Linkux/models"
+        "database/sql"
+        "errors"
+        "strings"
+
+        "github.com/jmoiron/sqlx"
+)
+
+const conPerPost = 10
+
+func CreatePost(p *models.Post) (err error) <span class="cov8" title="1">{
+        sqlStr := `insert into post(
+        post_id, title, content, author_id, label_id, trans_id)
+        values(? , ?, ?, ?, ?, ?)
+        `
+        _, err = db.Exec(sqlStr, p.PostID, p.Title, p.Content, p.AuthorID, p.LabelID, p.TransID)
+        return
+}</span>
+
+func AddContribution(p *models.Post) (err error) <span class="cov8" title="1">{
+        sqlStr := `update user set contribution = contribution + ? where user_id = ?`
+        _, err = db.Exec(sqlStr, conPerPost, p.AuthorID)
+        return
+}</span>
+
+func GetPostListByIDs(ids []string) (postList []*models.Post, err error) <span class="cov8" title="1">{
+        sqlStr := `select post_id, title, content, author_id, label_id, collect_num, viewd_num, create_time
+        from post
+        where post_id in (?)
+        order by FIND_IN_SET(post_id, ?)
+        `
+
+        query, args, err := sqlx.In(sqlStr, ids, strings.Join(ids, ","))
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+        <span class="cov8" title="1">query = db.Rebind(query)
+
+        err = db.Select(&amp;postList, query, args...)
+        return</span>
+}
+
+func GetLabelDetailByID(id int64) (label *models.LabelDetail, err error) <span class="cov8" title="1">{
+        label = new(models.LabelDetail)
+        sqlStr := `select
+                                label_id, label_name, introduction, create_time
+                                from label
+                                where label_id = ?
+        `
+        if err = db.Get(label, sqlStr, id); err != nil </span><span class="cov0" title="0">{
+                if err == sql.ErrNoRows </span><span class="cov0" title="0">{
+                        err = errors.New("无效标签id")
+                }</span>
+        }
+        <span class="cov8" title="1">return label, err</span>
+}
+
+func GetPostByID(pid int64) (post *models.Post, err error) <span class="cov8" title="1">{
+        post = new(models.Post)
+        sqlStr := `select
+        post_id, title, content, author_id, label_id, collect_num, viewd_num, create_time
+        from post
+        where post_id = ?
+        `
+        err = db.Get(post, sqlStr, pid)
+        return
+}</span>
+</pre>
+		
+		<pre class="file" id="file14" style="display: none">package mysql
+
+import (
+        "Linkux/models"
+)
+
+func GetUserRank() (data []*models.ApiRankDetail, err error) <span class="cov8" title="1">{
+        sqlStr := `select
+        username, contribution, pic_link
+        from user
+        order by contribution
+        desc
+        limit 10
+        `
+        data = make([]*models.ApiRankDetail, 0, 10)
+        err = db.Select(&amp;data, sqlStr)
+        return
+}</span>
+
+func GetMyRank(userID string) ([]*models.ApiRankDetail, error) <span class="cov8" title="1">{
+        sqlStr := `select
+        username, contribution, pic_link
+        from user
+        where user_id = ?
+        `
+        me := make([]*models.ApiRankDetail, 0, 2)
+        err := db.Select(&amp;me, sqlStr, userID)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+        <span class="cov8" title="1">return me, err</span>
+}
+</pre>
+		
+		<pre class="file" id="file15" style="display: none">package mysql
+
+import (
+        "Linkux/models"
+        "strings"
+
+        "github.com/jmoiron/sqlx"
+)
+
+func GetPostListByIDsAndSearch(ids []string, p *models.ParamPostList) (postList []*models.Post, err error) <span class="cov8" title="1">{
+        sqlStr := `select post_id, title, content, author_id, label_id, collect_num, viewd_num, create_time
+        from post
+        where post_id in (?)
+        and title like ?
+        order by FIND_IN_SET(post_id, ?)
+        `
+
+        query, args, err := sqlx.In(sqlStr, ids, "%"+p.Search+"%", strings.Join(ids, ","))
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+        <span class="cov8" title="1">query = db.Rebind(query)
+
+        err = db.Select(&amp;postList, query, args...)
+        return</span>
+}
+</pre>
+		
+		<pre class="file" id="file16" style="display: none">package mysql
+
+import (
+        "Linkux/dao/redis"
+        "Linkux/models"
+        "strconv"
+
+        "go.uber.org/zap"
+)
+
+func CreateTrans(p *models.Trans) (err error) <span class="cov8" title="1">{
+        sqlStr := `insert into trans(
+        trans_id, title, content)
+        values(? , ?, ?)
+        `
+        _, err = db.Exec(sqlStr, p.TransID, p.Title, p.Content)
+        return
+}</span>
+
+func GetTransTask() (data []*models.Trans, err error) <span class="cov8" title="1">{
+        sqlStr := `select trans_id, title, content, create_time from trans`
+
+        err = db.Select(&amp;data, sqlStr)
+        return
+}</span>
+
+func GetTransExist(p *models.ParamPostList) (data []*models.ApiPostDetail, err error) <span class="cov8" title="1">{
+        start := (p.Page - 1) * p.Size
+        end := start + p.Size - 1
+
+        sqlStr := `select post_id, trans_id, title, content, author_id, label_id, collect_num, viewd_num, create_time
+        from post
+        where trans_id = ?
+        limit ?,?
+        `
+        err = db.Select(&amp;data, sqlStr, p.TransID, start, end)
+
+        for idx, post := range data </span><span class="cov8" title="1">{
+                user, err := GetUserByID(post.AuthorID)
+                if err != nil </span><span class="cov0" title="0">{
+                        zap.L().Error("mysql.GetUserByID() failed",
+                                zap.String("author_id", post.AuthorID),
+                                zap.Error(err))
+                        continue</span>
+                }
+
+                <span class="cov8" title="1">label, err := GetLabelDetailByID(post.LabelID)
+                if err != nil </span><span class="cov0" title="0">{
+                        zap.L().Error("mysql.GetLabelDetailByID() failed",
+                                zap.Int64("label_id", post.LabelID),
+                                zap.Error(err))
+                        continue</span>
+                }
+                <span class="cov8" title="1">voteData, err := redis.GetPostVoteDataSingle(strconv.FormatInt(post.PostID, 10))
+                if err != nil </span><span class="cov0" title="0">{
+                        return nil, err
+                }</span>
+                <span class="cov8" title="1">data[idx].VoteNum = voteData
+                data[idx].AuthorName = user.Username
+                data[idx].PicLink = user.PicLink
+                data[idx].LabelDetail = label</span>
+        }
+        <span class="cov8" title="1">return</span>
+}
+</pre>
+		
+		<pre class="file" id="file17" style="display: none">package mysql
+
+import (
+        "Linkux/dao/redis"
+        "Linkux/models"
+        "strconv"
+        "strings"
+
+        "go.uber.org/zap"
+
+        "github.com/jmoiron/sqlx"
+)
+
+func InsertUser(user *models.User) (err error) <span class="cov8" title="1">{
+        sqlStr := `select count(user_id) from user where user_id = ?`
+        var count int
+        if err := db.Get(&amp;count, sqlStr, user.UserID); err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+        <span class="cov8" title="1">if count &gt; 0 </span><span class="cov0" title="0">{
+                return nil
+        }</span>
+
+        <span class="cov8" title="1">sqlStr = `insert into user(user_id, username, pic_link, contribution) values(?,?,?,?)`
+
+        _, err = db.Exec(sqlStr, user.UserID, user.Username, user.PicLink, user.Contribution)
+        return</span>
+}
+
+func GetUserByID(uid string) (user *models.User, err error) <span class="cov8" title="1">{
+        user = new(models.User)
+        sqlStr := `select username, pic_link from user where user_id = ?`
+        err = db.Get(user, sqlStr, uid)
+        return
+}</span>
+
+func GetFollowUserByIDs(ids []*models.Follow) (user []*models.User, err error) <span class="cov8" title="1">{
+        sqlStr := `select username, pic_link from user where user_id = ?`
+
+        user = make([]*models.User, 0, len(ids))
+        for _, v := range ids </span><span class="cov8" title="1">{
+                u := new(models.User)
+                err = db.Get(u, sqlStr, v.FollowID)
+                user = append(user, u)
+        }</span>
+
+        <span class="cov8" title="1">return</span>
+}
+
+func GetFollowedUserByIDs(ids []*models.Follow) (user []*models.User, err error) <span class="cov8" title="1">{
+        sqlStr := `select username, pic_link from user where user_id = ?`
+
+        user = make([]*models.User, 0, len(ids))
+        for _, v := range ids </span><span class="cov8" title="1">{
+                u := new(models.User)
+                err = db.Get(u, sqlStr, v.FollowedID)
+                user = append(user, u)
+        }</span>
+
+        <span class="cov8" title="1">return</span>
+}
+
+func GetPostListOfMy(ids []string, userID string) (postList []*models.Post, err error) <span class="cov8" title="1">{
+        sqlStr := `select post_id, title, content, author_id, label_id, create_time
+        from post
+        where post_id in (?)
+        and author_id = ?
+        order by FIND_IN_SET(post_id, ?)
+        `
+
+        query, args, err := sqlx.In(sqlStr, ids, userID, strings.Join(ids, ","))
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+        <span class="cov8" title="1">query = db.Rebind(query)
+
+        err = db.Select(&amp;postList, query, args...)
+        return</span>
+
+}
+
+func AddCollection(p *models.Trigger, userID string) (err error) <span class="cov8" title="1">{
+        sqlStr := `insert into collection(user_id, post_id) values(?, ?)`
+        _, err = db.Exec(sqlStr, userID, p.PostID)
+        return
+}</span>
+
+func AddCollectNum(p *models.Trigger) (err error) <span class="cov8" title="1">{
+        sqlStr := `update post set collect_num = collect_num + 1 where post_id = ?`
+        _, err = db.Exec(sqlStr, p.PostID)
+        return
+}</span>
+
+func DeleteCollection(p *models.Trigger, userID string) (err error) <span class="cov8" title="1">{
+        sqlStr := `delete from collection where user_id = ? and post_id = ?`
+        _, err = db.Exec(sqlStr, userID, p.PostID)
+        return
+}</span>
+
+func DeleteCollectNum(p *models.Trigger) (err error) <span class="cov0" title="0">{
+        sqlStr := `update post set collect_num = collect_num - 1 where post_id = ?`
+        _, err = db.Exec(sqlStr, p.PostID)
+        return
+}</span>
+
+func GetCollectionIDs(p *models.ParamPostList, userID string) (ids []string, err error) <span class="cov8" title="1">{
+        start := (p.Page - 1) * p.Size
+        end := start + p.Size - 1
+        sqlStr := `select post_id
+        from collection
+        where user_id = ?
+        limit ?, ?`
+        var postList []*models.Post
+        err = db.Select(&amp;postList, sqlStr, userID, start, end)
+        ids = make([]string, 0, len(postList))
+        for _, v := range postList </span><span class="cov8" title="1">{
+                ids = append(ids, strconv.FormatInt(v.PostID, 10))
+        }</span>
+        <span class="cov8" title="1">return</span>
+}
+
+func AddViewNum(p *models.Trigger) (err error) <span class="cov8" title="1">{
+        sqlStr := `update post set viewd_num = viewd_num + 1 where post_id = ?`
+        _, err = db.Exec(sqlStr, p.PostID)
+        return
+}</span>
+
+func AddFollow(p *models.Follow, userID string) (err error) <span class="cov8" title="1">{
+        sqlStr := `insert into follow(follow_id, user_id) values(?, ?)`
+        _, err = db.Exec(sqlStr, p.FollowID, userID)
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+
+        <span class="cov8" title="1">sqlStr = `insert into followed(followed_id, user_id) values(?, ?)`
+        _, err = db.Exec(sqlStr, userID, p.FollowID)
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+
+        <span class="cov8" title="1">return nil</span>
+}
+
+func CancelFollow(p *models.Follow, userID string) (err error) <span class="cov8" title="1">{
+        sqlStr := `delete from follow where follow_id = ? and user_id = ?`
+        _, err = db.Exec(sqlStr, p.FollowID, userID)
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+
+        <span class="cov8" title="1">sqlStr = `delete from followed where followed_id = ? and user_id = ?`
+        _, err = db.Exec(sqlStr, userID, p.FollowID)
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+        <span class="cov8" title="1">return</span>
+}
+
+func GetFollowUser(userID string) (data []*models.Follow, err error) <span class="cov8" title="1">{
+        sqlStr := `select follow_id from follow where user_id = ?`
+        err = db.Select(&amp;data, sqlStr, userID)
+        return
+}</span>
+
+func GetFollowedUser(userID string) (data []*models.Follow, err error) <span class="cov8" title="1">{
+        sqlStr := `select followed_id from followed where user_id = ?`
+        err = db.Select(&amp;data, sqlStr, userID)
+        return
+}</span>
+
+func GetFollowPostByIDs(p *models.ParamPostList, IDs []string) (data []*models.ApiPostDetail, err error) <span class="cov8" title="1">{
+        start := (p.Page - 1) * p.Size
+        end := start + p.Size - 1
+
+        sqlStr := `select post_id, title, content, author_id, label_id, collect_num, viewd_num, create_time
+        from post
+        where author_id in (?)
+        limit ?,?
+        `
+
+        query, args, err := sqlx.In(sqlStr, IDs, start, end)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+        <span class="cov8" title="1">query = db.Rebind(query)
+
+        err = db.Select(&amp;data, query, args...)
+        for idx, post := range data </span><span class="cov8" title="1">{
+                user, err := GetUserByID(post.AuthorID)
+                if err != nil </span><span class="cov8" title="1">{
+                        zap.L().Error("mysql.GetUserByID() failed",
+                                zap.String("author_id", post.AuthorID),
+                                zap.Error(err))
+                        continue</span>
+                }
+
+                <span class="cov0" title="0">label, err := GetLabelDetailByID(post.LabelID)
+                if err != nil </span><span class="cov0" title="0">{
+                        zap.L().Error("mysql.GetLabelDetailByID() failed",
+                                zap.Int64("label_id", post.LabelID),
+                                zap.Error(err))
+                        continue</span>
+                }
+                <span class="cov0" title="0">voteData, err := redis.GetPostVoteDataSingle(strconv.FormatInt(post.PostID, 10))
+                if err != nil </span><span class="cov0" title="0">{
+                        return nil, err
+                }</span>
+                <span class="cov0" title="0">data[idx].VoteNum = voteData
+                data[idx].AuthorName = user.Username
+                data[idx].PicLink = user.PicLink
+                data[idx].LabelDetail = label</span>
+        }
+        <span class="cov8" title="1">return</span>
+}
+</pre>
+		
+		<pre class="file" id="file18" style="display: none">package redis
+
+const (
+        Prefix           = "linkux:"
+        KeyPostTimeZset  = "post:time"
+        KeyPostScoreZset = "post:score"
+
+        KeyPostVotedZsetPF = "post:voted:"
+        KeyLabelSetPF      = "label:"
+)
+
+func getRedisKey(key string) string <span class="cov8" title="1">{
+        return Prefix + key
+}</span>
+</pre>
+		
+		<pre class="file" id="file19" style="display: none">package redis
+
+import (
+        "Linkux/settings"
+        "fmt"
+
+        "github.com/go-redis/redis"
+)
+
+var (
+        client *redis.Client
+        Nil    = redis.Nil
+)
+
+func Init(cfg *settings.RedisConfig) (err error) <span class="cov8" title="1">{
+        client = redis.NewClient(&amp;redis.Options{
+                Addr: fmt.Sprintf("%s:%d",
+                        cfg.Host,
+                        cfg.Port),
+                Password: cfg.Password,
+                DB:       cfg.DB,
+                PoolSize: cfg.PoolSize,
+        })
+
+        _, err = client.Ping().Result()
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+        <span class="cov8" title="1">return nil</span>
+}
+
+func Close() <span class="cov0" title="0">{
+        _ = client.Close()
+}</span>
+</pre>
+		
+		<pre class="file" id="file20" style="display: none">package redis
+
+import (
+        "Linkux/models"
+        "strconv"
+        "time"
+
+        "github.com/go-redis/redis"
+)
+
+func CreateRedisPost(postID, labelID int64) error <span class="cov8" title="1">{
+        pipeline := client.TxPipeline()
+        pipeline.ZAdd(getRedisKey(KeyPostTimeZset), redis.Z{
+                Score:  float64(time.Now().Unix()),
+                Member: postID,
+        })
+
+        pipeline.ZAdd(getRedisKey(KeyPostScoreZset), redis.Z{
+                Score:  float64(time.Now().Unix()),
+                Member: postID,
+        })
+
+        lKey := getRedisKey(KeyLabelSetPF + strconv.Itoa(int(labelID)))
+        pipeline.SAdd(lKey, postID)
+        _, err := pipeline.Exec()
+        return err
+}</span>
+
+func getIDsFromKey(key string, page, size int64) ([]string, error) <span class="cov8" title="1">{
+        start := (page - 1) * size
+        end := start + size - 1
+        return client.ZRevRange(key, start, end).Result()
+}</span>
+
+func GetPostIDsInOrder(p *models.ParamPostList) ([]string, error) <span class="cov8" title="1">{
+        key := getRedisKey(KeyPostTimeZset)
+        if p.Order == models.OrderScore </span><span class="cov8" title="1">{
+                key = getRedisKey(KeyPostScoreZset)
+        }</span>
+        <span class="cov8" title="1">return getIDsFromKey(key, p.Page, p.Size)</span>
+}
+
+func GetLabelPostIDsInOrder(p *models.ParamPostList) ([]string, error) <span class="cov8" title="1">{
+        orderKey := getRedisKey(KeyPostTimeZset)
+        if orderKey == models.OrderScore </span><span class="cov0" title="0">{
+                orderKey = getRedisKey(KeyPostScoreZset)
+        }</span>
+
+        <span class="cov8" title="1">lKey := getRedisKey(KeyLabelSetPF + strconv.Itoa(int(p.LabelID)))
+        key := orderKey + strconv.Itoa(int(p.LabelID))
+        if client.Exists(key).Val() &lt; 1 </span><span class="cov8" title="1">{
+                pipeline := client.Pipeline()
+                pipeline.ZInterStore(key, redis.ZStore{
+                        Aggregate: "MAX",
+                }, lKey, orderKey)
+                pipeline.Expire(key, 60*time.Second)
+                _, err := pipeline.Exec()
+                if err != nil </span><span class="cov0" title="0">{
+                        return nil, err
+                }</span>
+        }
+        <span class="cov8" title="1">return getIDsFromKey(key, p.Page, p.Size)</span>
+}
+
+func GetPostVoteData(ids []string) (data []int64, err error) <span class="cov8" title="1">{
+        pipeline := client.Pipeline()
+        for _, id := range ids </span><span class="cov8" title="1">{
+                key := getRedisKey(KeyPostVotedZsetPF + id)
+                pipeline.ZCount(key, "1", "1")
+        }</span>
+        <span class="cov8" title="1">cmders, err := pipeline.Exec()
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+        <span class="cov8" title="1">data = make([]int64, 0, len(ids))
+        for _, cmder := range cmders </span><span class="cov8" title="1">{
+                v := cmder.(*redis.IntCmd).Val()
+                data = append(data, v)
+        }</span>
+        <span class="cov8" title="1">return</span>
+}
+
+func GetPostVoteDataSingle(id string) (data int64, err error) <span class="cov8" title="1">{
+        pipeline := client.Pipeline()
+
+        key := getRedisKey(KeyPostVotedZsetPF + id)
+        pipeline.ZCount(key, "1", "1")
+
+        cmder, err := pipeline.Exec()
+        if err != nil </span><span class="cov0" title="0">{
+                return 0, err
+        }</span>
+
+        <span class="cov8" title="1">data = cmder[0].(*redis.IntCmd).Val()
+
+        return</span>
+}
+</pre>
+		
+		<pre class="file" id="file21" style="display: none">package redis
+
+import (
+        "errors"
+        "math"
+        "strconv"
+
+        "github.com/go-redis/redis"
+)
+
+const (
+        oneWeekSeconds = 7 * 24 * 3600
+        scorePerVote   = 432 // 一个赞多少分
+)
+
+var (
+        errVoteTimeExpire = errors.New("投票时间已过")
+        errVoteRepeated   = errors.New("不允许重复投相同票")
+)
+
+func VoteForPost(userID string, postID int64, value float64) error <span class="cov8" title="1">{
+        //postTime := client.ZScore(getRedisKey(KeyPostTimeZset), strconv.FormatInt(postID, 10)).Val()
+        //if float64(time.Now().Unix())-postTime &gt; oneWeekSeconds {
+        //        return errVoteTimeExpire
+        //}
+
+        ov := client.ZScore(getRedisKey(KeyPostVotedZsetPF+strconv.FormatInt(postID, 10)), userID).Val()
+        if value == ov </span><span class="cov8" title="1">{
+                return errVoteRepeated
+        }</span>
+        <span class="cov0" title="0">var dir float64
+        if value &gt; ov </span><span class="cov0" title="0">{
+                dir = 1
+        }</span> else<span class="cov0" title="0"> {
+                dir = -1
+        }</span>
+        <span class="cov0" title="0">diff := math.Abs(ov - value)
+        pipeline := client.TxPipeline()
+        pipeline.ZIncrBy(getRedisKey(KeyPostScoreZset), dir*diff*scorePerVote, strconv.FormatInt(postID, 10))
+
+        if value == 0 </span><span class="cov0" title="0">{
+                pipeline.ZRem(getRedisKey(KeyPostVotedZsetPF+strconv.FormatInt(postID, 10)), userID)
+        }</span> else<span class="cov0" title="0"> {
+                pipeline.ZAdd(getRedisKey(KeyPostVotedZsetPF+strconv.FormatInt(postID, 10)), redis.Z{
+                        Score:  value,
+                        Member: userID,
+                })
+        }</span>
+
+        <span class="cov0" title="0">_, err := pipeline.Exec()
+        return err</span>
+}
+</pre>
+		
+		</div>
+	</body>
+	<script>
+	(function() {
+		var files = document.getElementById('files');
+		var visible;
+		files.addEventListener('change', onChange, false);
+		function select(part) {
+			if (visible)
+				visible.style.display = 'none';
+			visible = document.getElementById(part);
+			if (!visible)
+				return;
+			files.value = part;
+			visible.style.display = 'block';
+			location.hash = part;
+		}
+		function onChange() {
+			select(files.value);
+			window.scrollTo(0, 0);
+		}
+		if (location.hash != "") {
+			select(location.hash.substr(1));
+		}
+		if (!visible) {
+			select("file0");
+		}
+	})();
+	</script>
+</html>
