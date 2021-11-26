@@ -204,6 +204,7 @@ func AddFollow(p *models.Follow, userID string) (err error) {
 	if err != nil {
 		zap.L().Error("mysql.AddFollow(p, userID) failed",
 			zap.String("user_id", userID),
+			zap.String("follow_id", p.FollowID),
 			zap.Error(err))
 		return
 	}

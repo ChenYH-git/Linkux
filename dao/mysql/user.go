@@ -90,9 +90,9 @@ func AddCollection(p *models.Trigger, userID string) (err error) {
 		return errors.New("无法收藏自己的帖子")
 	}
 
-	sqlStr = `select count(post_id = ?) from collection where user_id = ?`
+	sqlStr = `select count(user_id) from collection where post_id = ?`
 	var count int
-	if err := db.Get(&count, sqlStr, p.PostID, userID); err != nil {
+	if err := db.Get(&count, sqlStr, p.PostID); err != nil {
 		return err
 	}
 	if count > 0 {
@@ -105,9 +105,9 @@ func AddCollection(p *models.Trigger, userID string) (err error) {
 }
 
 func CheckCollect(pid, uid string) (flag bool, err error) {
-	sqlStr := `select count(post_id = ?) from collection where user_id = ?`
+	sqlStr := `select count(user_id) from collection where post_id = ?`
 	var count int
-	if err := db.Get(&count, sqlStr, pid, uid); err != nil {
+	if err := db.Get(&count, sqlStr, pid); err != nil {
 		return false, err
 	}
 	if count > 0 {
@@ -125,9 +125,9 @@ func AddCollectNum(p *models.Trigger) (err error) {
 }
 
 func DeleteCollection(p *models.Trigger, userID string) (err error) {
-	sqlStr := `select count(post_id = ?) from collection where user_id = ?`
+	sqlStr := `select count(user_id) from collection where post_id = ?`
 	var count int
-	if err := db.Get(&count, sqlStr, p.PostID, userID); err != nil {
+	if err := db.Get(&count, sqlStr, p.PostID); err != nil {
 		return err
 	}
 	if count < 1 {
@@ -167,9 +167,9 @@ func AddViewNum(p *models.Trigger) (err error) {
 }
 
 func AddFollow(p *models.Follow, userID string) (err error) {
-	sqlStr := `select count(follow_id = ?) from follow where user_id = ?`
+	sqlStr := `select count(user_id) from follow where follow_id = ?`
 	var count int
-	if err := db.Get(&count, sqlStr, p.FollowID, userID); err != nil {
+	if err := db.Get(&count, sqlStr, p.FollowID); err != nil {
 		return err
 	}
 	if count > 0 {
@@ -192,7 +192,16 @@ func AddFollow(p *models.Follow, userID string) (err error) {
 }
 
 func CancelFollow(p *models.Follow, userID string) (err error) {
-	sqlStr := `delete from follow where follow_id = ? and user_id = ?`
+	sqlStr := `select count(user_id) from follow where follow_id = ?`
+	var count int
+	if err := db.Get(&count, sqlStr, p.FollowID); err != nil {
+		return err
+	}
+	if count < 1 {
+		return errors.New("取消错误")
+	}
+
+	sqlStr = `delete from follow where follow_id = ? and user_id = ?`
 	_, err = db.Exec(sqlStr, p.FollowID, userID)
 	if err != nil {
 		return err
