@@ -4,7 +4,6 @@ import (
 	"errors"
 	"math"
 	"strconv"
-	"time"
 
 	"github.com/go-redis/redis"
 )
@@ -20,10 +19,10 @@ var (
 )
 
 func VoteForPost(userID string, postID int64, value float64) error {
-	postTime := client.ZScore(getRedisKey(KeyPostTimeZset), strconv.FormatInt(postID, 10)).Val()
-	if float64(time.Now().Unix())-postTime > oneWeekSeconds {
-		return errVoteTimeExpire
-	}
+	//postTime := client.ZScore(getRedisKey(KeyPostTimeZset), strconv.FormatInt(postID, 10)).Val()
+	//if float64(time.Now().Unix())-postTime > oneWeekSeconds {
+	//	return errVoteTimeExpire
+	//}
 
 	ov := client.ZScore(getRedisKey(KeyPostVotedZsetPF+strconv.FormatInt(postID, 10)), userID).Val()
 	if value == ov {
