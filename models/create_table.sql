@@ -79,9 +79,9 @@
 #     UNIQUE KEY `idx_trans_id` (`trans_id`)
 # ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 #
-#
 # INSERT INTO `label` VALUES ('1', '1', 'Ubuntu', '-', '2021-11-13 17:13:00', '2021-11-13 17:13:00');
 # INSERT INTO `label` VALUES ('2', '2', 'Mint', '-', '2021-11-13 17:13:00', '2021-11-13 17:13:00');
 # INSERT INTO `label` VALUES ('3', '3', 'kali', '-', '2021-11-13 17:13:00', '2021-11-13 17:13:00');
-# INSERT INTO `label` VALUES ('4', '4', 'MX Linux', '-', '2021-11-13 17:13:00', '2021-11-13 17:13:00')
+# INSERT INTO `label` VALUES ('4', '4', 'MX Linux', '-', '2021-11-13 17:13:00', '2021-11-13 17:13:00');
+#
 #

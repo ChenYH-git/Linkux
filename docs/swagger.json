@@ -15,7 +15,7 @@
         },
         "version": "1.0"
     },
-    "host": "localhost:8080",
+    "host": "119.23.175.25:8080",
     "paths": {
         "/collect": {
             "post": {
