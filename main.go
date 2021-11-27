@@ -31,7 +31,7 @@ import (
 // @license.name Apache 2.0
 // @license.url http://www.apache.org/licenses/LICENSE-2.0.html
 
-// @host 192.168.1.5:8080
+// @host localhost:8080
 // @BasePath
 func main() {
 	//1.加载配置

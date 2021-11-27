@@ -21,7 +21,7 @@ import (
 func SearchHandler(c *gin.Context) {
 	p := &models.ParamPostList{
 		Page:  1,
-		Size:  10,
+		Size:  100,
 		Order: models.OrderScore,
 	}
 	if err := c.ShouldBindQuery(p); err != nil {

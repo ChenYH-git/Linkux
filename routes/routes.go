@@ -2,12 +2,11 @@ package routes
 
 import (
 	"Linkux/controllers"
+	_ "Linkux/docs"
 	"Linkux/logger"
 	"Linkux/middleware"
 	"net/http"
 	"time"
-
-	_ "Linkux/docs"
 
 	"github.com/gin-gonic/gin"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -23,7 +22,7 @@ func Setup(mode string) *gin.Engine {
 	controllers.InitTrans("zh")
 
 	r := gin.New()
-	r.Use(logger.GinLogger(), logger.GinRecovery(true), middleware.RateLimitMiddleware(100*time.Millisecond, 10)) // 令牌桶容量为5，每秒钟填充1个
+	r.Use(logger.GinLogger(), logger.GinRecovery(true), middleware.RateLimitMiddleware(100*time.Millisecond, 100)) // 令牌桶容量为5，每秒钟填充1个
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	r.POST("/login", controllers.LoginHandler)
