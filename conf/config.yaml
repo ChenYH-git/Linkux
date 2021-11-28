@@ -23,7 +23,7 @@ mysql:
   max_open_conns: 200
   max_idle_conns: 50
 redis:
-  host: "10.0.192.4"
+  host: "10.0.192.10"
   port: 6379
   password: ""
   db: 0
