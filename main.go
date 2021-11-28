@@ -8,6 +8,7 @@ import (
 	"Linkux/routes"
 	"Linkux/settings"
 	"context"
+	"crypto/tls"
 	"fmt"
 	"log"
 	"net/http"
@@ -67,8 +68,9 @@ func main() {
 	r := routes.Setup(settings.Conf.Mode)
 	//6.启动服务(优雅关机)
 	srv := &http.Server{
-		Addr:    fmt.Sprintf(":%d", settings.Conf.Port),
-		Handler: r,
+		Addr:      fmt.Sprintf(":%d", settings.Conf.Port),
+		Handler:   r,
+		TLSConfig: &tls.Config{InsecureSkipVerify: true},
 	}
 
 	go func() {
