@@ -11,6 +11,13 @@ definitions:
     type: object
   controllers._ResponseUsr:
     type: object
+  models.Administer:
+    properties:
+      name:
+        type: string
+    required:
+    - name
+    type: object
   models.Follow:
     properties:
       follow_id:
@@ -122,7 +129,7 @@ definitions:
         description: 用户名
         type: string
     type: object
-host: 192.168.1.6:8080
+host: localhost:8080
 info:
   contact:
     email: 2135378647@qq.com
@@ -136,6 +143,30 @@ info:
   title: 2021 秋软工团队合作项目
   version: "1.0"
 paths:
+  /administer/login:
+    post:
+      consumes:
+      - application/json
+      description: 管理员登录
+      parameters:
+      - description: 管理员登录接口具体参数
+        in: body
+        name: object
+        required: true
+        schema:
+          $ref: '#/definitions/models.Administer'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers._ResponseMsg'
+      security:
+      - ApiKeyAuth: []
+      summary: 管理员登录接口
+      tags:
+      - 管理员相关接口
   /collect:
     post:
       consumes:

@@ -32,6 +32,45 @@ var doc = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/administer/login": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "管理员登录",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "管理员相关接口"
+                ],
+                "summary": "管理员登录接口",
+                "parameters": [
+                    {
+                        "description": "管理员登录接口具体参数",
+                        "name": "object",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Administer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controllers._ResponseMsg"
+                        }
+                    }
+                }
+            }
+        },
         "/collect": {
             "post": {
                 "security": [
@@ -1053,6 +1092,17 @@ var doc = `{
         "controllers._ResponseUsr": {
             "type": "object"
         },
+        "models.Administer": {
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
         "models.Follow": {
             "type": "object",
             "properties": {
@@ -1220,7 +1270,7 @@ type swaggerInfo struct {
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = swaggerInfo{
 	Version:     "1.0",
-	Host:        "192.168.1.6:8080",
+	Host:        "localhost:8080",
 	BasePath:    "",
 	Schemes:     []string{},
 	Title:       "2021 秋软工团队合作项目",
