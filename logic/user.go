@@ -5,6 +5,7 @@ import (
 	"Linkux/dao/redis"
 	"Linkux/models"
 	"Linkux/pkg/jwt"
+	"crypto/tls"
 	"encoding/json"
 	"errors"
 	"io/ioutil"
@@ -20,7 +21,15 @@ const (
 )
 
 func Login(p *models.User) (user *models.User, err error) {
-	resp, err := http.Get("https://api.weixin.qq.com/sns/jscode2session?appid=" + id + `&secret=` + secret + `&js_code=` + p.Code + `&grant_type=` + grant_type)
+	tr := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}
+
+	client := &http.Client{
+		Transport: tr,
+	}
+
+	resp, err := client.Get("https://api.weixin.qq.com/sns/jscode2session?appid=" + id + `&secret=` + secret + `&js_code=` + p.Code + `&grant_type=` + grant_type)
 	if err != nil {
 		zap.L().Error("Get weixin API failed", zap.Error(err))
 		return
