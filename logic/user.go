@@ -14,8 +14,8 @@ import (
 )
 
 const (
-	id         = `wxb27cb3df6158fc0e`
-	secret     = `001a15eeb9b2e60acfb21ce896e3885f`
+	id         = `wxeb54c0e66fee4927`
+	secret     = `cec24107e24419f501691fc694187d84`
 	grant_type = `authorization_code`
 )
 

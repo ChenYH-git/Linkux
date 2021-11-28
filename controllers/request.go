@@ -13,6 +13,7 @@ var (
 )
 
 const CtxUserIDKey = "userID"
+const CtxAdName = "adName"
 
 func getCurrentUserID(c *gin.Context) (userID string, err error) {
 	uid, ok := c.Get(CtxUserIDKey)

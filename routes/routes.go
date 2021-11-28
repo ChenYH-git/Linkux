@@ -55,6 +55,13 @@ func Setup(mode string) *gin.Engine {
 		v1.GET("trans/get/exist", controllers.GetTransExistHandler)
 	}
 
+	v2 := r.Group("/administer")
+	v2.POST("/login", controllers.AdministerLoginHandler)
+	v2.Use(middleware.AdministerCheck())
+	{
+
+	}
+
 	r.NoRoute(func(c *gin.Context) {
 		c.JSON(http.StatusNotFound, gin.H{
 			"msg": "404 NOT FOUND",

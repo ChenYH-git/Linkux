@@ -37,3 +37,31 @@ func JWTAuthMiddleware() func(c *gin.Context) {
 		c.Next() // 后续的处理函数可通过c.Get("userID")来获取当前请求的用户信息
 	}
 }
+
+func AdministerCheck() func(c *gin.Context) {
+	return func(c *gin.Context) {
+		authHeader := c.Request.Header.Get("Authorization")
+		if authHeader == "" {
+			controllers.ResponseError(c, controllers.CodeNeedLogin)
+			c.Abort()
+			return
+		}
+
+		parts := strings.SplitN(authHeader, " ", 2)
+		if !(len(parts) == 2 && parts[0] == "Bearer") {
+			controllers.ResponseError(c, controllers.CodeInvalidToken)
+			c.Abort()
+			return
+		}
+
+		mc, err := jwt.ParseAdToken(parts[1])
+		if err != nil {
+			controllers.ResponseError(c, controllers.CodeInvalidToken)
+			c.Abort()
+			return
+		}
+		//将当前请求的userID信息保存到请求的上下文c中
+		c.Set(controllers.CtxAdName, mc.UserName)
+		c.Next() // 后续的处理函数可通过c.Get("userID")来获取当前请求的用户信息
+	}
+}
