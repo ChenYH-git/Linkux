@@ -56,7 +56,7 @@ func PostVoteController(c *gin.Context) {
 // @Accept application/json
 // @Produce application/json
 // @Param Authorization header string true "Bearer 用户令牌"
-// @Param object body models.Trigger true "两个 bool 参数"
+// @Param object body models.Trigger true "帖子id参数"
 // @Security ApiKeyAuth
 // @Success 200 {object} _ResponseMsg
 // @Router /getvc [post]

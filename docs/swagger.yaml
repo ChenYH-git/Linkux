@@ -14,6 +14,7 @@ definitions:
   models.Administer:
     properties:
       name:
+        description: 管理员名称，校验用
         type: string
     required:
     - name
@@ -79,6 +80,12 @@ definitions:
     - label_id
     - title
     type: object
+  models.StarUser:
+    properties:
+      user_id:
+        description: 用户id
+        type: string
+    type: object
   models.Trans:
     properties:
       content:
@@ -129,20 +136,78 @@ definitions:
         description: 用户名
         type: string
     type: object
-host: localhost:8080
+host: 192.168.1.6:8080
 info:
   contact:
     email: 2135378647@qq.com
     name: FZU UNDEFINED 小组
     url: https://blog.csdn.net/codingyuhan
-  description: 软工合作 alpha 冲刺版
+  description: 软工合作 release 版
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   termsOfService: http://swagger.io/terms/
   title: 2021 秋软工团队合作项目
-  version: "1.0"
+  version: "2.0"
 paths:
+  /administer/getp:
+    post:
+      consumes:
+      - application/json
+      description: 获取当前帖子是否加精
+      parameters:
+      - description: Bearer 用户令牌
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 帖子id参数
+        in: body
+        name: object
+        required: true
+        schema:
+          $ref: '#/definitions/models.Trigger'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers._ResponseMsg'
+      security:
+      - ApiKeyAuth: []
+      summary: 获取当前帖子是否加精的接口
+      tags:
+      - 管理员相关接口
+  /administer/getu:
+    post:
+      consumes:
+      - application/json
+      description: 获取当前用户是否加v
+      parameters:
+      - description: Bearer 用户令牌
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 用户id参数
+        in: body
+        name: object
+        required: true
+        schema:
+          $ref: '#/definitions/models.StarUser'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers._ResponseMsg'
+      security:
+      - ApiKeyAuth: []
+      summary: 获取当前用户是否加v的接口
+      tags:
+      - 管理员相关接口
   /administer/login:
     post:
       consumes:
@@ -165,6 +230,247 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: 管理员登录接口
+      tags:
+      - 管理员相关接口
+  /administer/posts/delete:
+    delete:
+      consumes:
+      - application/json
+      description: 管理员删除帖子
+      parameters:
+      - description: Bearer 用户令牌
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 帖子id参数
+        in: body
+        name: object
+        required: true
+        schema:
+          $ref: '#/definitions/models.Trigger'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers._ResponseMsg'
+      security:
+      - ApiKeyAuth: []
+      summary: 管理员删除帖子接口
+      tags:
+      - 管理员相关接口
+  /administer/posts/get:
+    get:
+      consumes:
+      - application/json
+      description: 管理员获取现有帖子
+      parameters:
+      - description: Bearer 用户令牌
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 帖子社区标签id，可以为空
+        in: query
+        name: label_id
+        type: integer
+      - description: 排序方式，可以为空，默认为score，可以为time
+        example: score
+        in: query
+        name: order
+        type: string
+      - description: 分页信息，可以为空，默认从1开始
+        in: query
+        name: page
+        type: integer
+      - description: 搜索内容，可以为空，搜索时必填
+        in: query
+        name: search
+        type: string
+      - description: 分页大小，可以为空，默认大小10
+        in: query
+        name: size
+        type: integer
+      - description: 帖子对应的翻译任务帖id，可以为空，查看已有翻译时必须保证不为0
+        in: query
+        name: trans_id
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers._ResponsePostList'
+      security:
+      - ApiKeyAuth: []
+      summary: 管理员获取现有帖子列表接口
+      tags:
+      - 管理员相关接口
+  /administer/posts/star:
+    put:
+      consumes:
+      - application/json
+      description: 管理员帖子加精
+      parameters:
+      - description: Bearer 用户令牌
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 帖子id参数
+        in: body
+        name: object
+        required: true
+        schema:
+          $ref: '#/definitions/models.Trigger'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers._ResponseMsg'
+      security:
+      - ApiKeyAuth: []
+      summary: 管理员帖子加精接口
+      tags:
+      - 管理员相关接口
+  /administer/posts/star/cancel:
+    put:
+      consumes:
+      - application/json
+      description: 管理员帖子取消加精
+      parameters:
+      - description: Bearer 用户令牌
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 帖子id参数
+        in: body
+        name: object
+        required: true
+        schema:
+          $ref: '#/definitions/models.Trigger'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers._ResponseMsg'
+      security:
+      - ApiKeyAuth: []
+      summary: 管理员帖子取消加精接口
+      tags:
+      - 管理员相关接口
+  /administer/user/get:
+    get:
+      consumes:
+      - application/json
+      description: 管理员获取用户
+      parameters:
+      - description: Bearer 用户令牌
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 帖子社区标签id，可以为空
+        in: query
+        name: label_id
+        type: integer
+      - description: 排序方式，可以为空，默认为score，可以为time
+        example: score
+        in: query
+        name: order
+        type: string
+      - description: 分页信息，可以为空，默认从1开始
+        in: query
+        name: page
+        type: integer
+      - description: 搜索内容，可以为空，搜索时必填
+        in: query
+        name: search
+        type: string
+      - description: 分页大小，可以为空，默认大小10
+        in: query
+        name: size
+        type: integer
+      - description: 帖子对应的翻译任务帖id，可以为空，查看已有翻译时必须保证不为0
+        in: query
+        name: trans_id
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers._ResponseMsg'
+      security:
+      - ApiKeyAuth: []
+      summary: 管理员获取用户接口
+      tags:
+      - 管理员相关接口
+  /administer/user/star:
+    put:
+      consumes:
+      - application/json
+      description: 管理员用户加v
+      parameters:
+      - description: Bearer 用户令牌
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 用户id参数
+        in: body
+        name: object
+        required: true
+        schema:
+          $ref: '#/definitions/models.StarUser'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers._ResponseMsg'
+      security:
+      - ApiKeyAuth: []
+      summary: 管理员用户加v接口
+      tags:
+      - 管理员相关接口
+  /administer/user/star/cancel:
+    put:
+      consumes:
+      - application/json
+      description: 管理员用户取消加v
+      parameters:
+      - description: Bearer 用户令牌
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 用户id参数
+        in: body
+        name: object
+        required: true
+        schema:
+          $ref: '#/definitions/models.StarUser'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers._ResponseMsg'
+      security:
+      - ApiKeyAuth: []
+      summary: 管理员用户取消加v接口
       tags:
       - 管理员相关接口
   /collect:
@@ -459,7 +765,7 @@ paths:
         name: Authorization
         required: true
         type: string
-      - description: 两个 bool 参数
+      - description: 帖子id参数
         in: body
         name: object
         required: true

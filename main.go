@@ -21,8 +21,8 @@ import (
 )
 
 // @title 2021 秋软工团队合作项目
-// @version 1.0
-// @description 软工合作 alpha 冲刺版
+// @version 2.0
+// @description 软工合作 release 版
 // @termsOfService http://swagger.io/terms/
 
 // @contact.name FZU UNDEFINED 小组
@@ -32,7 +32,7 @@ import (
 // @license.name Apache 2.0
 // @license.url http://www.apache.org/licenses/LICENSE-2.0.html
 
-// @host localhost:8080
+// @host 192.168.1.6:8080
 // @BasePath
 func main() {
 	//1.加载配置

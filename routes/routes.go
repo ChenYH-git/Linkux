@@ -60,7 +60,17 @@ func Setup(mode string) *gin.Engine {
 	v2.POST("/login", controllers.AdministerLoginHandler)
 	v2.Use(middleware.AdministerCheck())
 	{
-
+		v2.GET("/examine/get", controllers.ExamineGetPostsHandler)
+		v2.PUT("/examine/put", controllers.ExaminePutChangesHandler)
+		v2.GET("/posts/get", controllers.GetPostsExistsHandler)
+		v2.PUT("/posts/star", controllers.StarPostsHandler)
+		v2.PUT("/posts/star/cancel", controllers.CancelStarPostsHandler)
+		v2.DELETE("/posts/delete", controllers.DeletePostsHandler)
+		v2.POST("/getp", controllers.GetPostStatusHandler)
+		v2.GET("/user/get", controllers.GetUserExistsHandler)
+		v2.PUT("/user/star", controllers.StarUserHandler)
+		v2.PUT("/user/star/cancel", controllers.CancelStarUserHandler)
+		v2.POST("/getu", controllers.GetUserStatusHandler)
 	}
 
 	r.NoRoute(func(c *gin.Context) {

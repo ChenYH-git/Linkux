@@ -29,6 +29,20 @@ func getCurrentUserID(c *gin.Context) (userID string, err error) {
 	return
 }
 
+func getCurrentAdministerID(c *gin.Context) (adName string, err error) {
+	uid, ok := c.Get(CtxAdName)
+	if !ok {
+		err = ErrorNoUser
+		return
+	}
+	adName, ok = uid.(string)
+	if !ok {
+		err = ErrorChangeString
+		return
+	}
+	return
+}
+
 func getPageInfo(c *gin.Context) (int64, int64) {
 	pageNumStr := c.Query("page")
 	sizeStr := c.Query("size")

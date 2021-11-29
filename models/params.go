@@ -26,3 +26,7 @@ type VCorNot struct {
 	Voted     bool `json:"voted"`     // 1为点过赞，0为没有
 	Collected bool `json:"collected"` // 1为收藏过，0为没有
 }
+
+type PUorNot struct {
+	Qualified bool `json:"qualified"` // 1为加过精，0为没有
+}
