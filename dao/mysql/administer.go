@@ -2,7 +2,10 @@ package mysql
 
 import (
 	"Linkux/models"
+	"database/sql"
 	"errors"
+
+	"go.uber.org/zap"
 )
 
 func GetAllUser(p *models.ParamPostList) (data []*models.ApiRankDetail, err error) {
@@ -118,4 +121,57 @@ func CheckUser(p *models.StarUser) (qualified bool, err error) {
 		qualified = false
 	}
 	return
+}
+
+func GetWaitingTransTask(p *models.ParamPostList) (data []*models.Trans, err error) {
+	start := (p.Page - 1) * p.Size
+	end := start + p.Size - 1
+
+	sqlStr := `select trans_id, title, content, create_time from trans where status = 0 limit ?,?`
+	if err = db.Select(&data, sqlStr, start, end); err != nil {
+		if err == sql.ErrNoRows {
+			zap.L().Warn("No trans_task waiting\n")
+			err = nil
+		}
+	}
+	return
+}
+
+func GetWaitingPostsTask(p *models.ParamPostList) (data []*models.Post, err error) {
+	start := (p.Page - 1) * p.Size
+	end := start + p.Size - 1
+
+	sqlStr := `select post_id, label_id, title, content, create_time from post where status = 0 limit ?,?`
+	if err = db.Select(&data, sqlStr, start, end); err != nil {
+		if err == sql.ErrNoRows {
+			zap.L().Warn("No posts waiting\n")
+			err = nil
+		}
+	}
+
+	return
+}
+
+func GetAuthorByPostID(pid int64) (AuthorID string, err error) {
+	sqlStr := `select author_id from post where post_id = ?`
+	err = db.Get(&AuthorID, sqlStr, pid)
+	return
+}
+
+func JudgePass(p *models.Judge) (err error) {
+	if p.TransID == 0 {
+		sqlStr := `update post set status = 1 where post_id = ?`
+		_, err = db.Exec(sqlStr, p.PostID)
+		return
+	}
+
+	sqlStr := `update trans set status = 1 where trans_id = ?`
+	_, err = db.Exec(sqlStr, p.TransID)
+	return
+}
+
+func DeleteTrans(p *models.Task) (err error) {
+	sqlStr := `delete from trans where trans_id = ?`
+	_, err = db.Exec(sqlStr, p.TransID)
+	return err
 }

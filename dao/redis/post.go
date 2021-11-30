@@ -26,6 +26,20 @@ func CreateRedisPost(postID, labelID int64) error {
 	return err
 }
 
+func DeletePosts(postID int64) (err error) {
+	pipeline := client.TxPipeline()
+	pipeline.ZRem(getRedisKey(KeyPostTimeZset), postID)
+	pipeline.ZRem(getRedisKey(KeyPostScoreZset), postID)
+	pipeline.Del(getRedisKey(KeyPostVotedZsetPF + strconv.FormatInt(postID, 10)))
+	pipeline.SRem(getRedisKey(KeyLabelSetPF+"1"), postID)
+	pipeline.SRem(getRedisKey(KeyLabelSetPF+"2"), postID)
+	pipeline.SRem(getRedisKey(KeyLabelSetPF+"3"), postID)
+	pipeline.SRem(getRedisKey(KeyLabelSetPF+"4"), postID)
+
+	_, err = pipeline.Exec()
+	return err
+}
+
 func getIDsFromKey(key string, page, size int64) ([]string, error) {
 	start := (page - 1) * size
 	end := start + size - 1

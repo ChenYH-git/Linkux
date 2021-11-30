@@ -2,6 +2,7 @@ package logic
 
 import (
 	"Linkux/dao/mysql"
+	"Linkux/dao/redis"
 	"Linkux/models"
 
 	"go.uber.org/zap"
@@ -35,6 +36,11 @@ func CancelStarPosts(p *models.Trigger) (err error) {
 func DeletePosts(p *models.Trigger) (err error) {
 	if err = mysql.DeletePosts(p); err != nil {
 		zap.L().Error("mysql.DeletePosts(p) failed", zap.Error(err))
+		return err
+	}
+
+	if err = redis.DeletePosts(p.PostID); err != nil {
+		zap.L().Error("redis.DeletePosts(p) failed", zap.Error(err))
 		return err
 	}
 	return
@@ -74,6 +80,59 @@ func GetUserStatus(p *models.StarUser) (qualified bool, err error) {
 			zap.String("userID", p.UserID),
 			zap.Error(err))
 		return false, err
+	}
+	return
+}
+
+func GetWaitingTransTask(p *models.ParamPostList) (data []*models.Trans, err error) {
+	data, err = mysql.GetWaitingTransTask(p)
+	if err != nil {
+		zap.L().Error("mysql.GetWaitingTransTask err:", zap.Error(err))
+		return
+	}
+	return
+}
+
+func GetWaitingPosts(p *models.ParamPostList) (data []*models.Post, err error) {
+	data, err = mysql.GetWaitingPostsTask(p)
+	if err != nil {
+		zap.L().Error("mysql.GetWaitingPostsTask err:", zap.Error(err))
+		return
+	}
+	return
+}
+
+func JudgePass(p *models.Judge) (err error) {
+	err = mysql.JudgePass(p)
+	if err != nil {
+		zap.L().Error("mysql.JudgePass(p) err:", zap.Error(err))
+		return
+	}
+
+	if p.TransID != 0 || p.PostID == 0 {
+		return err
+	}
+	err = redis.CreateRedisPost(p.PostID, p.LabelID)
+	if err != nil {
+		return err
+	}
+
+	AuthorID, err := mysql.GetAuthorByPostID(p.PostID)
+	if err != nil {
+		zap.L().Error("mysql.GetAuthorByPostID err:", zap.Error(err))
+		return
+	}
+	err = mysql.AddContribution(AuthorID)
+	if err != nil {
+		return err
+	}
+	return
+}
+
+func DeleteTrans(p *models.Task) (err error) {
+	if err = mysql.DeleteTrans(p); err != nil {
+		zap.L().Error("mysql.DeleteTrans(p) failed", zap.Error(err))
+		return err
 	}
 	return
 }

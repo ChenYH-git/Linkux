@@ -234,6 +234,7 @@ func GetFollowPostByIDs(p *models.ParamPostList, IDs []string) (data []*models.A
 	sqlStr := `select post_id, title, content, author_id, label_id, collect_num, viewd_num, create_time
 	from post
 	where author_id in (?)
+	and status = 1
 	limit ?,?
 	`
 

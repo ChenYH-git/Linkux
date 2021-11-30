@@ -38,18 +38,6 @@ func TestCreatePost(t *testing.T) {
 	t.Logf("CreatePost insert record into mysql suceess\n")
 }
 
-func TestAddContribution(t *testing.T) {
-	post := models.Post{
-		AuthorID: "5",
-	}
-
-	err := AddContribution(&post)
-	if err != nil {
-		t.Fatalf("AddContribution insert record into mysql failed, err:%v\n", err)
-	}
-	t.Logf("AddContribution insert record into mysql suceess\n")
-}
-
 func TestGetLabelDetailByID(t *testing.T) {
 	id := int64(1)
 

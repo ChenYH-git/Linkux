@@ -32,6 +32,202 @@ var doc = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/administer/examine/getposts": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "管理员获取待审核帖子",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "管理员相关接口"
+                ],
+                "summary": "管理员获取待审核帖子接口",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer 用户令牌",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "帖子社区标签id，可以为空",
+                        "name": "label_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "score",
+                        "description": "排序方式，可以为空，默认为score，可以为time",
+                        "name": "order",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "分页信息，可以为空，默认从1开始",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "搜索内容，可以为空，搜索时必填",
+                        "name": "search",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "分页大小，可以为空，默认大小10",
+                        "name": "size",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "0",
+                        "description": "帖子对应的翻译任务帖id，可以为空，查看已有翻译时必须保证不为0",
+                        "name": "trans_id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controllers._ResponseMsg"
+                        }
+                    }
+                }
+            }
+        },
+        "/administer/examine/gettask": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "管理员获取待审核翻译任务",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "管理员相关接口"
+                ],
+                "summary": "管理员获取待审核翻译任务接口",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer 用户令牌",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "帖子社区标签id，可以为空",
+                        "name": "label_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "score",
+                        "description": "排序方式，可以为空，默认为score，可以为time",
+                        "name": "order",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "分页信息，可以为空，默认从1开始",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "搜索内容，可以为空，搜索时必填",
+                        "name": "search",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "分页大小，可以为空，默认大小10",
+                        "name": "size",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "0",
+                        "description": "帖子对应的翻译任务帖id，可以为空，查看已有翻译时必须保证不为0",
+                        "name": "trans_id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controllers._ResponseMsg"
+                        }
+                    }
+                }
+            }
+        },
+        "/administer/examine/put": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "此接口仅用于通过帖子或翻译任务审核",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "管理员相关接口"
+                ],
+                "summary": "管理员审核通过接口",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer 用户令牌",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "（帖子id、社区id）或（翻译任务id）参数",
+                        "name": "object",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Judge"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controllers._ResponseMsg"
+                        }
+                    }
+                }
+            }
+        },
         "/administer/getp": {
             "post": {
                 "security": [
@@ -267,7 +463,8 @@ var doc = `{
                         "in": "query"
                     },
                     {
-                        "type": "integer",
+                        "type": "string",
+                        "example": "0",
                         "description": "帖子对应的翻译任务帖id，可以为空，查看已有翻译时必须保证不为0",
                         "name": "trans_id",
                         "in": "query"
@@ -375,6 +572,52 @@ var doc = `{
                 }
             }
         },
+        "/administer/trans/delete": {
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "管理员删除翻译任务",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "管理员相关接口"
+                ],
+                "summary": "管理员删除翻译任务接口",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer 用户令牌",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "翻译任务id参数",
+                        "name": "object",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Task"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controllers._ResponseMsg"
+                        }
+                    }
+                }
+            }
+        },
         "/administer/user/get": {
             "get": {
                 "security": [
@@ -433,7 +676,8 @@ var doc = `{
                         "in": "query"
                     },
                     {
-                        "type": "integer",
+                        "type": "string",
+                        "example": "0",
                         "description": "帖子对应的翻译任务帖id，可以为空，查看已有翻译时必须保证不为0",
                         "name": "trans_id",
                         "in": "query"
@@ -691,7 +935,8 @@ var doc = `{
                         "in": "query"
                     },
                     {
-                        "type": "integer",
+                        "type": "string",
+                        "example": "0",
                         "description": "帖子对应的翻译任务帖id，可以为空，查看已有翻译时必须保证不为0",
                         "name": "trans_id",
                         "in": "query"
@@ -968,7 +1213,8 @@ var doc = `{
                         "in": "query"
                     },
                     {
-                        "type": "integer",
+                        "type": "string",
+                        "example": "0",
                         "description": "帖子对应的翻译任务帖id，可以为空，查看已有翻译时必须保证不为0",
                         "name": "trans_id",
                         "in": "query"
@@ -1088,7 +1334,8 @@ var doc = `{
                         "in": "query"
                     },
                     {
-                        "type": "integer",
+                        "type": "string",
+                        "example": "0",
                         "description": "帖子对应的翻译任务帖id，可以为空，查看已有翻译时必须保证不为0",
                         "name": "trans_id",
                         "in": "query"
@@ -1277,7 +1524,8 @@ var doc = `{
                         "in": "query"
                     },
                     {
-                        "type": "integer",
+                        "type": "string",
+                        "example": "0",
                         "description": "帖子对应的翻译任务帖id，可以为空，查看已有翻译时必须保证不为0",
                         "name": "trans_id",
                         "in": "query"
@@ -1397,7 +1645,8 @@ var doc = `{
                         "in": "query"
                     },
                     {
-                        "type": "integer",
+                        "type": "string",
+                        "example": "0",
                         "description": "帖子对应的翻译任务帖id，可以为空，查看已有翻译时必须保证不为0",
                         "name": "trans_id",
                         "in": "query"
@@ -1587,6 +1836,25 @@ var doc = `{
                 }
             }
         },
+        "models.Judge": {
+            "type": "object",
+            "properties": {
+                "label_id": {
+                    "description": "如果审核的是帖子，那么这项要填，否则为0",
+                    "type": "integer"
+                },
+                "post_id": {
+                    "description": "如果审核的是帖子，那么这项要填，否则为0",
+                    "type": "string",
+                    "example": "0"
+                },
+                "trans_id": {
+                    "description": "如果审核的是任务，那么这项要填，否则为0",
+                    "type": "string",
+                    "example": "0"
+                }
+            }
+        },
         "models.ParamVoteData": {
             "type": "object",
             "required": [
@@ -1663,6 +1931,16 @@ var doc = `{
                 "user_id": {
                     "description": "用户id",
                     "type": "string"
+                }
+            }
+        },
+        "models.Task": {
+            "type": "object",
+            "properties": {
+                "trans_id": {
+                    "description": "翻译任务id",
+                    "type": "string",
+                    "example": "0"
                 }
             }
         },

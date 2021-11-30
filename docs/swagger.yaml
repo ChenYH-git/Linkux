@@ -28,6 +28,20 @@ definitions:
         description: 粉丝id
         type: string
     type: object
+  models.Judge:
+    properties:
+      label_id:
+        description: 如果审核的是帖子，那么这项要填，否则为0
+        type: integer
+      post_id:
+        description: 如果审核的是帖子，那么这项要填，否则为0
+        example: "0"
+        type: string
+      trans_id:
+        description: 如果审核的是任务，那么这项要填，否则为0
+        example: "0"
+        type: string
+    type: object
   models.ParamVoteData:
     properties:
       direction:
@@ -84,6 +98,13 @@ definitions:
     properties:
       user_id:
         description: 用户id
+        type: string
+    type: object
+  models.Task:
+    properties:
+      trans_id:
+        description: 翻译任务id
+        example: "0"
         type: string
     type: object
   models.Trans:
@@ -150,6 +171,133 @@ info:
   title: 2021 秋软工团队合作项目
   version: "2.0"
 paths:
+  /administer/examine/getposts:
+    get:
+      consumes:
+      - application/json
+      description: 管理员获取待审核帖子
+      parameters:
+      - description: Bearer 用户令牌
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 帖子社区标签id，可以为空
+        in: query
+        name: label_id
+        type: integer
+      - description: 排序方式，可以为空，默认为score，可以为time
+        example: score
+        in: query
+        name: order
+        type: string
+      - description: 分页信息，可以为空，默认从1开始
+        in: query
+        name: page
+        type: integer
+      - description: 搜索内容，可以为空，搜索时必填
+        in: query
+        name: search
+        type: string
+      - description: 分页大小，可以为空，默认大小10
+        in: query
+        name: size
+        type: integer
+      - description: 帖子对应的翻译任务帖id，可以为空，查看已有翻译时必须保证不为0
+        example: "0"
+        in: query
+        name: trans_id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers._ResponseMsg'
+      security:
+      - ApiKeyAuth: []
+      summary: 管理员获取待审核帖子接口
+      tags:
+      - 管理员相关接口
+  /administer/examine/gettask:
+    get:
+      consumes:
+      - application/json
+      description: 管理员获取待审核翻译任务
+      parameters:
+      - description: Bearer 用户令牌
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 帖子社区标签id，可以为空
+        in: query
+        name: label_id
+        type: integer
+      - description: 排序方式，可以为空，默认为score，可以为time
+        example: score
+        in: query
+        name: order
+        type: string
+      - description: 分页信息，可以为空，默认从1开始
+        in: query
+        name: page
+        type: integer
+      - description: 搜索内容，可以为空，搜索时必填
+        in: query
+        name: search
+        type: string
+      - description: 分页大小，可以为空，默认大小10
+        in: query
+        name: size
+        type: integer
+      - description: 帖子对应的翻译任务帖id，可以为空，查看已有翻译时必须保证不为0
+        example: "0"
+        in: query
+        name: trans_id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers._ResponseMsg'
+      security:
+      - ApiKeyAuth: []
+      summary: 管理员获取待审核翻译任务接口
+      tags:
+      - 管理员相关接口
+  /administer/examine/put:
+    put:
+      consumes:
+      - application/json
+      description: 此接口仅用于通过帖子或翻译任务审核
+      parameters:
+      - description: Bearer 用户令牌
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: （帖子id、社区id）或（翻译任务id）参数
+        in: body
+        name: object
+        required: true
+        schema:
+          $ref: '#/definitions/models.Judge'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers._ResponseMsg'
+      security:
+      - ApiKeyAuth: []
+      summary: 管理员审核通过接口
+      tags:
+      - 管理员相关接口
   /administer/getp:
     post:
       consumes:
@@ -294,9 +442,10 @@ paths:
         name: size
         type: integer
       - description: 帖子对应的翻译任务帖id，可以为空，查看已有翻译时必须保证不为0
+        example: "0"
         in: query
         name: trans_id
-        type: integer
+        type: string
       produces:
       - application/json
       responses:
@@ -367,6 +516,35 @@ paths:
       summary: 管理员帖子取消加精接口
       tags:
       - 管理员相关接口
+  /administer/trans/delete:
+    delete:
+      consumes:
+      - application/json
+      description: 管理员删除翻译任务
+      parameters:
+      - description: Bearer 用户令牌
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 翻译任务id参数
+        in: body
+        name: object
+        required: true
+        schema:
+          $ref: '#/definitions/models.Task'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers._ResponseMsg'
+      security:
+      - ApiKeyAuth: []
+      summary: 管理员删除翻译任务接口
+      tags:
+      - 管理员相关接口
   /administer/user/get:
     get:
       consumes:
@@ -400,9 +578,10 @@ paths:
         name: size
         type: integer
       - description: 帖子对应的翻译任务帖id，可以为空，查看已有翻译时必须保证不为0
+        example: "0"
         in: query
         name: trans_id
-        type: integer
+        type: string
       produces:
       - application/json
       responses:
@@ -564,9 +743,10 @@ paths:
         name: size
         type: integer
       - description: 帖子对应的翻译任务帖id，可以为空，查看已有翻译时必须保证不为0
+        example: "0"
         in: query
         name: trans_id
-        type: integer
+        type: string
       produces:
       - application/json
       responses:
@@ -739,9 +919,10 @@ paths:
         name: size
         type: integer
       - description: 帖子对应的翻译任务帖id，可以为空，查看已有翻译时必须保证不为0
+        example: "0"
         in: query
         name: trans_id
-        type: integer
+        type: string
       produces:
       - application/json
       responses:
@@ -816,9 +997,10 @@ paths:
         name: size
         type: integer
       - description: 帖子对应的翻译任务帖id，可以为空，查看已有翻译时必须保证不为0
+        example: "0"
         in: query
         name: trans_id
-        type: integer
+        type: string
       produces:
       - application/json
       responses:
@@ -935,9 +1117,10 @@ paths:
         name: size
         type: integer
       - description: 帖子对应的翻译任务帖id，可以为空，查看已有翻译时必须保证不为0
+        example: "0"
         in: query
         name: trans_id
-        type: integer
+        type: string
       produces:
       - application/json
       responses:
@@ -1012,9 +1195,10 @@ paths:
         name: size
         type: integer
       - description: 帖子对应的翻译任务帖id，可以为空，查看已有翻译时必须保证不为0
+        example: "0"
         in: query
         name: trans_id
-        type: integer
+        type: string
       produces:
       - application/json
       responses:

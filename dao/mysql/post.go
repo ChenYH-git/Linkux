@@ -20,9 +20,9 @@ func CreatePost(p *models.Post) (err error) {
 	return
 }
 
-func AddContribution(p *models.Post) (err error) {
+func AddContribution(AuthorID string) (err error) {
 	sqlStr := `update user set contribution = contribution + ? where user_id = ?`
-	_, err = db.Exec(sqlStr, conPerPost, p.AuthorID)
+	_, err = db.Exec(sqlStr, conPerPost, AuthorID)
 	return
 }
 
@@ -30,6 +30,7 @@ func GetPostListByIDs(ids []string) (postList []*models.Post, err error) {
 	sqlStr := `select post_id, title, content, author_id, label_id, collect_num, viewd_num, create_time
 	from post
 	where post_id in (?)
+	and status = 1
 	order by FIND_IN_SET(post_id, ?)
 	`
 
@@ -64,6 +65,7 @@ func GetPostByID(pid int64) (post *models.Post, err error) {
 	post_id, title, content, author_id, label_id, collect_num, viewd_num, create_time
 	from post
 	where post_id = ?
+	and status = 1
 	`
 	err = db.Get(post, sqlStr, pid)
 	return

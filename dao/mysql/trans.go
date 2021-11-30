@@ -18,7 +18,7 @@ func CreateTrans(p *models.Trans) (err error) {
 }
 
 func GetTransTask() (data []*models.Trans, err error) {
-	sqlStr := `select trans_id, title, content, create_time from trans`
+	sqlStr := `select trans_id, title, content, create_time from trans where status = 1`
 
 	err = db.Select(&data, sqlStr)
 	return
@@ -31,6 +31,7 @@ func GetTransExist(p *models.ParamPostList) (data []*models.ApiPostDetail, err e
 	sqlStr := `select post_id, trans_id, title, content, author_id, label_id, collect_num, viewd_num, create_time
 	from post
 	where trans_id = ?
+	and status = 1
 	limit ?,?
 	`
 	err = db.Select(&data, sqlStr, p.TransID, start, end)

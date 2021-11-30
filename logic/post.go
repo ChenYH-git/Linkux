@@ -16,15 +16,6 @@ func CreatePost(p *models.Post) (err error) {
 	if err != nil {
 		return err
 	}
-	err = redis.CreateRedisPost(p.PostID, p.LabelID)
-	if err != nil {
-		return err
-	}
-
-	err = mysql.AddContribution(p)
-	if err != nil {
-		return err
-	}
 	return
 }
 

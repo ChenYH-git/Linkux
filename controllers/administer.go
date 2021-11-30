@@ -59,12 +59,97 @@ func AdministerLoginHandler(c *gin.Context) {
 	})
 }
 
-func ExamineGetPostsHandler(c *gin.Context) {
+// ExamineGetTaskHandler 管理员获取待审核翻译任务接口
+// @Summary 管理员获取待审核翻译任务接口
+// @Description 管理员获取待审核翻译任务
+// @Tags 管理员相关接口
+// @Accept application/json
+// @Produce application/json
+// @Param Authorization header string true "Bearer 用户令牌"
+// @Param object query models.ParamPostList false "分页参数"
+// @Security ApiKeyAuth
+// @Success 200 {object} _ResponseMsg
+// @Router /administer/examine/gettask [get]
+func ExamineGetTaskHandler(c *gin.Context) {
+	p := &models.ParamPostList{
+		Page: 1,
+		Size: 10,
+	}
 
+	if err := c.ShouldBindQuery(p); err != nil {
+		zap.L().Error("ExamineGetTaskHandler get query err: ", zap.Error(err))
+		ResponseError(c, CodeInvalidParam)
+		return
+	}
+
+	transdata, err := logic.GetWaitingTransTask(p)
+	if err != nil {
+		zap.L().Error("logic.GetWaitingTransTask() failed", zap.Error(err))
+		ResponseError(c, CodeServerBusy)
+		return
+	}
+
+	ResponseSuccess(c, transdata)
 }
 
-func ExaminePutChangesHandler(c *gin.Context) {
+// ExamineGetPostsHandler 管理员获取待审核帖子接口
+// @Summary 管理员获取待审核帖子接口
+// @Description 管理员获取待审核帖子
+// @Tags 管理员相关接口
+// @Accept application/json
+// @Produce application/json
+// @Param Authorization header string true "Bearer 用户令牌"
+// @Param object query models.ParamPostList false "分页参数"
+// @Security ApiKeyAuth
+// @Success 200 {object} _ResponseMsg
+// @Router /administer/examine/getposts [get]
+func ExamineGetPostsHandler(c *gin.Context) {
+	p := &models.ParamPostList{
+		Page: 1,
+		Size: 10,
+	}
 
+	if err := c.ShouldBindQuery(p); err != nil {
+		zap.L().Error("ExamineGetPostsHandler get query err: ", zap.Error(err))
+		ResponseError(c, CodeInvalidParam)
+		return
+	}
+	postsdata, err := logic.GetWaitingPosts(p)
+	if err != nil {
+		zap.L().Error("logic.GetWaitingPosts() failed", zap.Error(err))
+		ResponseError(c, CodeServerBusy)
+		return
+	}
+
+	ResponseSuccess(c, postsdata)
+}
+
+// ExaminePutChangesHandler 管理员审核通过接口
+// @Summary 管理员审核通过接口
+// @Description 此接口仅用于通过帖子或翻译任务审核
+// @Tags 管理员相关接口
+// @Accept application/json
+// @Produce application/json
+// @Param Authorization header string true "Bearer 用户令牌"
+// @Param object body models.Judge true "（帖子id、社区id）或（翻译任务id）参数"
+// @Security ApiKeyAuth
+// @Success 200 {object} _ResponseMsg
+// @Router /administer/examine/put [put]
+func ExaminePutChangesHandler(c *gin.Context) {
+	p := new(models.Judge)
+	if err := c.ShouldBindJSON(p); err != nil {
+		zap.L().Error("Invalid ExaminePutChangesHandler param", zap.Error(err))
+		ResponseErrorWithMsg(c, CodeInvalidParam, err.Error())
+		return
+	}
+
+	if err := logic.JudgePass(p); err != nil {
+		zap.L().Error("logic.JudgePass() failed, err:", zap.Error(err))
+		ResponseError(c, CodeServerBusy)
+		return
+	}
+
+	ResponseSuccess(c, nil)
 }
 
 // GetPostsExistsHandler 管理员获取现有帖子列表接口
@@ -191,6 +276,39 @@ func DeletePostsHandler(c *gin.Context) {
 
 	if err := logic.DeletePosts(p); err != nil {
 		zap.L().Error("logic.DeletePosts(p) failed", zap.Error(err))
+		ResponseError(c, CodeServerBusy)
+		return
+	}
+
+	ResponseSuccess(c, nil)
+}
+
+// DeleteTransHandler 管理员删除翻译任务接口
+// @Summary 管理员删除翻译任务接口
+// @Description 管理员删除翻译任务
+// @Tags 管理员相关接口
+// @Accept application/json
+// @Produce application/json
+// @Param Authorization header string true "Bearer 用户令牌"
+// @Param object body models.Task true "翻译任务id参数"
+// @Security ApiKeyAuth
+// @Success 200 {object} _ResponseMsg
+// @Router /administer/trans/delete [delete]
+func DeleteTransHandler(c *gin.Context) {
+	p := new(models.Task)
+	if err := c.ShouldBindJSON(p); err != nil {
+		errs, ok := err.(validator.ValidationErrors)
+		if !ok {
+			ResponseError(c, CodeInvalidParam)
+			return
+		}
+		errData := removeTopStruct(errs.Translate(trans))
+		ResponseErrorWithMsg(c, CodeInvalidParam, errData)
+		return
+	}
+
+	if err := logic.DeleteTrans(p); err != nil {
+		zap.L().Error("logic.DeleteTrans(p) failed", zap.Error(err))
 		ResponseError(c, CodeServerBusy)
 		return
 	}
