@@ -27,4 +27,8 @@ redis:
   port: 6379
   password: ""
   db: 0
-  pool_size: 100
+  pool_size: 200
+weixin:
+  id: "wxeb54c0e66fee4927"
+  secret: "cec24107e24419f501691fc694187d84"
+  grant_type: "authorization_code"

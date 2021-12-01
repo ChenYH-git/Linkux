@@ -5,6 +5,7 @@ import (
 	"Linkux/dao/redis"
 	"Linkux/models"
 	"Linkux/pkg/jwt"
+	"Linkux/settings"
 	"crypto/tls"
 	"encoding/json"
 	"errors"
@@ -12,12 +13,6 @@ import (
 	"net/http"
 
 	"go.uber.org/zap"
-)
-
-const (
-	id         = `wxeb54c0e66fee4927`
-	secret     = `cec24107e24419f501691fc694187d84`
-	grant_type = `authorization_code`
 )
 
 func Login(p *models.User) (user *models.User, err error) {
@@ -29,7 +24,7 @@ func Login(p *models.User) (user *models.User, err error) {
 		Transport: tr,
 	}
 
-	resp, err := client.Get("https://api.weixin.qq.com/sns/jscode2session?appid=" + id + `&secret=` + secret + `&js_code=` + p.Code + `&grant_type=` + grant_type)
+	resp, err := client.Get("https://api.weixin.qq.com/sns/jscode2session?appid=" + settings.Conf.WeiXinConfig.Id + `&secret=` + settings.Conf.WeiXinConfig.Secret + `&js_code=` + p.Code + `&grant_type=` + settings.Conf.WeiXinConfig.GrantType)
 	if err != nil {
 		zap.L().Error("Get weixin API failed", zap.Error(err))
 		return

@@ -11,15 +11,16 @@ import (
 var Conf = new(AppConfig)
 
 type AppConfig struct {
-	Name         string `mapstructure:"name"`
-	Mode         string `mapstructure:"mode"`
-	Version      string `mapstructure:"version"`
-	StartTime    string `mapstructure:"start_time"`
-	MachineID    int64  `mapstructure:"machine_id"`
-	Port         int    `mapstructure:"port"`
-	*LogConfig   `mapstructure:"log"`
-	*MySQLConfig `mapstructure:"mysql"`
-	*RedisConfig `mapstructure:"redis"`
+	Name          string `mapstructure:"name"`
+	Mode          string `mapstructure:"mode"`
+	Version       string `mapstructure:"version"`
+	StartTime     string `mapstructure:"start_time"`
+	MachineID     int64  `mapstructure:"machine_id"`
+	Port          int    `mapstructure:"port"`
+	*LogConfig    `mapstructure:"log"`
+	*MySQLConfig  `mapstructure:"mysql"`
+	*RedisConfig  `mapstructure:"redis"`
+	*WeiXinConfig `mapstructure:"weixin"`
 }
 
 type LogConfig struct {
@@ -46,6 +47,12 @@ type RedisConfig struct {
 	Port     int    `mapstructure:"port"`
 	DB       int    `mapstructure:"db"`
 	PoolSize int    `mapstructure:"pool_size"`
+}
+
+type WeiXinConfig struct {
+	Id        string `mapstructure:"id"`
+	Secret    string `mapstructure:"secret"`
+	GrantType string `mapstructure:"grant_type"`
 }
 
 func Init() (err error) {

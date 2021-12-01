@@ -23,7 +23,7 @@ func Setup(mode string) *gin.Engine {
 
 	r := gin.New()
 
-	r.Use(logger.GinLogger(), logger.GinRecovery(true), middleware.RateLimitMiddleware(100*time.Millisecond, 100)) // 令牌桶容量为5，每秒钟填充1个
+	r.Use(logger.GinLogger(), logger.GinRecovery(true), middleware.RateLimitMiddleware(60*time.Millisecond, 500)) // 令牌桶容量为500，每6秒钟填充100个
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	r.POST("/login", controllers.LoginHandler)
