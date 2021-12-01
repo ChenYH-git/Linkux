@@ -1906,6 +1906,10 @@ var doc = `{
                     "type": "string",
                     "example": "0"
                 },
+                "qualified": {
+                    "description": "是否加精",
+                    "type": "boolean"
+                },
                 "status": {
                     "description": "帖子状态，管理审核时使用，无需填入",
                     "type": "integer"
@@ -1999,11 +2003,15 @@ var doc = `{
                     "description": "头像链接",
                     "type": "string"
                 },
+                "qualified": {
+                    "description": "是否加精",
+                    "type": "boolean"
+                },
                 "token": {
                     "description": "后端返回的用户 token",
                     "type": "string"
                 },
-                "userID": {
+                "user_id": {
                     "description": "用户id",
                     "type": "string"
                 },
@@ -2028,7 +2036,7 @@ type swaggerInfo struct {
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = swaggerInfo{
 	Version:     "2.0",
-	Host:        "192.168.1.6:8080",
+	Host:        "192.168.1.4:8080",
 	BasePath:    "",
 	Schemes:     []string{},
 	Title:       "2021 秋软工团队合作项目",

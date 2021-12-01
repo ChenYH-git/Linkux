@@ -28,13 +28,31 @@ func GetTransExist(p *models.ParamPostList) (data []*models.ApiPostDetail, err e
 	start := (p.Page - 1) * p.Size
 	end := start + p.Size - 1
 
-	sqlStr := `select post_id, trans_id, title, content, author_id, label_id, collect_num, viewd_num, create_time
+	sqlStr := `select post_id, trans_id, title, content, author_id, label_id, collect_num, viewd_num, create_time, status
 	from post
 	where trans_id = ?
 	and status = 1
 	limit ?,?
 	`
 	err = db.Select(&data, sqlStr, p.TransID, start, end)
+	if err != nil {
+		return nil, err
+	}
+
+	sqlStr = `select count(post_id) from vpost where post_id = ?`
+
+	for i, _ := range data {
+		var count int
+		err = db.Get(&count, sqlStr, data[i].PostID)
+		if err != nil {
+			return nil, err
+		}
+		if count < 1 {
+			data[i].Qualified = false
+			continue
+		}
+		data[i].Qualified = true
+	}
 
 	for idx, post := range data {
 		user, err := GetUserByID(post.AuthorID)
@@ -59,6 +77,7 @@ func GetTransExist(p *models.ParamPostList) (data []*models.ApiPostDetail, err e
 		data[idx].VoteNum = voteData
 		data[idx].AuthorName = user.Username
 		data[idx].PicLink = user.PicLink
+		data[idx].AuthorQualified = user.Qualified
 		data[idx].LabelDetail = label
 	}
 	return

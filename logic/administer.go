@@ -8,7 +8,7 @@ import (
 	"go.uber.org/zap"
 )
 
-func GetAllUser(p *models.ParamPostList) (data []*models.ApiRankDetail, err error) {
+func GetAllUser(p *models.ParamPostList) (data []*models.User, err error) {
 	data, err = mysql.GetAllUser(p)
 	if err != nil {
 		zap.L().Error("mysql.GetAllUser() failed", zap.Error(err))

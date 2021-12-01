@@ -1,12 +1,13 @@
 package models
 
 type User struct {
-	Contribution int64  `db:"contribution"`             // 用户贡献度
-	UserID       string `db:"user_id"`                  // 用户id
-	Username     string `json:"username" db:"username"` // 用户名
-	PicLink      string `json:"pic_link" db:"pic_link"` // 头像链接
-	Code         string `json:"code"`                   // 微信返回的 code
-	Token        string `json:"token"`                  // 后端返回的用户 token
+	Contribution int64  `json:"contribution" db:"contribution"` // 用户贡献度
+	UserID       string `json:"user_id" db:"user_id"`           // 用户id
+	Username     string `json:"username" db:"username"`         // 用户名
+	PicLink      string `json:"pic_link" db:"pic_link"`         // 头像链接
+	Code         string `json:"code"`                           // 微信返回的 code
+	Token        string `json:"token"`                          // 后端返回的用户 token
+	Qualified    bool   `json:"qualified"`                      // 是否加精
 }
 
 type LoginResBody struct {

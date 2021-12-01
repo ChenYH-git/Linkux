@@ -46,11 +46,12 @@ func GetSearchRes(p *models.ParamPostList) (data []*models.ApiPostDetail, err er
 			return nil, err
 		}
 		postDetail := &models.ApiPostDetail{
-			AuthorName:  user.Username,
-			PicLink:     user.PicLink,
-			VoteNum:     voteData,
-			Post:        post,
-			LabelDetail: label,
+			AuthorName:      user.Username,
+			PicLink:         user.PicLink,
+			AuthorQualified: user.Qualified,
+			VoteNum:         voteData,
+			Post:            post,
+			LabelDetail:     label,
 		}
 		data = append(data, postDetail)
 	}

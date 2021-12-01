@@ -11,7 +11,7 @@ import (
 
 const (
 	oneWeekSeconds = 7 * 24 * 3600
-	scorePerVote   = 432 // 一个赞多少分
+	scorePerVote   = 8640 // 一个赞多少分
 )
 
 var (

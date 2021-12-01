@@ -86,11 +86,12 @@ func GetNoLabelList(p *models.ParamPostList) (data []*models.ApiPostDetail, err 
 			continue
 		}
 		postDetail := &models.ApiPostDetail{
-			AuthorName:  user.Username,
-			PicLink:     user.PicLink,
-			VoteNum:     voteData[idx],
-			Post:        post,
-			LabelDetail: label,
+			AuthorName:      user.Username,
+			PicLink:         user.PicLink,
+			AuthorQualified: user.Qualified,
+			VoteNum:         voteData[idx],
+			Post:            post,
+			LabelDetail:     label,
 		}
 		data = append(data, postDetail)
 	}
@@ -133,11 +134,12 @@ func GetLabelList(p *models.ParamPostList) (data []*models.ApiPostDetail, err er
 			continue
 		}
 		postDetail := &models.ApiPostDetail{
-			AuthorName:  user.Username,
-			PicLink:     user.PicLink,
-			VoteNum:     voteData[idx],
-			Post:        post,
-			LabelDetail: label,
+			AuthorName:      user.Username,
+			PicLink:         user.PicLink,
+			AuthorQualified: user.Qualified,
+			VoteNum:         voteData[idx],
+			Post:            post,
+			LabelDetail:     label,
 		}
 		data = append(data, postDetail)
 	}

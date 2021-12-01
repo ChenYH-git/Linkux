@@ -8,19 +8,42 @@ import (
 	"go.uber.org/zap"
 )
 
-func GetAllUser(p *models.ParamPostList) (data []*models.ApiRankDetail, err error) {
+func GetAllUser(p *models.ParamPostList) (data []*models.User, err error) {
 	start := (p.Page - 1) * p.Size
 	end := start + p.Size - 1
 
 	sqlStr := `select
-	username, contribution, pic_link
+	username, user_id, contribution, pic_link
 	from user
 	order by contribution
 	desc
 	limit ?,?
 	`
-	data = make([]*models.ApiRankDetail, 0, 10)
+	data = make([]*models.User, 0, 10)
 	err = db.Select(&data, sqlStr, start, end)
+	if err != nil {
+		return
+	}
+
+	ids := make([]string, 0, len(data))
+	for _, v := range data {
+		ids = append(ids, v.UserID)
+	}
+
+	sqlStr = `select count(user_id) from vuser where user_id = ?`
+
+	for i, _ := range data {
+		var count int
+		err = db.Get(&count, sqlStr, data[i].UserID)
+		if err != nil {
+			return nil, err
+		}
+		if count < 1 {
+			data[i].Qualified = false
+			continue
+		}
+		data[i].Qualified = true
+	}
 	return
 }
 

@@ -32,6 +32,22 @@ func GetUserByID(uid string) (user *models.User, err error) {
 	user = new(models.User)
 	sqlStr := `select username, pic_link from user where user_id = ?`
 	err = db.Get(user, sqlStr, uid)
+	if err != nil {
+		return nil, err
+	}
+
+	var count int
+	sqlStr = `select count(user_id) from vuser where user_id = ?`
+	err = db.Get(&count, sqlStr, uid)
+	if err != nil {
+		return nil, err
+	}
+
+	if count < 1 {
+		user.Qualified = false
+	} else {
+		user.Qualified = true
+	}
 	return
 }
 
@@ -45,6 +61,20 @@ func GetFollowUserByIDs(ids []*models.Follow) (user []*models.User, err error) {
 		user = append(user, u)
 	}
 
+	sqlStr = `select count(user_id) from vuser where user_id = ?`
+
+	for i, _ := range user {
+		var count int
+		err = db.Get(&count, sqlStr, user[i].UserID)
+		if err != nil {
+			return nil, err
+		}
+		if count < 1 {
+			user[i].Qualified = false
+			continue
+		}
+		user[i].Qualified = true
+	}
 	return
 }
 
@@ -58,11 +88,25 @@ func GetFollowedUserByIDs(ids []*models.Follow) (user []*models.User, err error)
 		user = append(user, u)
 	}
 
+	sqlStr = `select count(user_id) from vuser where user_id = ?`
+
+	for i, _ := range user {
+		var count int
+		err = db.Get(&count, sqlStr, user[i].UserID)
+		if err != nil {
+			return nil, err
+		}
+		if count < 1 {
+			user[i].Qualified = false
+			continue
+		}
+		user[i].Qualified = true
+	}
 	return
 }
 
 func GetPostListOfMy(ids []string, userID string) (postList []*models.Post, err error) {
-	sqlStr := `select post_id, title, content, author_id, label_id, create_time
+	sqlStr := `select post_id, title, content, author_id, label_id, create_time, status
 	from post
 	where post_id in (?)
 	and author_id = ?
@@ -76,6 +120,24 @@ func GetPostListOfMy(ids []string, userID string) (postList []*models.Post, err 
 	query = db.Rebind(query)
 
 	err = db.Select(&postList, query, args...)
+	if err != nil {
+		return nil, err
+	}
+
+	sqlStr = `select count(post_id) from vpost where post_id = ?`
+
+	for i, _ := range postList {
+		var count int
+		err = db.Get(&count, sqlStr, postList[i].PostID)
+		if err != nil {
+			return nil, err
+		}
+		if count < 1 {
+			postList[i].Qualified = false
+			continue
+		}
+		postList[i].Qualified = true
+	}
 	return
 
 }
@@ -231,7 +293,7 @@ func GetFollowPostByIDs(p *models.ParamPostList, IDs []string) (data []*models.A
 	start := (p.Page - 1) * p.Size
 	end := start + p.Size - 1
 
-	sqlStr := `select post_id, title, content, author_id, label_id, collect_num, viewd_num, create_time
+	sqlStr := `select post_id, title, content, author_id, label_id, collect_num, viewd_num, create_time, status
 	from post
 	where author_id in (?)
 	and status = 1
@@ -245,6 +307,24 @@ func GetFollowPostByIDs(p *models.ParamPostList, IDs []string) (data []*models.A
 	query = db.Rebind(query)
 
 	err = db.Select(&data, query, args...)
+	if err != nil {
+		return nil, err
+	}
+
+	sqlStr = `select count(post_id) from vpost where post_id = ?`
+
+	for i, _ := range data {
+		var count int
+		err = db.Get(&count, sqlStr, data[i].PostID)
+		if err != nil {
+			return nil, err
+		}
+		if count < 1 {
+			data[i].Qualified = false
+			continue
+		}
+		data[i].Qualified = true
+	}
 	for idx, post := range data {
 		user, err := GetUserByID(post.AuthorID)
 		if err != nil {
@@ -268,6 +348,7 @@ func GetFollowPostByIDs(p *models.ParamPostList, IDs []string) (data []*models.A
 		data[idx].VoteNum = voteData
 		data[idx].AuthorName = user.Username
 		data[idx].PicLink = user.PicLink
+		data[idx].AuthorQualified = user.Qualified
 		data[idx].LabelDetail = label
 	}
 	return

@@ -100,10 +100,11 @@ func GetUserConByID(p *models.ParamPostList, userID string) (data []*models.ApiP
 			continue
 		}
 		postDetail := &models.ApiPostDetail{
-			AuthorName:  user.Username,
-			VoteNum:     voteData[idx],
-			Post:        post,
-			LabelDetail: label,
+			AuthorName:      user.Username,
+			AuthorQualified: user.Qualified,
+			VoteNum:         voteData[idx],
+			Post:            post,
+			LabelDetail:     label,
 		}
 		data = append(data, postDetail)
 	}
@@ -184,11 +185,12 @@ func GetCollection(p *models.ParamPostList, userID string) (data []*models.ApiPo
 			continue
 		}
 		postDetail := &models.ApiPostDetail{
-			AuthorName:  user.Username,
-			VoteNum:     voteData[idx],
-			PicLink:     user.PicLink,
-			Post:        post,
-			LabelDetail: label,
+			AuthorName:      user.Username,
+			PicLink:         user.PicLink,
+			AuthorQualified: user.Qualified,
+			VoteNum:         voteData[idx],
+			Post:            post,
+			LabelDetail:     label,
 		}
 		data = append(data, postDetail)
 	}
