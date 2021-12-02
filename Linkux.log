@@ -238,3 +238,4 @@
 {"level":"INFO","time":"2021-12-02T15:56:18.697+0800","caller":"logger/logger.go:79","msg":"/trans/get/task","status":200,"method":"GET","path":"/trans/get/task","query":"","ip":"192.168.1.4","user-agent":"Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 Mobile/15E148 Safari/604.1 wechatdevtools/1.05.2111232 MicroMessenger/8.0.5 webview/","errors":"","cost":0.0009947}
 {"level":"INFO","time":"2021-12-02T15:56:28.521+0800","caller":"Linkux/main.go:86","msg":"Shutdown Server ..."}
 {"level":"INFO","time":"2021-12-02T15:56:29.023+0800","caller":"Linkux/main.go:93","msg":"Server exiting"}
+{"level":"DEBUG","time":"2021-12-02T18:10:00.970+0800","caller":"Linkux/main.go:49","msg":"logger init success..."}

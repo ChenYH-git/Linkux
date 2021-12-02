@@ -25,11 +25,13 @@ func Setup(mode string) *gin.Engine {
 
 	r.Use(logger.GinLogger(), logger.GinRecovery(true), middleware.RateLimitMiddleware(60*time.Millisecond, 500)) // 令牌桶容量为500，每6秒钟填充100个
 
+	//r.LoadHTMLGlob("./template/*")
+	//r.Static("/static", "./static")
+
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	r.POST("/login", controllers.LoginHandler)
 	r.GET("/search", controllers.SearchHandler)
-	//r.LoadHTMLGlob("./template/*")
-	//r.Static("/static", "./static")
+
 	v1 := r.Group("/")
 	v1.Use(middleware.JWTAuthMiddleware())
 	{
