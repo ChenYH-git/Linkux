@@ -97,6 +97,7 @@ func GetUserConByID(p *models.ParamPostList, userID string) (data []*models.ApiP
 		postDetail := &models.ApiPostDetail{
 			AuthorName:      user.Username,
 			AuthorQualified: user.Qualified,
+			PicLink:         user.PicLink,
 			VoteNum:         voteData[idx],
 			Post:            post,
 			LabelDetail:     label,

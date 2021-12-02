@@ -26,8 +26,9 @@ redis:
   host: "localhost"
   port: 6379
   password: ""
+  idle_time_out: -1
   db: 0
-  pool_size: 200
+  pool_size: 5000
 weixin:
   id: "wxeb54c0e66fee4927"
   secret: "cec24107e24419f501691fc694187d84"

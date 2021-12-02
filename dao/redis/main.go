@@ -17,9 +17,10 @@ func Init(cfg *settings.RedisConfig) (err error) {
 		Addr: fmt.Sprintf("%s:%d",
 			cfg.Host,
 			cfg.Port),
-		Password: cfg.Password,
-		DB:       cfg.DB,
-		PoolSize: cfg.PoolSize,
+		Password:    cfg.Password,
+		DB:          cfg.DB,
+		PoolSize:    cfg.PoolSize,
+		IdleTimeout: cfg.IdleTimeOut,
 	})
 
 	_, err = client.Ping().Result()
