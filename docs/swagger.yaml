@@ -163,7 +163,7 @@ definitions:
         description: 用户名
         type: string
     type: object
-host: test-1437725-1308546479.ap-shanghai.run.tcloudbase.com:8080
+host: 192.168.1.4:8080
 info:
   contact:
     email: 2135378647@qq.com

@@ -15,17 +15,17 @@ log:
   max_age: 30
   max_backups: 7
 mysql:
-  host: "10.0.224.7"
+  host: "localhost"
   port: 3306
   user: "root"
-  password: "Cyh123456."
+  password: "chenyuhan123000"
   dbname: "linkux"
   max_open_conns: 200
   max_idle_conns: 50
 redis:
-  host: "10.0.192.2"
+  host: "localhost"
   port: 6379
-  password: "Cyh123456."
+  password: ""
   db: 0
   pool_size: 5000
 weixin:
