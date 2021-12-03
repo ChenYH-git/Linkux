@@ -1,6 +1,6 @@
 name: "Linkux"
-mode: "dev"
-version: "v0.0.3"
+mode: "release"
+version: "v1.0.1"
 port: 8080
 start_time: "2021-03-04"
 machine_id: 1
@@ -23,10 +23,9 @@ mysql:
   max_open_conns: 200
   max_idle_conns: 50
 redis:
-  host: "10.0.192.4"
+  host: "10.0.96.11"
   port: 6379
-  password: ""
-  idle_time_out: -1
+  password: "Cyh123456."
   db: 0
   pool_size: 5000
 weixin:

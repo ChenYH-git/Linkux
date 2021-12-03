@@ -2,7 +2,6 @@ package settings
 
 import (
 	"fmt"
-	"time"
 
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
@@ -43,12 +42,11 @@ type MySQLConfig struct {
 }
 
 type RedisConfig struct {
-	Host        string        `mapstructure:"host"`
-	Password    string        `mapstructure:"password"`
-	Port        int           `mapstructure:"port"`
-	DB          int           `mapstructure:"db"`
-	PoolSize    int           `mapstructure:"pool_size"`
-	IdleTimeOut time.Duration `mapstructure:"idle_time_out"`
+	Host     string `mapstructure:"host"`
+	Password string `mapstructure:"password"`
+	Port     int    `mapstructure:"port"`
+	DB       int    `mapstructure:"db"`
+	PoolSize int    `mapstructure:"pool_size"`
 }
 
 type WeiXinConfig struct {
