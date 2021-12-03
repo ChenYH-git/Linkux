@@ -32,7 +32,7 @@ import (
 // @license.name Apache 2.0
 // @license.url http://www.apache.org/licenses/LICENSE-2.0.html
 
-// @host test-1437725-1308546479.ap-shanghai.run.tcloudbase.com:8080
+// @host test-1437725-1308546479.ap-shanghai.run.tcloudbase.com
 // @BasePath
 func main() {
 	//1.加载配置
