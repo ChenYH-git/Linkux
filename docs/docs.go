@@ -2036,7 +2036,7 @@ type swaggerInfo struct {
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = swaggerInfo{
 	Version:     "2.0",
-	Host:        "https://test-1437725-1308546479.ap-shanghai.run.tcloudbase.com",
+	Host:        "test-1437725-1308546479.ap-shanghai.run.tcloudbase.com:8080",
 	BasePath:    "",
 	Schemes:     []string{},
 	Title:       "2021 秋软工团队合作项目",

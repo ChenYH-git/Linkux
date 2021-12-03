@@ -1,5 +1,5 @@
 name: "Linkux"
-mode: "release"
+mode: "dev"
 version: "v1.0.1"
 port: 8080
 start_time: "2021-03-04"
@@ -23,7 +23,7 @@ mysql:
   max_open_conns: 200
   max_idle_conns: 50
 redis:
-  host: "10.0.96.11"
+  host: "10.0.192.2"
   port: 6379
   password: "Cyh123456."
   db: 0

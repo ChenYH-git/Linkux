@@ -480,3 +480,15 @@
 {"level":"DEBUG","time":"2021-12-02T22:28:09.739+0800","caller":"Linkux/main.go:49","msg":"logger init success..."}
 {"level":"INFO","time":"2021-12-02T22:28:12.563+0800","caller":"Linkux/main.go:86","msg":"Shutdown Server ..."}
 {"level":"INFO","time":"2021-12-02T22:28:13.064+0800","caller":"Linkux/main.go:93","msg":"Server exiting"}
+{"level":"DEBUG","time":"2021-12-03T13:44:27.459+0800","caller":"Linkux/main.go:49","msg":"logger init success..."}
+{"level":"INFO","time":"2021-12-03T13:45:08.618+0800","caller":"logger/logger.go:79","msg":"/swagger/index.html","status":200,"method":"GET","path":"/swagger/index.html","query":"","ip":"::1","user-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36","errors":"","cost":0}
+{"level":"INFO","time":"2021-12-03T13:45:08.646+0800","caller":"logger/logger.go:79","msg":"/swagger/swagger-ui.css","status":200,"method":"GET","path":"/swagger/swagger-ui.css","query":"","ip":"::1","user-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36","errors":"","cost":0.0009945}
+{"level":"INFO","time":"2021-12-03T13:45:08.647+0800","caller":"logger/logger.go:79","msg":"/swagger/swagger-ui-standalone-preset.js","status":200,"method":"GET","path":"/swagger/swagger-ui-standalone-preset.js","query":"","ip":"::1","user-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36","errors":"","cost":0.0009882}
+{"level":"INFO","time":"2021-12-03T13:45:08.647+0800","caller":"logger/logger.go:79","msg":"/swagger/swagger-ui-bundle.js","status":200,"method":"GET","path":"/swagger/swagger-ui-bundle.js","query":"","ip":"::1","user-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36","errors":"","cost":0.0009882}
+{"level":"INFO","time":"2021-12-03T13:45:08.659+0800","caller":"logger/logger.go:79","msg":"/favicon.ico","status":404,"method":"GET","path":"/favicon.ico","query":"","ip":"::1","user-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36","errors":"","cost":0.0010011}
+{"level":"INFO","time":"2021-12-03T13:45:09.573+0800","caller":"logger/logger.go:79","msg":"/swagger/doc.json","status":200,"method":"GET","path":"/swagger/doc.json","query":"","ip":"::1","user-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36","errors":"","cost":0}
+{"level":"INFO","time":"2021-12-03T13:45:37.561+0800","caller":"Linkux/main.go:86","msg":"Shutdown Server ..."}
+{"level":"INFO","time":"2021-12-03T13:45:38.061+0800","caller":"Linkux/main.go:93","msg":"Server exiting"}
+{"level":"DEBUG","time":"2021-12-03T13:45:41.527+0800","caller":"Linkux/main.go:49","msg":"logger init success..."}
+{"level":"INFO","time":"2021-12-03T13:46:17.475+0800","caller":"Linkux/main.go:86","msg":"Shutdown Server ..."}
+{"level":"INFO","time":"2021-12-03T13:46:17.976+0800","caller":"Linkux/main.go:93","msg":"Server exiting"}
