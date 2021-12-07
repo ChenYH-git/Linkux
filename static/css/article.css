@@ -1,0 +1,206 @@
+html, body {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.articleContainer {
+    position: relative;
+    height: 100%;
+    background-color: #34a2aa;
+}
+
+.pageHeader {
+    position: absolute;
+    right: 35%;
+    height: 100px;
+    line-height: 100px;
+}
+
+.pageHeader .pageTitle {
+    font-size: 50px;
+}
+
+.mainContainer {
+    position: absolute;
+    height: 400px;
+    width: 100%;
+    top: 150px;
+}
+
+.mainContainer .leftArea {
+    position: absolute;
+    height: 400px;
+    width: 200px;
+}
+
+.leftArea .colorArea {
+    width: 100px;
+    height: 50px;
+    background-color: white;
+    line-height: 50px;
+    text-align: center;
+    margin-left: 10px;
+}
+
+.colorArea .return {
+    font-size: 30px;
+    color: #01cb01;
+}
+
+.articleArea {
+    position: absolute;
+    left: 250px;
+    background-color: white;
+    width: 1200px;
+}
+.articleArea .articleHeader {
+    position: relative;
+    height: 70px;
+    width: 1200px;
+    margin: 0px 0px;
+    border-bottom: 3px solid;
+    border-color:#D1D1D1;
+}
+
+.articleArea .articleHeader {
+    position: relative;
+    height: 70px;
+    margin: 10px 0px;
+}
+
+.articleHeader .avatar {
+    position: absolute;
+    left: 0;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    /*border: red 2px;*/
+}
+.articleHeader .middleArea {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    height: 100px;
+    line-height: 65px;
+    left: 75px;
+    margin: auto;
+}
+.articleHeader .middleArea .authorName{
+    position: absolute;
+    top: 25px;
+    width: 130px;
+}
+.articleArea .articleTitle {
+    position: absolute;
+    top: 5%;
+    left: 8%;
+    font-size: 15px;
+}
+.articleArea .articleDate{
+    position: absolute;
+    top: 50px;
+    left: 380px;
+}
+.articleArea .articleConnect{
+    position: absolute;
+    top:38%;
+    left:8%;
+    font-size:15px;
+}
+.articleArea .detailArea {
+    width: 1000px;
+    height: 350px;
+    overflow: hidden;
+}
+.detailArea .detailContent {
+    width: 1000px;
+    height: 350px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    max-height: 350px;
+}
+.box{
+    position: absolute;
+    left: 180px;
+    top: 50px;
+}
+.box .eye{
+    height: 15px;
+    width: 15px;
+}
+.box .like{
+    height: 15px;
+    width: 15px;
+}
+.box .star{
+    height: 15px;
+    width: 15px;
+}
+.button1 {
+    position: absolute;
+    top: 30px;
+    right: 10%;
+    width: 80px;
+    height: 30px;
+    color: #0feb1a;
+    background-color: #FFFFFF;
+    border: 1px solid;
+    border-color: #BDBDBD;
+    align-items: center;
+
+}
+
+.button2 {
+
+    position: absolute;
+    width: 40px;
+    height: 30px;
+    top: 30px;
+    right: 5%;
+    color: #f50c0c;
+    background-color: #FFFFFF;
+    border: 1px solid;
+    border-color: #BDBDBD;
+    align-items: center;
+}
+
+/* 横的白线 */
+.row {
+    position: absolute;
+    height: 10px;
+    width: 100%;
+    top: 100px;
+    left: 0;
+    background-color: white;
+}
+/* 竖的白线 */
+.column {
+    position: absolute;
+    width: 10px;
+    height: 100%;
+    left: 140px;
+    top: 0;
+    background-color: white;
+}
+.detailArea .detailContent {
+    width: 1000px;
+    height: 350px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    max-height: 350px;
+}
+.button{
+    cursor: pointer;
+    right: 10%;
+    position: absolute;
+    top: 35%;
+    color: #00CD00;
+    background-color: #FFFFFF;
+    border: 1px solid #00CD00;
+}
+.button.active{
+    color: #01cb01;
+}

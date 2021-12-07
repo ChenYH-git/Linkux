@@ -85,6 +85,15 @@ func Setup(mode string) *gin.Engine {
 		v3.GET("/user", func(c *gin.Context) {
 			c.HTML(http.StatusOK, "user.html", nil)
 		})
+		v3.GET("/article", func(c *gin.Context) {
+			c.HTML(http.StatusOK, "article.html", nil)
+		})
+		v3.GET("/audit", func(c *gin.Context) {
+			c.HTML(http.StatusOK, "audit.html", nil)
+		})
+		v3.GET("/task", func(c *gin.Context) {
+			c.HTML(http.StatusOK, "task.html", nil)
+		})
 	}
 
 	r.NoRoute(func(c *gin.Context) {

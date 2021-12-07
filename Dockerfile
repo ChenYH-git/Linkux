@@ -28,6 +28,8 @@ RUN go build -o linkux .
 ###################
 FROM scratch
 
+COPY ./template /template
+COPY ./static /static
 COPY ./docs /docs
 COPY ./conf /conf
 

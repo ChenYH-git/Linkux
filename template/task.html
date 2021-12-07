@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="../static/css/task.css">
+    <script src="../static/js/jquery-1.7.2.js"></script>
+    <script>
+        let host = "https://test-1437725-1308546479.ap-shanghai.run.tcloudbase.com";
+        let articles;
+        let index = 1;
+        function getarticle(i){
+            let token = localStorage.getItem("token");
+            $.ajax("https://test-1437725-1308546479.ap-shanghai.run.tcloudbase.com/administer/examine/gettask",{
+                headers:{
+                    Authorization:"Bearer "+token
+                },
+                data:{
+                    page:i,
+                    size:7
+                },
+                dataType:"json",
+                success:(res)=>{
+                    console.log(res);
+                    let innerHtml="";
+                    let date;
+                    let d;
+                    articles=res.data;
+                    for(let i=0;i<res.data.length;i++) {
+                        date = new Date(res.data[i].create_time);
+                        d = date.getFullYear() + "年" + date.getMonth() + "月" + date.getDate() + "日";
+                        innerHtml += `<div class="eachArticle">
+                            <div class=" title">${res.data[i].title}</div>
+                            <div class="link"></div>
+                            <div class="date">${d}</div>
+                            <img onclick="sign(this)" data-method="pass" data-index="${i}" src="../static/imgs/pass.png" class="pass">
+                            <img onclick="sign(this)" data-method="fail" data-index="${i}" src="../static/imgs/fail.png" class="fail">
+                        </div>`;
+
+                    }
+                    console.log(document.getElementById("ccc"))
+                    console.log(innerHtml)
+                    $("#ccc").html(innerHtml);
+                }
+            })
+        }
+        $(window).load(function (){
+            getarticle(index);
+        })
+        function nextPage(){
+            index++;
+            getarticle(index);
+        }
+        function lastPage(){
+            if(index>1)index--;
+            getarticle(index);
+        }
+        function click1() {
+            location.href = "/page/task";
+        }
+        function click2() {
+            location.href = "/page/article"
+        }
+        function click3() {
+            location.href = "/page/user"
+        }
+        function click4() {
+            location.href = "/page/audit"
+        }
+        function sign(e){
+            let token = localStorage.getItem("token")
+            if(e.getAttribute("data-method") == "pass"){
+                $.ajax(host+"/administer/examine/put",{
+                    headers:{
+                        Authorization:"Bearer "+token
+                    },
+                    type:"PUT",
+                    contentType:'application/json;charset=UTF-8',
+                    data: JSON.stringify({
+                        "post_id": articles[parseInt(e.getAttribute("data-index"))].post_id
+                    }),
+                    dataType: "json",
+                    success: (res) => {
+                        e.parentNode.remove();
+                        alert("审核通过");
+                    }
+                })
+            }else {
+                $.ajax(host+"/administer/trans/delete",{
+                    headers:{
+                        Authorization:"Bearer "+token
+                    },
+                    type:"DELETE",
+                    contentType:'application/json;charset=UTF-8',
+                    data: JSON.stringify({
+                        "trans_id": articles[parseInt(e.getAttribute("data-index"))].trans_id
+                    }),
+                    dataType: "json",
+                    success: (res) => {
+                        e.parentNode.remove();
+                        alert("请求驳回");
+                    }
+                })
+            }
+        }
+    </script>
+
+</head>
+<body>
+<div class="articleContainer">
+    <div class="pageHeader">
+        <span class="pageTitle">管理员操作页</span>
+    </div>
+    <div class="mainContainer">
+        <div class="leftArea">
+            <div class="colorArea">
+                <button onclick="click1()" class="return" >任务审核</button>
+                <button onclick="click2()" class="return" >已有文章</button>
+                <button onclick="click3()" class="return" >用户管理</button>
+                <button onclick="click4()" class="return" >文章审核</button>
+            </div>
+        </div>
+        <div id="ccc" class="articleArea">
+        </div>
+        <div style="position: absolute;right: 0;top: -30px">
+            <button onclick="lastPage()">上一页</button>
+            <button onclick="nextPage()">下一页</button>
+        </div>
+    </div>
+</div>
+<div class="row"></div>
+<div class="column"></div>
+</body>
+</html>

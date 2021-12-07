@@ -10,7 +10,7 @@
     let index = 1;
     function getUser(i){
         let token = localStorage.getItem("token");
-        $.ajax("http://localhost:8080/administer/user/get",{
+        $.ajax("https://test-1437725-1308546479.ap-shanghai.run.tcloudbase.com/administer/user/get",{
             headers:{
                 Authorization:"Bearer "+token
             },
@@ -54,21 +54,21 @@
         getUser(index);
     }
     function click1() {
-        location.href = "/renwu";
+        location.href = "/page/task";
     }
     function click2() {
-        location.href = "/yiyou"
+        location.href = "/page/article"
     }
     function click3() {
         location.href = "/page/user"
     }
     function click4() {
-        location.href = "/shenhe"
+        location.href = "/page/audit"
     }
     function sign(e){
         let token = localStorage.getItem("token")
         if(!users[parseInt(e.getAttribute("data-index"))].qualified)
-        $.ajax("http://localhost:8080/administer/user/star",{
+        $.ajax("https://test-1437725-1308546479.ap-shanghai.run.tcloudbase.com/administer/user/star",{
             headers:{
                 Authorization:"Bearer "+token
             },
@@ -84,7 +84,7 @@
             }
         })
         else
-            $.ajax("http://localhost:8080/administer/user/star/cancel",{
+            $.ajax("https://test-1437725-1308546479.ap-shanghai.run.tcloudbase.com/administer/user/star/cancel",{
                 headers:{
                     Authorization:"Bearer "+token
                 },

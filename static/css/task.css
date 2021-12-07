@@ -1,0 +1,173 @@
+html, body {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.articleContainer {
+    position: relative;
+    height: 100%;
+    background-color: #34a2aa;
+}
+
+.pageHeader {
+    position: absolute;
+    right: 35%;
+    height: 100px;
+    line-height: 100px;
+}
+
+.pageHeader .pageTitle {
+    font-size: 50px;
+}
+
+.mainContainer {
+    position: absolute;
+    height: 400px;
+    width: 100%;
+    top: 150px;
+}
+
+.mainContainer .leftArea {
+    position: absolute;
+    height: 400px;
+    width: 200px;
+}
+
+.leftArea .optionsArea {
+    width: 120px;
+    height: 50px;
+    background-color: white;
+    line-height: 50px;
+    text-align: center;
+    margin-left: 10px;
+    margin-top: 20px;
+    /*padding-top: 15px;*/
+}
+
+.optionsArea .block {
+    font-size: 30px;
+    color: #01cb01;
+}
+
+.leftArea .colorArea {
+    width: 100px;
+    height: 50px;
+    background-color: white;
+    line-height: 50px;
+    text-align: center;
+    margin-left: 10px;
+}
+
+.colorArea .return {
+    font-size: 30px;
+    color: #000000;
+}
+.colorArea .act{
+    color:#01cb01;
+}
+
+.articleArea {
+    position: absolute;
+    left: 180px;
+    background-color: white;
+    width: 1200px;
+    height: 500px;
+}
+.articleArea .articleSort {
+    width: 1200px;
+    height: 20px;
+    border-color:black;
+    border-style:solid;
+    border-width:1px;
+}
+.articleArea .eachArticle {
+    position: relative;
+    height: 80px;
+    width: 1200px;
+    margin: 0px 0px;
+    border-bottom: 3px solid;
+    border-color: #D1D1D1;
+}
+.eachArticle .title {
+    position: relative;
+    left: 50px;
+    top: 2px;
+    font-size: 18px;
+    height: 18px;
+    width: 650px;
+    color: black;
+    font-weight: bold;
+}
+.eachArticle .link {
+    position: relative;
+    left: 50px;
+    top: 15px;
+    font-size: 14px;
+    height: 18px;
+    width: 650px;
+    color: blue;
+}
+.eachArticle .date {
+    position: relative;
+    left: 50px;
+    top: 15px;
+    font-size: 20px;
+    height: 20px;
+    width: 650px;
+    color: black;
+}
+.eachArticle .fail {
+    position: absolute;
+    left: 950px;
+    top: 15px;
+    height: 50px;
+    width: 50px;
+}
+.eachArticle .pass {
+    position: absolute;
+    left: 1050px;
+    top: 15px;
+    height: 50px;
+    width: 50px;
+}
+/* 横的白线 */
+.row {
+    position: absolute;
+    height: 10px;
+    width: 100%;
+    top: 100px;
+    left: 0;
+    background-color: white;
+}
+/* 竖的白线 */
+.column {
+    position: absolute;
+    width: 10px;
+    height: 100%;
+    left: 140px;
+    top: 0;
+    background-color: white;
+}
+
+.detailArea .detailContent {
+    width: 1000px;
+    height: 350px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    max-height: 350px;
+}
+.button{
+    cursor: pointer;
+    right: 10%;
+    position: absolute;
+    top: 35%;
+    color: #00CD00;
+    background-color: #FFFFFF;
+    border: 1px solid #00CD00;
+}
+.button.active{
+    color: #01cb01;
+}

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="../static/css/article.css">
+    <script src="../static/js/jquery-1.7.2.js"></script>
+    <script>
+        let addr1 = "https://test-1437725-1308546479.ap-shanghai.run.tcloudbase.com/administer/posts/star"
+        let addr2 = "https://test-1437725-1308546479.ap-shanghai.run.tcloudbase.com/administer/posts/delete"
+        let users;
+        let index = 1;
+        function getUser(i){
+            let token = localStorage.getItem("token");
+            $.ajax("https://test-1437725-1308546479.ap-shanghai.run.tcloudbase.com/administer/posts/get",{
+                headers:{
+                    Authorization:"Bearer "+token
+                },
+                data:{
+                    page:i,
+                    size:6
+                },
+                dataType:"json",
+                success:(res)=>{
+                    console.log(res);
+                    let innerHtml="";
+                    let date;
+                    let d;
+                    users=res.data;
+                    for(let i=0;i<res.data.length;i++) {
+                        date = new Date(res.data[i].create_time);
+                        d = date.getFullYear() + "年" + date.getMonth() + "月" + date.getDate() + "日";
+                        res.data[i].content.replace("\<",`.`);
+                        innerHtml += `<div class="articleHeader">
+                                        <img src="${res.data[i].pic_link}" class="avatar">
+                                        <div class="middleArea">
+                                            <span class="authorName">${res.data[i].author_name}</span>
+                                        </div>
+                                        <div class="articleTitle">${res.data[i].title}</div>
+                                        <div class="articleConnect"></div>
+                                        <div class="box">
+                                            <img src="../static/imgs/eye.png" class="eye">${res.data[i].viewd_num}
+                                            <img src="../static/imgs/like.png" class="like">${res.data[i].vote_num}
+                                            <img src="../static/imgs/star.png" class="star">${res.data[i].collect_num}
+                                        </div>
+                                        <div class="articleDate">${d}</div>
+                                        <div onclick='sign(this)' data-method='v' data-index="${i}" class="button1">设置优质</div>
+                                        <div onclick='sign(this)' data-method='delete' data-index="${i}" class="button2">删除</div>
+                                       </div>
+                                        `
+                    }
+                    console.log(innerHtml)
+                    $("#ccc").html(innerHtml);
+                }
+            })
+        }
+        $(window).load(function (){
+            getUser(index);
+        })
+        function nextPage(){
+            index++;
+            getUser(index);
+        }
+        function lastPage(){
+            if(index>1)index--;
+            getUser(index);
+        }
+        function click1() {
+            location.href = "/page/task";
+        }
+        function click2() {
+            location.href = "/page/article"
+        }
+        function click3() {
+            location.href = "/page/user"
+        }
+        function click4() {
+            location.href = "/page/audit"
+        }
+        function sign(e){
+            let token = localStorage.getItem("token");
+            if(e.getAttribute("data-method") === "v")
+            {
+                $.ajax( addr1,{
+                    headers:{
+                        Authorization:"Bearer "+token
+                    },
+                    type:"PUT",
+                    contentType:'application/json;charset=UTF-8',
+                    data: JSON.stringify({
+                        "post_id": users[parseInt(e.getAttribute("data-index"))].post_id
+                    }),
+                    dataType: "json",
+                    success: (res) => {
+                        alert("加精成功");
+                    }
+                })
+            }else {
+                $.ajax( addr2,{
+                    headers:{
+                        Authorization:"Bearer "+token
+                    },
+                    type:"DELETE",
+                    contentType:'application/json;charset=UTF-8',
+                    data: JSON.stringify({
+                        "post_id": users[parseInt(e.getAttribute("data-index"))].post_id
+                    }),
+                    dataType: "json",
+                    success: (res) => {
+                        e.parentNode.remove();
+                        alert("删除成功");
+                    }
+                })
+            }
+        }
+    </script>
+
+</head>
+<body>
+<div class="articleContainer">
+    <div class="pageHeader">
+        <span class="pageTitle">管理员操作页</span>
+    </div>
+    <div class="mainContainer">
+        <div class="leftArea">
+            <div class="colorArea">
+                <button onclick="click1()" class="return" >任务审核</button>
+                <button onclick="click2()" class="return" >已有文章</button>
+                <button onclick="click3()" class="return" >用户管理</button>
+                <button onclick="click4()" class="return" >文章审核</button>
+            </div>
+        </div>
+        <div id="ccc" class="articleArea">
+        </div>
+        <div style="position: absolute;right: 0;top: -30px">
+            <button onclick="lastPage()">上一页</button>
+            <button onclick="nextPage()">下一页</button>
+        </div>
+    </div>
+</div>
+<div class="row"></div>
+<div class="column"></div>
+</body>
+</html>
