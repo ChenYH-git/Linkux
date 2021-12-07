@@ -53,7 +53,7 @@ func GetPostListByIDs(ids []string) (postList []*models.Post, err error) {
 		if err != nil {
 			return nil, err
 		}
-		if count < 1 {
+		if count == 0 {
 			postList[i].Qualified = false
 			continue
 		}

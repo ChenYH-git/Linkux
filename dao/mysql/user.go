@@ -43,7 +43,7 @@ func GetUserByID(uid string) (user *models.User, err error) {
 		return nil, err
 	}
 
-	if count < 1 {
+	if count == 0 {
 		user.Qualified = false
 	} else {
 		user.Qualified = true
@@ -69,7 +69,7 @@ func GetFollowUserByIDs(ids []*models.Follow) (user []*models.User, err error) {
 		if err != nil {
 			return nil, err
 		}
-		if count < 1 {
+		if count == 0 {
 			user[i].Qualified = false
 			continue
 		}
@@ -96,7 +96,7 @@ func GetFollowedUserByIDs(ids []*models.Follow) (user []*models.User, err error)
 		if err != nil {
 			return nil, err
 		}
-		if count < 1 {
+		if count == 0 {
 			user[i].Qualified = false
 			continue
 		}
@@ -132,7 +132,7 @@ func GetPostListOfMy(ids []string, userID string) (postList []*models.Post, err 
 		if err != nil {
 			return nil, err
 		}
-		if count < 1 {
+		if count == 0 {
 			postList[i].Qualified = false
 			continue
 		}
@@ -152,9 +152,9 @@ func AddCollection(p *models.Trigger, userID string) (err error) {
 		return errors.New("无法收藏自己的帖子")
 	}
 
-	sqlStr = `select count(user_id) from collection where post_id = ?`
+	sqlStr = `select count(*) from collection where post_id = ? and user_id = ?`
 	var count int
-	if err := db.Get(&count, sqlStr, p.PostID); err != nil {
+	if err := db.Get(&count, sqlStr, p.PostID, userID); err != nil {
 		return err
 	}
 	if count > 0 {
@@ -167,9 +167,9 @@ func AddCollection(p *models.Trigger, userID string) (err error) {
 }
 
 func CheckCollect(pid, uid string) (flag bool, err error) {
-	sqlStr := `select count(user_id) from collection where post_id = ?`
+	sqlStr := `select count(*) from collection where post_id = ? and user_id = ?`
 	var count int
-	if err := db.Get(&count, sqlStr, pid); err != nil {
+	if err := db.Get(&count, sqlStr, pid, uid); err != nil {
 		return false, err
 	}
 	if count > 0 {
@@ -187,12 +187,12 @@ func AddCollectNum(p *models.Trigger) (err error) {
 }
 
 func DeleteCollection(p *models.Trigger, userID string) (err error) {
-	sqlStr := `select count(user_id) from collection where post_id = ?`
+	sqlStr := `select count(*) from collection where post_id = ? and user_id = ?`
 	var count int
-	if err := db.Get(&count, sqlStr, p.PostID); err != nil {
+	if err := db.Get(&count, sqlStr, p.PostID, userID); err != nil {
 		return err
 	}
-	if count < 1 {
+	if count == 0 {
 		return errors.New("无此帖子")
 	}
 	sqlStr = `delete from collection where user_id = ? and post_id = ?`
@@ -229,9 +229,9 @@ func AddViewNum(p *models.Trigger) (err error) {
 }
 
 func AddFollow(p *models.Follow, userID string) (err error) {
-	sqlStr := `select count(user_id) from follow where follow_id = ?`
+	sqlStr := `select count(*) from follow where follow_id = ? and user_id = ?`
 	var count int
-	if err := db.Get(&count, sqlStr, p.FollowID); err != nil {
+	if err := db.Get(&count, sqlStr, p.FollowID, userID); err != nil {
 		return err
 	}
 	if count > 0 {
@@ -254,12 +254,12 @@ func AddFollow(p *models.Follow, userID string) (err error) {
 }
 
 func CancelFollow(p *models.Follow, userID string) (err error) {
-	sqlStr := `select count(user_id) from follow where follow_id = ?`
+	sqlStr := `select count(*) from follow where follow_id = ? and user_id = ?`
 	var count int
-	if err := db.Get(&count, sqlStr, p.FollowID); err != nil {
+	if err := db.Get(&count, sqlStr, p.FollowID, userID); err != nil {
 		return err
 	}
-	if count < 1 {
+	if count == 0 {
 		return errors.New("取消错误")
 	}
 
@@ -319,7 +319,7 @@ func GetFollowPostByIDs(p *models.ParamPostList, IDs []string) (data []*models.A
 		if err != nil {
 			return nil, err
 		}
-		if count < 1 {
+		if count == 0 {
 			data[i].Qualified = false
 			continue
 		}

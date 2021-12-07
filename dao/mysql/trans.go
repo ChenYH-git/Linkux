@@ -47,7 +47,7 @@ func GetTransExist(p *models.ParamPostList) (data []*models.ApiPostDetail, err e
 		if err != nil {
 			return nil, err
 		}
-		if count < 1 {
+		if count == 0 {
 			data[i].Qualified = false
 			continue
 		}

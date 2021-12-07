@@ -34,7 +34,7 @@ func GetPostListByIDsAndSearch(ids []string, p *models.ParamPostList) (postList 
 		if err != nil {
 			return nil, err
 		}
-		if count < 1 {
+		if count == 0 {
 			postList[i].Qualified = false
 			continue
 		}

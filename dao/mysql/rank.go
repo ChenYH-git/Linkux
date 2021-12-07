@@ -26,7 +26,7 @@ func GetUserRank() (data []*models.User, err error) {
 		if err != nil {
 			return nil, err
 		}
-		if count < 1 {
+		if count == 0 {
 			data[i].Qualified = false
 			continue
 		}
@@ -54,7 +54,7 @@ func GetMyRank(userID string) ([]*models.User, error) {
 		return nil, err
 	}
 
-	if count < 1 {
+	if count == 0 {
 		me[0].Qualified = false
 	} else {
 		me[0].Qualified = true

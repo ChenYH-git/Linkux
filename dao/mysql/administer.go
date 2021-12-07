@@ -38,7 +38,7 @@ func GetAllUser(p *models.ParamPostList) (data []*models.User, err error) {
 		if err != nil {
 			return nil, err
 		}
-		if count < 1 {
+		if count == 0 {
 			data[i].Qualified = false
 			continue
 		}
@@ -69,7 +69,7 @@ func CancelStarPosts(p *models.Trigger) (err error) {
 	if err := db.Get(&count, sqlStr, p.PostID); err != nil {
 		return err
 	}
-	if count < 1 {
+	if count == 0 {
 		return errors.New("帖子未加精，无法取消")
 	}
 
@@ -122,7 +122,7 @@ func CancelStarUser(p *models.StarUser) (err error) {
 	if err := db.Get(&count, sqlStr, p.UserID); err != nil {
 		return err
 	}
-	if count < 1 {
+	if count == 0 {
 		return errors.New("用户未加v，无法取消")
 	}
 
