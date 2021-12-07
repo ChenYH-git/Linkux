@@ -18,14 +18,14 @@ mysql:
   host: "10.0.224.7"
   port: 3306
   user: "root"
-  password: "Cyh123456"
+  password: "Cyh123456."
   dbname: "linkux"
   max_open_conns: 200
   max_idle_conns: 50
 redis:
   host: "10.0.192.2"
   port: 6379
-  password: "Cyh123456"
+  password: "Cyh123456."
   db: 0
   pool_size: 5000
 weixin:
