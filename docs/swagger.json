@@ -13,9 +13,9 @@
             "name": "Apache 2.0",
             "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
         },
-        "version": "2.0"
+        "version": "2.2"
     },
-    "host": "192.168.1.4:8080",
+    "host": "test-1437725-1308546479.ap-shanghai.run.tcloudbase.com",
     "paths": {
         "/administer/examine/getposts": {
             "get": {

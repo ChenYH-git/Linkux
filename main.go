@@ -21,7 +21,7 @@ import (
 )
 
 // @title 2021 秋软工团队合作项目
-// @version 2.0
+// @version 2.2
 // @description 软工合作 release 版
 // @termsOfService http://swagger.io/terms/
 
@@ -32,7 +32,7 @@ import (
 // @license.name Apache 2.0
 // @license.url http://www.apache.org/licenses/LICENSE-2.0.html
 
-// @host 192.168.1.4:8080
+// @host test-1437725-1308546479.ap-shanghai.run.tcloudbase.com
 // @BasePath
 func main() {
 	//1.加载配置

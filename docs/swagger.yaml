@@ -163,7 +163,7 @@ definitions:
         description: 用户名
         type: string
     type: object
-host: 192.168.1.4:8080
+host: test-1437725-1308546479.ap-shanghai.run.tcloudbase.com
 info:
   contact:
     email: 2135378647@qq.com
@@ -175,7 +175,7 @@ info:
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   termsOfService: http://swagger.io/terms/
   title: 2021 秋软工团队合作项目
-  version: "2.0"
+  version: "2.2"
 paths:
   /administer/examine/getposts:
     get:
