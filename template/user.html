@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="../static/css/user.css">
+    <script src="../static/js/jquery-1.7.2.js"></script>
+<script>
+    let users;
+    let index = 1;
+    function getUser(i){
+        let token = localStorage.getItem("token");
+        $.ajax("http://localhost:8080/administer/user/get",{
+            headers:{
+                Authorization:"Bearer "+token
+            },
+            data:{
+                page:i,
+                size:7
+            },
+            dataType:"json",
+            success:(res)=>{
+                console.log(res);
+                let innerHtml="";
+                users=res.data;
+                for(let i=0;i<res.data.length;i++) {
+                    innerHtml += "<div class='userHeader'>" +
+                        "<img src='"+ res.data[i].pic_link +"' class='avatar'>" +
+                        "<div class='middleArea'>" +
+                        "<span class='authorName'>" + res.data[i].username + "</span>" +
+                        "</div>" +
+                        '<div class="userTitle">贡献度：' + res.data[i].contribution + "</div>" +
+                        "<div onclick='sign(this)' data-index='" + i + "' class='button'>"+
+                        (res.data[i].qualified?'取消优质用户':'设置为优质用户') +
+                        "</div>" +
+                        "</div>"
+
+                }
+                console.log(document.getElementById("ccc"))
+                console.log(innerHtml)
+                $("#ccc").html(innerHtml);
+            }
+        })
+    }
+    $(window).load(function (){
+        getUser(index);
+    })
+    function nextPage(){
+        index++;
+        getUser(index);
+    }
+    function lastPage(){
+        if(index>1)index--;
+        getUser(index);
+    }
+    function click1() {
+        location.href = "/renwu";
+    }
+    function click2() {
+        location.href = "/yiyou"
+    }
+    function click3() {
+        location.href = "/page/user"
+    }
+    function click4() {
+        location.href = "/shenhe"
+    }
+    function sign(e){
+        let token = localStorage.getItem("token")
+        if(!users[parseInt(e.getAttribute("data-index"))].qualified)
+        $.ajax("http://localhost:8080/administer/user/star",{
+            headers:{
+                Authorization:"Bearer "+token
+            },
+            contentType: "application/json; charset=utf-8",
+            data:JSON.stringify({
+                "user_id": users[parseInt(e.getAttribute("data-index"))].user_id
+            }),
+            dataType:"json",
+            type:"PUT",
+            success: () => {
+                e.innerHTML = "取消优质用户";
+                users[parseInt(e.getAttribute("data-index"))].qualified = true;
+            }
+        })
+        else
+            $.ajax("http://localhost:8080/administer/user/star/cancel",{
+                headers:{
+                    Authorization:"Bearer "+token
+                },
+                contentType: "application/json; charset=utf-8",
+                data:JSON.stringify({
+                    "user_id": users[parseInt(e.getAttribute("data-index"))].user_id
+                }),
+                dataType:"json",
+                type:"PUT",
+                success: () => {
+                    e.innerHTML = "设置为优质用户";
+                    users[parseInt(e.getAttribute("data-index"))].qualified = false;
+                }
+            })
+    }
+</script>
+
+</head>
+<body>
+    <div class="userContainer">
+        <div class="pageHeader">
+            <span class="pageTitle">管理员操作页</span>
+        </div>
+        <div class="mainContainer">
+            <div class="leftArea">
+                <div class="colorArea">
+                    <button onclick="click1()" class="return" >任务审核</button>
+                    <button onclick="click2()" class="return" >已有文章</button>
+                    <button onclick="click3()" class="return" >用户管理</button>
+                    <button onclick="click4()" class="return" >文章审核</button>
+                </div>
+            </div>
+            <div id="ccc" class="userArea">
+            </div>
+            <div style="position: absolute;right: 0;top: -30px">
+                <button onclick="lastPage()">上一页</button>
+                <button onclick="nextPage()">下一页</button>
+            </div>
+        </div>
+    </div>
+<div class="row"></div>
+<div class="column"></div>
+</body>
+</html>

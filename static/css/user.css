@@ -1,0 +1,143 @@
+html, body {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.userContainer {
+    position: relative;
+    height: 100%;
+    background-color: #34a2aa;
+}
+
+.pageHeader {
+    position: absolute;
+    right: 35%;
+    height: 100px;
+    line-height: 100px;
+}
+
+.pageHeader .pageTitle {
+    font-size: 50px;
+}
+
+.mainContainer {
+    position: absolute;
+    height: 400px;
+    width: 100%;
+    top: 150px;
+}
+
+.mainContainer .leftArea {
+    position: absolute;
+    height: 400px;
+    width: 200px;
+}
+
+.leftArea .colorArea {
+    width: 100px;
+    height: 50px;
+    background-color: white;
+    line-height: 50px;
+    text-align: center;
+    margin-left: 10px;
+}
+
+.colorArea .return {
+    font-size: 30px;
+    color: #000000;
+}
+.colorArea .act{
+    color:#01cb01;
+}
+
+.userArea {
+    position: absolute;
+    left: 250px;
+    background-color: white;
+    width: 1200px;
+    display: block;
+}
+.userArea .userHeader {
+    position: relative;
+    height: 70px;
+    width: 1200px;
+    margin: 0px 0px;
+    border-bottom: 3px solid;
+    border-color:#D1D1D1;
+}
+
+.userArea .userHeader {
+    position: relative;
+    height: 70px;
+    margin: 10px 0px;
+}
+
+.userHeader .avatar {
+    position: absolute;
+    left: 0;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    /*border: red 2px;*/
+}
+
+.userHeader .middleArea {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    height: 70px;
+    line-height: 65px;
+    left: 75px;
+    margin: auto;
+}
+.userArea .userTitle {
+    position: absolute;
+    top: 30%;
+    left: 45%;
+    font-size: 20px;
+}
+.userArea .detailArea {
+    width: 1000px;
+    height: 350px;
+    overflow: hidden;
+}
+.detailArea .detailContent {
+    width: 1000px;
+    height: 350px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    max-height: 350px;
+}
+.button{
+    cursor: pointer;
+    right: 10%;
+    position: absolute;
+    top: 35%;
+    color: #00CD00;
+    background-color: #FFFFFF;
+    border: 1px solid #00CD00;
+}
+.button.active{
+    color: #01cb01;
+}
+/* 横的白线 */
+.row {
+    position: absolute;
+    height: 10px;
+    width: 100%;
+    top: 100px;
+    left: 0;
+    background-color: white;
+}
+/* 竖的白线 */
+.column {
+    position: absolute;
+    width: 10px;
+    height: 100%;
+    left: 140px;
+    top: 0;
+    background-color: white;
+}

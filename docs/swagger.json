@@ -15,7 +15,7 @@
         },
         "version": "2.2"
     },
-    "host": "test-1437725-1308546479.ap-shanghai.run.tcloudbase.com",
+    "host": "localhost:8080",
     "paths": {
         "/administer/examine/getposts": {
             "get": {

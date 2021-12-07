@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录</title><script src="../static/js/jquery-1.7.2.js"></script>
+    <script>
+       
+
+function dl(){
+
+
+    $.ajax("http://localhost:8080/administer/login",{
+        
+        data:JSON.stringify({
+            "name":document.getElementById("a").value
+        }),
+        contentType: "application/json; charset=utf-8",
+        type:"POST",
+        dataType:"json",
+        success:(res) => {
+            console.log(res)
+            localStorage.setItem("token",res.data.token);
+            location.href = "/page/user";
+        }
+    })
+}
+
+</script>
+
+    <style>
+        div {
+            position: absolute;
+            background-color:white;
+            width: 400px;
+            height: 200px;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            margin:auto;
+         }
+         input {
+          border:3px solid blue;
+         }
+    </style>
+</head>
+<body bgcolor="#33a1a9">
+<div align="center" >
+<h1>管理员登录</h1>
+<input type="text" placeholder="输入管理员id" id="a"  ><br><br><br>
+<button onclick="dl()">登录</button>
+
+</div>    
+</body>
+</html>

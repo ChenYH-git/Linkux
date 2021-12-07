@@ -25,8 +25,8 @@ func Setup(mode string) *gin.Engine {
 
 	r.Use(logger.GinLogger(), logger.GinRecovery(true), middleware.RateLimitMiddleware(60*time.Millisecond, 500)) // 令牌桶容量为500，每6秒钟填充100个
 
-	//r.LoadHTMLGlob("./template/*")
-	//r.Static("/static", "./static")
+	r.LoadHTMLGlob("./template/*")
+	r.Static("/static", "./static")
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	r.POST("/login", controllers.LoginHandler)
@@ -75,6 +75,16 @@ func Setup(mode string) *gin.Engine {
 		v2.PUT("/user/star", controllers.StarUserHandler)
 		v2.PUT("/user/star/cancel", controllers.CancelStarUserHandler)
 		v2.POST("/getu", controllers.GetUserStatusHandler)
+	}
+
+	v3 := r.Group("/page")
+	{
+		v3.GET("/login", func(c *gin.Context) {
+			c.HTML(http.StatusOK, "login.html", nil)
+		})
+		v3.GET("/user", func(c *gin.Context) {
+			c.HTML(http.StatusOK, "user.html", nil)
+		})
 	}
 
 	r.NoRoute(func(c *gin.Context) {
