@@ -77,7 +77,7 @@
                     type:"PUT",
                     contentType:'application/json;charset=UTF-8',
                     data: JSON.stringify({
-                        "post_id": articles[parseInt(e.getAttribute("data-index"))].post_id
+                        "trans_id": articles[parseInt(e.getAttribute("data-index"))].trans_id
                     }),
                     dataType: "json",
                     success: (res) => {
